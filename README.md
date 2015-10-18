@@ -47,4 +47,18 @@ En el sistema habrá usuarios especiales (que podrán realizar las mismas accion
 borrar fotos que consideren inapropiadas. Los usuarios con permisos de 
 administrador serán definidos por el web administrator.
 
-[+Documentacion](https://www.draw.io/#G0B2VNcg_DK-gkbml1TEpRcGpkdlk)
+[+Modificar documentacion](https://www.draw.io/#G0B2VNcg_DK-gkbml1TEpRcGpkdlk)
+
+### Instrucciones para trabajar
+
+* Crear environment
+    `$ virtualenv env`
+
+* Activar environment
+    `$ source env/bin/activate`
+
+* Instalar requerimientos de *requirements.txt*
+    `$ pip install -r requirements.txt`
+
+* Para salir del env
+    `$ deactivate`
