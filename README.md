@@ -49,16 +49,36 @@ administrador serán definidos por el web administrator.
 
 [+Modificar documentacion](https://www.draw.io/#G0B2VNcg_DK-gkbml1TEpRcGpkdlk)
 
-### Instrucciones para trabajar
+### Instrucciones para usar entorno virtual
 
 * Crear environment
+
     `$ virtualenv env`
 
 * Activar environment
+
     `$ source env/bin/activate`
 
 * Instalar requerimientos de *requirements.txt*
+
     `$ pip install -r requirements.txt`
 
 * Para salir del env
+
     `$ deactivate`
+
+### Instrucciones para trabajar en branch por issue
+
+* Una vez clonado el documento crear un branch nuevo e ingresar
+
+    `$ git checkout -b newBranch`
+
+* Luego de hacer las modificaciones... 
+ 
+    `$ git add ...` y `$ git commit ...` 
+
+* ...hacer primer push en nuestra rama 
+
+    `$ git push -u origin newBranch`
+
+* Cuando el trabajo este listo para ser verificado realizar **pull-request** online y esperar la verificacion de los compañeros luego hacer **merge** online
