@@ -14,11 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 from django.conf.urls import include, url
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
-from PhotoApp.views import PhotoList, PhotoUpload
+import PhotoApp.urls
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^photos/', PhotoList.as_view(), name='photolist'),
-    url(r'^upload/', PhotoUpload.as_view(), name='photoupload'),
-] 
+    url(r'^', include(PhotoApp.urls, namespace='photoapp')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
