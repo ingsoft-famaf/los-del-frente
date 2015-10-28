@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView,FormView
 from .models import Photo
 from .forms import PhotoForm
 # Create your views here.
@@ -7,7 +7,7 @@ from .forms import PhotoForm
 class PhotoUpload(CreateView):
     template_name = 'PhotoApp/photo_form.html'
     form_class = PhotoForm
-    success_url = '/photos/'
+    success_url = '/upload/'
 
 class PhotoList(ListView):
     model = Photo
