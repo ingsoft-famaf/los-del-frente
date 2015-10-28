@@ -1,0 +1,8 @@
+<h1>Fotos</h1>
+<ul>
+{% for photo in object_list %}
+    <li>{{ photo }}</li>
+{% empty %}
+    <li>No articles yet.</li>
+{% endfor %}
+</ul>

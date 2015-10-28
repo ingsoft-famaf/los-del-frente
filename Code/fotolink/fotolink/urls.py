@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from PhotoApp.views import PhotoList, PhotoUpload
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^photos/', PhotoList.as_view(), name='photolist'),
+    url(r'^upload/', PhotoUpload.as_view(), name='photoupload'),
 ]
