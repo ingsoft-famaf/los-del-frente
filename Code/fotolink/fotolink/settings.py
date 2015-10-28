@@ -105,7 +105,7 @@ STATIC_ROOT = 'static'
 STATIC_URL = '/static/'
 
 # Users data
-MEDIA_ROOT = 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 # Where HTML pages came from

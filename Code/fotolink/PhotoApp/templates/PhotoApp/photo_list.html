@@ -1,0 +1,11 @@
+<h1>Fotos</h1>
+<ul>
+{% for photo in object_list %}
+    <li>
+        <a href="#"><img src="{{ photo.picture.url }}" alt="?"></a>
+        {{ photo }}
+    </li>
+{% empty %}
+    <li>No photos yet.</li>
+{% endfor %}
+</ul>

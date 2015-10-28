@@ -21,4 +21,4 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^photos/', PhotoList.as_view(), name='photolist'),
     url(r'^upload/', PhotoUpload.as_view(), name='photoupload'),
-]
+] 
