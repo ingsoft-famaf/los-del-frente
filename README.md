@@ -49,6 +49,11 @@ administrador serán definidos por el web administrator.
 
 [+Modificar documentacion](https://www.draw.io/#G0B2VNcg_DK-gkbml1TEpRcGpkdlk)
 
+### IMPORTANTE:
+* Instalar libreria *python-dev*
+
+    `$ sudo apt-get install python-dev`
+
 ### Instrucciones para usar entorno virtual
 
 * Crear environment
