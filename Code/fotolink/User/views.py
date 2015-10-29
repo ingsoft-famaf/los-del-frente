@@ -6,11 +6,15 @@ from django.http import HttpResponseRedirect
 
 
 def register(request):
+    print "oime"
     if request.method == "POST":
+        print "aca toy"
         form = UserForm(request.POST)
         if form.is_valid():
-            new_user = User.objects.create_user(**form.cleaned_data)
-            login(new_user)
+            username= form.cleaned_data['name']
+            password= form.cleaned_data['password']
+            new_user = User.objects.create_user(username=username, password=password)
+            new_user.save()
             # redirect, or however you want to get to the main view
             return HttpResponseRedirect('User/reg_ok.html')
     else:

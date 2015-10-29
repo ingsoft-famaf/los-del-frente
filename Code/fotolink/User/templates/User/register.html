@@ -5,10 +5,10 @@
 <h1> Registrate a fotoLink</h1><br>
 <h1> Es gratis!(por ahora...)</h1><br>
 <body>
-    <form>
-        Nombre de usuario: <input type="text" name ="username"><br>
+    <form method="post">
+    {% csrf_token %}
+        Nombre de usuario: <input type="text" name ="name"><br>
         Password : <input type="password" name="password"><br>
-        Re-introducir password: <input type="password" name="password"><br>
         <input type="submit" value="submit"><br>
     </form>
 </body>
