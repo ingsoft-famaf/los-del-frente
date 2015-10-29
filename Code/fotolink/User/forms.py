@@ -5,4 +5,4 @@ from django import forms
 
 class UserForm(forms.Form):
     name = forms.CharField(max_length=40)
-    password = forms.PasswordInput()
+    password = forms.CharField(max_length=32, widget=forms.PasswordInput)

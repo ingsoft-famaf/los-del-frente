@@ -16,8 +16,7 @@ def register(request):
             new_user = User.objects.create_user(username=username, password=password)
             new_user.save()
             # redirect, or however you want to get to the main view
-            return HttpResponseRedirect('User/reg_ok.html')
+            return HttpResponseRedirect('reg_ok.html')
     else:
-        form = UserForm() 
-
-    return render(request, 'User/register.html', {'form': form})
+        form = UserForm()
+        return render(request, 'User/register.html', {'form': form})
