@@ -1,10 +1,8 @@
 from forms import UserForm
-from django.contrib.auth import login
-from django.contrib.auth.models import User
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.views.generic import CreateView
 
 
+'''
 def register(request):
     print "oime"
     if request.method == "POST":
@@ -20,3 +18,10 @@ def register(request):
     else:
         form = UserForm()
         return render(request, 'User/register.html', {'form': form})
+'''
+
+
+class Register2(CreateView):
+    template_name = 'User/register.html'
+    form_class = UserForm
+    success_url = '/reg_ok.html/'
