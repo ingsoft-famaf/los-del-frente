@@ -21,5 +21,5 @@ import PhotoApp.urls
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^', include(PhotoApp.urls, namespace='photoapp')),
+    url(r'^', include(PhotoApp.urls, namespace='photos')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
