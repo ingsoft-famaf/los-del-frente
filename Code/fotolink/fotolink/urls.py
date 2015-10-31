@@ -18,6 +18,7 @@ from django.contrib import admin
 import User.urls
 
 urlpatterns = [
+    url('^', include('django.contrib.auth.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^', include(User.urls, namespace='register')),
+    url(r'^', include(User.urls)),
 ]
