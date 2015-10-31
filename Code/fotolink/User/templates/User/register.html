@@ -1,0 +1,14 @@
+<html>
+<head>
+    <title> Registrate a FotoLink!</title>
+</head>
+<h1> Registrate a fotoLink</h1><br>
+<h1> Es gratis!(por ahora...)</h1><br>
+<body>
+    <form  action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+        <input type="submit" value="submit"><br>
+    </form>
+</body>
+</html>
