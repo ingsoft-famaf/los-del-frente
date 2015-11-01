@@ -2,12 +2,10 @@
 <ul>
 {% for photo in object_list %}
     <li>
-        <a href="#"><img src="{{ photo.picture_crop.url }}" alt="?"></a>
-        <p>{{ photo.dateTime }}</p>
-        <a>{{ photo.place }} </a>
-        <p>
-        <a href="{% url 'photos:photodetail' photo.pk %}">View More</a>
-        </p>
+        <a href="{% url 'photos:photodetail' photo.pk %}">
+            <img src="{{ photo.picture_crop.url }}" alt="?">
+            <a href="{% url 'photos:photodetail' photo.pk %}">View More</a>
+        </a>
     </li>
 {% empty %}
     <li>No photos yet.</li>
