@@ -1,0 +1,56 @@
+body {
+    font-family: sans-serif;
+}
+.notify {
+    display: block;
+    text-decoration: none;
+    margin: 40px 0;
+    color: #00A300;
+    text-align: center;
+}
+.notify.error {
+    color: #8F0000;
+}
+.notification {
+    position: fixed;
+    bottom: 0px;
+    right: 50px;
+    text-align: center;
+    color: #fff;
+    opacity: 0.7;
+    width: 280px;
+    height: 0;
+    overflow: hidden;
+    -webkit-transition: all ease 0.4s;
+    -moz-transition: all ease 0.4s;
+    -ms-transition: all ease 0.4s;
+    -o-transition: all ease 0.4s;
+    transition: all ease 0.4s;
+}
+.notification.is-visible {
+    height: 180px;
+}
+.notification:hover {
+    opacity: 1;
+}
+.notification.success {
+    background: #00A300;
+}
+.notification.error {
+    background: #8F0000;
+}
+.notification .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: #fff;
+    text-decoration: none;
+}
+.notification h5 {
+    margin: 35px 0;
+    font-size: 20px;
+}
+.notification p {
+    margin: 20px 0;
+    font-size: 12px;
+}
