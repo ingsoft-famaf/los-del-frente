@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from User.views import Register
+from User.views import Register, Profile
 from django.views.generic import TemplateView
 
 urlpatterns = [

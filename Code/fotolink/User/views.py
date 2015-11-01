@@ -1,5 +1,5 @@
-from forms import UserCreationForm
-from django.views.generic import CreateView
+from forms import UserCreationForm, ProfileForm
+from django.views.generic import CreateView, DetailView
 from django.contrib.auth import views
 from User.models import Perfil
 
@@ -9,8 +9,8 @@ class Register(CreateView):
     form_class = UserCreationForm
     success_url = '/reg_ok/'
 
-class Profile(CreateView):
+class Profile(DetailView):
     template_name = 'User/profile.html'
     model = Perfil
-    form_class = HACERFORMULARIO
-    success_url = '/reg_ok/'
+    form_class = ProfileForm
+    #success_url = '/reg_ok/'
