@@ -14,3 +14,8 @@ class Profile(DetailView):
     model = Perfil
     form_class = ProfileForm
     #success_url = '/reg_ok/'
+
+    def get_context_data(self, **kwargs):
+        #que hace esta linea?
+        context = super(Profile, self).get_context_data(**kwargs)
+        return context
