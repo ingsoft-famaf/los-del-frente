@@ -9,9 +9,10 @@ from imagekit.processors import ResizeToFill
 
 class Place(models.Model):
     placeName = models.CharField(max_length=50, null=True, blank =False)
+
     # This is how an object is shown
     def __unicode__(self):
-        return str(self.placeName)
+        return str (self.placeName)
 
 class Photo(models.Model):
     picture = ProcessedImageField(upload_to='pictures', null = True, processors=[ResizeToFill(640, 480)], format='JPEG', options= {'quality':90})
@@ -23,7 +24,7 @@ class Photo(models.Model):
 
     # This is how an object is shown
     def __unicode__(self):
-        return str(self.place) + ' ' + str (self.dateTime)
+        return str (self.dateTime)
 
     # This is only for thumbnail of the picture in admin
     def image_tag(self):

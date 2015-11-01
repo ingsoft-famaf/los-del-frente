@@ -4,7 +4,7 @@
     <li>
         <a href="#"><img src="{{ photo.picture_crop.url }}" alt="?"></a>
         <p>{{ photo.dateTime }}</p>
-        <p>{{ photo.place }} </p>
+        <a>{{ photo.place }} </a>
         <p>
         <a href="{% url 'photos:photodetail' photo.pk %}">View More</a>
         </p>
