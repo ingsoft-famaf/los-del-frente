@@ -40,7 +40,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'imagekit',
     # Our particular apps
-    'PhotoApp'
+    'PhotoApp',
+    'User',
 )
 
 MIDDLEWARE_CLASSES = (
