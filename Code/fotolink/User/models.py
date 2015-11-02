@@ -1,8 +1,11 @@
 from django.db import models
+from django.contrib.auth.models import User
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
 
+
 class Perfil(models.Model):
+    usuario = models.OneToOneField(User, null = True)
     nombre = models.CharField(max_length=30)
     edad = models.IntegerField()
     residencia = models.CharField(max_length=40)
