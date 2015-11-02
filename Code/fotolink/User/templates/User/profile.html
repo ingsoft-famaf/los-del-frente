@@ -1,7 +1,7 @@
-<html>
-<head>
-    <title>Editar Perfil de {{ object.nombre }}</title>
-</head>
+{% extends 'base.html' %}
+{% block title %}Register{% endblock %}
+
+{% block content %}
 <h1> Edite aquí su perfil, querid@ {{ object.nombre }}</h1><br>
 <body>
     <form  action="" method="post">
@@ -10,4 +10,5 @@
     <input type="submit" value="Update"><br>
     </form>
 </body>
-</html>
+{% endblock %}
+

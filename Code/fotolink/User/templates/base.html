@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fotolink|{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <div id="header">
+        <h1> Esta es la base!!!</h1>
+    </div>
+
+    <div id="">
+        <a href="/">Home</a>
+        <a href="/upload/">Upload</a>
+        <a href="/photos/">Photos</a>
+        <a href="/">Configuration</a>
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
