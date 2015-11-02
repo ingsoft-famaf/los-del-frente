@@ -1,13 +1,14 @@
-<html>
-<head>
-    <title>Editar Perfil de {{ object.nombre }}</title>
-</head>
-<h1> Edite aquí su perfil, querid@ {{ object.nombre }}</h1><br>
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<h1>Profile</h1>
+<h1> {{ object.nombre }}</h1><br>
 <body>
-    <form  action="" method="post">
+    <form  action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Update"><br>
+    {{ object.as_p }}
+    <a href="{% url 'user:editprofile' object.pk %}">View More</a>
     </form>
 </body>
-</html>
+{% endblock %}

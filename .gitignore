@@ -55,4 +55,9 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# Database
 db.sqlite3
+
+# Temps
+*~
