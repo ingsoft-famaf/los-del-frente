@@ -1,2 +1,8 @@
 Django==1.8.4
 Python==2.7
+# Para poder usar ImageField
+Pillow==2.8.1
+
+# Para reducir imagenes
+django-imagekit==3.2.6
+
