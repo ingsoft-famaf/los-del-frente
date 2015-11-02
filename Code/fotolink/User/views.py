@@ -1,7 +1,8 @@
-from django.views.generic import CreateView, UpdateView, DetailView
-from django.contrib.auth import views
-from django.contrib.auth.models import User
+from django.views.generic import CreateView, UpdateView, DetailView, TemplateView
 from django.http import HttpResponseRedirect
+# Para utilizar los modelos y vistas de usuario de Django
+from django.contrib.auth.models import User
+from django.contrib.auth import views
 # Para buscar objetos de tipo usuario generico
 from django.shortcuts import get_object_or_404
 # Para restricciones de acceso
@@ -16,18 +17,18 @@ from .forms import ProfileForm
 class Register(CreateView):
     template_name = 'User/register.html'
     form_class = UserCreationForm
-    success_url = '/reg_ok/'
+    success_url = '/login/'
 
 
 class ProfileCreate(CreateView):
     model = Perfil
     form_class = ProfileForm
     template_name = 'User/profile_create.html'
+    success_url = '/reg_ok/'
 
     '''
     Este metodo sobreescribe el default obligando a estar logueado
     '''
-
     @method_decorator(login_required(login_url='/login/'))
     def dispatch(self, request, *args, **kwargs):
         return super(self.__class__, self).dispatch(request, *args, **kwargs)

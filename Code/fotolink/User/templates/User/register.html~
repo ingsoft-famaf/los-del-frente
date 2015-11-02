@@ -1,6 +1,4 @@
-{% extends 'base.html' %}
-{% block title %}Register{% endblock %}
-
+<title>Sign Up</title>
 {% block content %}
 <h1> Registrate a fotoLink</h1><br>
 <h1> Es gratis!(por ahora...)</h1><br>

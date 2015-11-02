@@ -1,5 +1,11 @@
+{% extends 'base.html' %}
+{% block title %} Detail {% endblock %}
+
+{% block content %}
 <h1>Details</h1>
 <p>Date and Time: {{ object.date }} at {{object.time}}</p>
 <p>Place: {{ object.place }}</p>
 <img src="{{ object.picture.url }}" class="img-responsive img-detail" alt="">
+
+{% endblock %}
 

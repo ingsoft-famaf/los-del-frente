@@ -21,8 +21,8 @@ import PhotoApp.urls
 import User.urls
 
 urlpatterns = [
-    url('^', include('django.contrib.auth.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^', include('django.contrib.auth.urls')),
     url(r'^', include(PhotoApp.urls, namespace='photos')),
-    url(r'^', include(User.urls, namespace='user')),
+    url(r'^', include(User.urls, namespace='user'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
