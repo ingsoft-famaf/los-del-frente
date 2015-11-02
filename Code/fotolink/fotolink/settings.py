@@ -39,6 +39,7 @@ INSTALLED_APPS = (
 
     'django.contrib.staticfiles',
     'imagekit',
+    'widget_tweaks',
     # Our particular apps
     'PhotoApp',
     'User',
@@ -106,7 +107,6 @@ USE_TZ = True
 
 STATIC_ROOT = 'static'
 STATIC_URL = '/static/'
-
 
 # Users data
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

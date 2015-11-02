@@ -1,8 +1,11 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
+from django.forms import ModelForm
+from .models import Perfil
 
-class UserForm(UserCreationForm):
+class ProfileForm(ModelForm):
     class Meta:
-        model = User
-        fields = ['username', 'password1']
+        model = Perfil
+        exclude = ('usuario',)
+        fields = ('nombre','edad','residencia','mail','facebook','web','usuario')
