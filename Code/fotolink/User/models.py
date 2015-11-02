@@ -8,5 +8,7 @@ class Perfil(models.Model):
     mail = models.EmailField(max_length=70)
     facebook = models.URLField(max_length=60)
     web = models.URLField(max_length=200)
-    #foto_perfil = models.ImageField()
+    foto_perfil = models.ImageField(upload_to='media',
+                                    default = 'no-img.jpg')
+
     es_moderador = models.BooleanField()
