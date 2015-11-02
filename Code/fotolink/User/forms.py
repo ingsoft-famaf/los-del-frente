@@ -7,4 +7,4 @@ from .models import Perfil
 class ProfileForm(ModelForm):
     class Meta:
         model = Perfil
-        fields = '__all__'
+        exclude = ('es_moderador',)
