@@ -1,16 +1,13 @@
 <html>
 <head>
-    <title> el usuariooooo</title>
+    <title>Editar Perfil de {{ object.nombre }}</title>
 </head>
-<h1> Perfil de fotolink {{ object.nombre }}</h1><br>
-<h1> Perfil de fotolink {{ object.edad }}</h1><br>
-<h1> Perfil de fotolink {{ object.residensia }}</h1><br>
-<h1> Perfil de fotolink {{ object.web }}</h1><br>
-<h1> Es gratis!(por ahora...)</h1><br>
+<h1> Edite aquí su perfil, querid@ {{ object.nombre }}</h1><br>
 <body>
-    <form  action="" method="GET">
+    <form  action="" method="post">
     {% csrf_token %}
-    {{ object.form.as_p }}
+    {{ form.as_p }}
+    <input type="submit" value="Update"><br>
     </form>
 </body>
 </html>
