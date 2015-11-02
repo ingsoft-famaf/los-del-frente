@@ -19,7 +19,8 @@ class Photo(models.Model):
     picture_crop = ImageSpecField(source='picture', processors=[ResizeToFill(50, 50)],
                                       format='JPEG',
                                       options={'quality': 60})
-    dateTime = models.DateTimeField(null= True)
+    date = models.DateField(null =True)
+    time = models.TimeField(null=True)
     place = models.ForeignKey(Place, null =True)
 
     # This is how an object is shown
