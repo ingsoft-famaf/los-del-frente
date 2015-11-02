@@ -1,9 +1,11 @@
 from forms import UserCreationForm, ProfileForm
 from django.views.generic import CreateView, UpdateView, DetailView
 from django.contrib.auth import views
+from django.contrib.auth.models import User
 from .models import Perfil
 from .forms import ProfileForm
-
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 
 class Register(CreateView):
     template_name = 'User/register.html'
@@ -15,19 +17,21 @@ class ProfileCreate(CreateView):
     form_class = ProfileForm
     template_name = 'User/profile_create.html'
 
-    #Esto no estaria andando
+    # AutoComplete form.usuario with actual logged in user
     def form_valid(self, form):
-        self.object.usuario = self.request.pk
-        self.object.save()
+        usuario = form.save(commit=False)
+        usuario.usuario = User.objects.get(username=self.request.user)
+        usuario.save()
         return HttpResponseRedirect(self.get_success_url())
+
 
 class ProfileDetail(DetailView):
     model = Perfil
     template_name = 'User/profile.html'
 
-    def get_context_data(self, **kwargs):
-        context = super(Profile, self).get_context_data(**kwargs)
-        return context
+    def get_object(self):
+        ActualUser = get_object_or_404(User, username=self.request.user)
+        return get_object_or_404(Perfil, usuario=ActualUser)
 
 class ProfileEdit(UpdateView):
     template_name = 'User/profile_edit.html'
@@ -35,6 +39,12 @@ class ProfileEdit(UpdateView):
     form_class = ProfileForm
     success_url = '/edit_ok/'
 
-    def get_context_data(self, **kwargs):
-        context = super(Profile, self).get_context_data(**kwargs)
-        return context
+    def get_object(self):
+        ActualUser = get_object_or_404(User, username=self.request.user)
+        return get_object_or_404(Perfil, usuario=ActualUser)
+
+    def form_valid(self, form):
+        usuario = form.save(commit=False)
+        usuario.usuario = User.objects.get(username=self.request.user)
+        usuario.save()
+        return HttpResponseRedirect(self.get_success_url())
