@@ -41,7 +41,7 @@ class ProfileCreate(CreateView):
         usuario = form.save(commit=False)
         usuario.usuario = User.objects.get(username=self.request.user)
         usuario.save()
-        return HttpResponseRedirect(self.get_success_url())
+        return HttpResponseRedirect(self.success_url)
 
 
 class ProfileDetail(DetailView):

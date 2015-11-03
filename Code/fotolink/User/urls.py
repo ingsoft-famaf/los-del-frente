@@ -2,7 +2,6 @@ from django.conf.urls import url
 from User.views import Register, ProfileEdit,ProfileDetail, ProfileCreate
 from django.views.generic import TemplateView
 # Para usar como pagina de referencia 
-from django.contrib.auth import views as DJ_views
 
 urlpatterns = [
     url(r'^register/', Register.as_view(), name='registro'),
@@ -11,5 +10,5 @@ urlpatterns = [
     url(r'^accounts/profile/$', ProfileDetail.as_view(), name='profile'),
     url(r'^accounts/profile/edit/$', ProfileEdit.as_view(), name='editprofile'),
     url(r'^edit_ok/', TemplateView.as_view(template_name='User/edit_ok.html')),
-    url(r'^$', DJ_views.login, name='home')
+    url(r'^$', ProfileDetail.as_view(), name='home')
 ]
