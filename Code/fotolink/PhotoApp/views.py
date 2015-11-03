@@ -2,13 +2,11 @@ from django.views.generic import ListView, CreateView
 from django.views.generic import FormView, DetailView, DeleteView
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
-# Para restricciones de acceso
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-
 from .forms import PhotoForm
 from .models import Photo
-# Create your views here.
+
 
 class PhotoDelete(DeleteView):
     model = Photo
@@ -39,12 +37,11 @@ class PhotoUpload(CreateView):
         return super(self.__class__, self).dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
-        return reverse ('photos:photodelete', kwargs={'pk': self.object.pk})
+        return reverse('photos:delete', kwargs={'pk': self.object.pk})
 
 
 class PhotoList(ListView):
     model = Photo
-    # paginate_by = 3
 
     '''
     Este metodo sobreescribe el default obligando a estar logueado

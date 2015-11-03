@@ -4,8 +4,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
 from .models import Perfil
 
+
 class ProfileForm(ModelForm):
     class Meta:
         model = Perfil
         exclude = ('usuario',)
-        fields ='__all__'
+        fields = '__all__'

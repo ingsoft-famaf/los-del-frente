@@ -1,18 +1,15 @@
-from django.views.generic import CreateView, UpdateView, DetailView, TemplateView
+from django.views.generic import CreateView, UpdateView
+from django.views.generic import DetailView, TemplateView
 from django.http import HttpResponseRedirect
-# Para utilizar los modelos y vistas de usuario de Django
 from django.contrib.auth.models import User
 from django.contrib.auth import views
-# Para buscar objetos de tipo usuario generico
 from django.shortcuts import get_object_or_404
-# Para restricciones de acceso
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-# Para usuarios genericos
 from forms import UserCreationForm, ProfileForm
-
 from .models import Perfil
 from .forms import ProfileForm
+
 
 class Register(CreateView):
     template_name = 'User/register.html'
