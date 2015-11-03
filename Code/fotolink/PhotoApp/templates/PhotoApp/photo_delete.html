@@ -4,5 +4,5 @@
     <img src="{{ object.picture.url }}" class="img-responsive img-detail" alt="">
     <p>This is the last oportunity if you want to delete this foto</p>
     <input type="submit" value="Delete" />
-<input type="button" onclick="location.href='{% url 'photos:photodetail' photo.pk %}';" value="Confirm" />
+<input type="button" onclick="location.href='{% url 'photos:detail' photo.pk %}';" value="Confirm" />
 </form>
