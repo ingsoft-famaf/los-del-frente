@@ -5,6 +5,10 @@ from imagekit.processors import ResizeToFill
 
 
 class Perfil(models.Model):
+    """
+    Clase Perfil que modela los datos visibles o no, de un usuario registrado.
+    Hereda de django.db.models.Model y es para casi uso exclusivo de django.
+    """
     usuario = models.OneToOneField(User, null=True)
     nombre = models.CharField(max_length=30)
     edad = models.IntegerField()
@@ -24,9 +28,11 @@ class Perfil(models.Model):
                                  options={'quality': 90})
 
     def image_tag(self):
+        """Retorna url absoluta para uso html del avatar (imagen)"""
         return u'<img src="%s" alt= "404"/>' % self.avatar.url
     image_tag.short_description = 'Image'
     image_tag.allow_tags = True
 
     def __string__(self):
+        """Retorna el nombre de un usuario al imprimir un objeto Perfil"""
         return str(nombre)
