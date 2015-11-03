@@ -5,13 +5,18 @@ from imagekit.processors import ResizeToFill
 
 
 class Perfil(models.Model):
-    usuario = models.OneToOneField(User, null = True)
+    usuario = models.OneToOneField(User, null = True)    
     nombre = models.CharField(max_length=30)
     edad = models.IntegerField()
+    edad_privacidad = models.BooleanField("privacidad")
     residencia = models.CharField(max_length=40)
+    residencia_privacidad = models.BooleanField("privacidad")
     mail = models.EmailField(max_length=70)
+    mail_privacidad = models.BooleanField("privacidad")
     facebook = models.URLField(max_length=60)
+    facebook_privacidad = models.BooleanField("privacidad")
     web = models.URLField(max_length=200)
+    web_privacidad = models.BooleanField("privacidad")
     avatar = ProcessedImageField(upload_to='avatars',
                                   null = True,
                                   processors=[ResizeToFill(300, 300)],
