@@ -1,6 +1,8 @@
 Fotolink
 ========
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ingsoft-famaf/los-del-frente?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
 ### Resumen 
 
 Fotolink consiste en un sistema capaz de conectar a personas que estuvieron 
