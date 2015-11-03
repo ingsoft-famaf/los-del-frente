@@ -7,13 +7,22 @@ from django.forms.extras.widgets import SelectDateWidget
 
 
 class Place(models.Model):
+    """
+    Clase Place que modela un lugar en la aplicacion. Hereda de
+    django.db.models.Model y es para casi uso exclusivo de django.
+    """
     placeName = models.CharField(max_length=50, null=True, blank=False)
 
     def __unicode__(self):
+        """Retorna el nombre de un lugar al imprimir un objeto Place"""
         return str(self.placeName)
 
 
 class Photo(models.Model):
+    """
+    Clase Photo que modela una foto en la aplicacion. Hereda de
+    django.db.models.Model y es para casi uso exclusivo de django.
+    """
     picture = ProcessedImageField(upload_to='pictures',
                                   null=True,
                                   processors=[ResizeToFill(640, 480)],
@@ -29,10 +38,8 @@ class Photo(models.Model):
                             help_text="<em>hh:mm</em>.")
     place = models.ForeignKey(Place, null=True)
 
-    def __unicode__(self):
-        return str(self.dateTime)
-
     def image_tag(self):
+        """Retorna url absoluta para uso html de una foto"""
         return u'<img src="%s" alt= "404"/>' % self.picture_crop.url
     image_tag.short_description = 'Image'
     image_tag.allow_tags = True
