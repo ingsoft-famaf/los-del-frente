@@ -11,7 +11,9 @@ class Place(models.Model):
     Clase Place que modela un lugar en la aplicacion. Hereda de
     django.db.models.Model y es para casi uso exclusivo de django.
     """
-    placeName = models.CharField(max_length=50, null=True, blank=False)
+    placeName = models.CharField(max_length=50,
+                                 blank=False,
+                                 primary_key=True)
 
     def __unicode__(self):
         """Retorna el nombre de un lugar al imprimir un objeto Place"""
@@ -43,3 +45,5 @@ class Photo(models.Model):
         return u'<img src="%s" alt= "404"/>' % self.picture_crop.url
     image_tag.short_description = 'Image'
     image_tag.allow_tags = True
+
+
