@@ -1,11 +1,10 @@
 from django.views.generic import ListView, CreateView
-from django.views.generic import FormView, DetailView, DeleteView
+from django.views.generic import DetailView, DeleteView
 from django.core.urlresolvers import reverse
-from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from .forms import PhotoForm
-from .models import Photo
+from .models import Photo, Place
 
 
 class PhotoDelete(DeleteView):
@@ -85,3 +84,22 @@ class PhotoList(ListView):
         """
         context = super(PhotoList, self).get_context_data()
         return context
+
+    '''
+    Filtrar fotos. Una primera aproximacion al problema de buscar foto
+    de acuerdo a ciertos parametros. Propongo:
+    1- nombre de lugar contiene 'string':
+        place_id=Place.objects.filter(placeName__contains='string')[0].id
+        Mal: solo te da el primer resultado del conjunto de lugares cuyos
+        nombres contienen 'string'.
+    2- Por fecha y hora:
+        En el ejemplo estan todas las fotos de julio entre las 8am y 6pm
+    3- Fecha, hora y lugar
+        Concatenar los filters.
+    Manejar excepcion de empty queryset. No hay una forma mejor de hacer esto?
+    Inputs del usuario...
+
+    '''
+    def get_queryset(self):
+        qset = super(PhotoList, self).get_queryset()
+        return qset.filter(date__range=["2014-07-01","2014-07-31"]).filter(time__range=["08:00", "18:00"])
