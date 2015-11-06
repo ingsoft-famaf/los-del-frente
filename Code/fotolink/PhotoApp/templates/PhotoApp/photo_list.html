@@ -3,6 +3,12 @@
 
 {% block content %}
 <h1>Photos</h1>
+    <form method="post">
+    {% csrf_token %}
+        <h1>Buscar por lugar y fecha</h1>
+        Lugar <input type="text" name ="place"><br>
+        <input type="submit" value="submit"><br>
+    </form>
 <ul>
 {% for photo in object_list %}
     <li>

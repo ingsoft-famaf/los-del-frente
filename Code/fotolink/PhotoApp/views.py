@@ -101,5 +101,15 @@ class PhotoList(ListView):
 
     '''
     def get_queryset(self):
+        '''
+        if self.request.method=='POST':
+            form = PhotoForm(self.request.POST)
+            if form.is_valid():
+                picPlace = form.cleaned_data['place']
+                #picDate= form.cleaned_data['date']
+                #picTime=form.cleaned_data['time']
+        '''
+        print "hola"
+        picPlace = self.request.POST.get('place','')
         qset = super(PhotoList, self).get_queryset()
-        return qset.filter(date__range=["2014-07-01","2014-07-31"]).filter(time__range=["08:00", "18:00"])
+        return qset.filter(place=Place.objects.filter(placeName__contains=picPlace))
