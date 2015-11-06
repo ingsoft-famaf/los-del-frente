@@ -89,3 +89,7 @@ administrador serán definidos por el web administrator.
     `$ git push -u origin newBranch`
 
 * Cuando el trabajo este listo para ser verificado realizar **pull-request** online y esperar la verificacion de los compañeros luego hacer **merge** online
+
+### Instrucciones para correr tests de PhotoApp
+
+    `$ python manage test PhotoApp/tests`
