@@ -45,5 +45,3 @@ class Photo(models.Model):
         return u'<img src="%s" alt= "404"/>' % self.picture_crop.url
     image_tag.short_description = 'Image'
     image_tag.allow_tags = True
-
-
