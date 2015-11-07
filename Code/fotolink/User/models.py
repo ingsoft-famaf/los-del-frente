@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 
 class Perfil(models.Model):
@@ -10,21 +12,21 @@ class Perfil(models.Model):
     Hereda de django.db.models.Model y es para casi uso exclusivo de django.
     """
     usuario = models.OneToOneField(User, null=True)
-    nombre = models.CharField(max_length=30)
-    edad = models.IntegerField()
-    edad_privacidad = models.BooleanField("privacidad")
-    residencia = models.CharField(max_length=40)
-    residencia_privacidad = models.BooleanField("privacidad")
-    mail = models.EmailField(max_length=70)
-    mail_privacidad = models.BooleanField("privacidad")
-    facebook = models.URLField(max_length=60)
-    facebook_privacidad = models.BooleanField("privacidad")
-    web = models.URLField(max_length=200)
-    web_privacidad = models.BooleanField("privacidad")
+    nombre = models.CharField(max_length=30, blank=True)
+    edad = models.IntegerField(blank=True, null=True)
+    edad_privacidad = models.BooleanField("privacidad", default=True)
+    residencia = models.CharField(max_length=40, blank=True)
+    residencia_privacidad = models.BooleanField("privacidad", default=True)
+    mail = models.EmailField(max_length=70, blank=True)
+    mail_privacidad = models.BooleanField("privacidad", default=True)
+    facebook = models.URLField(max_length=60, blank=True)
+    facebook_privacidad = models.BooleanField("privacidad", default=True)
+    web = models.URLField(max_length=200, blank=True)
+    web_privacidad = models.BooleanField("privacidad", default=True)
     avatar = ProcessedImageField(upload_to='avatars',
-                                 null=True,
                                  processors=[ResizeToFill(300, 300)],
                                  format='JPEG',
+                                 default='avatars/no_avatar.jpg',
                                  options={'quality': 90})
 
     def image_tag(self):
@@ -36,3 +38,9 @@ class Perfil(models.Model):
     def __string__(self):
         """Retorna el nombre de un usuario al imprimir un objeto Perfil"""
         return str(nombre)
+
+@receiver(post_save, sender=User)
+def create_profile_for_new_user(sender, created, instance, **kwargs):
+    if created:
+        perfil = Perfil(usuario=instance)
+        perfil.save()

@@ -22,43 +22,6 @@ class Register(CreateView):
     success_url = '/login/'
 
 
-class ProfileCreate(CreateView):
-    """
-    Vista que implementa la creacion de un nuevo perfil. Hereda de
-    django.views.generic.CreateView. Requiere que un usuario este identificado
-    en el sistema.
-
-    Overrides: dispatch, form_valid
-    """
-    model = Perfil
-    form_class = ProfileForm
-    template_name = 'User/profile_create.html'
-    success_url = '/reg_ok/'
-
-    @method_decorator(login_required(login_url='/login/'))
-    def dispatch(self, request, *args, **kwargs):
-        """
-        Metodo de salida de la vista que llama a su superclase. Requiere login
-
-        :param request: http request
-        :returns: http response
-        """
-        return super(self.__class__, self).dispatch(request, *args, **kwargs)
-
-    def form_valid(self, form):
-        """
-        Valida un formulario y guarda el registro recibido como parametro
-        sobre el usuario logueado.
-
-        :param form: formulario html con datos de un Perfil
-        :returns: HttpResponseRedirect: objeto con la direccion de redireccion
-        """
-        usuario = form.save(commit=False)
-        usuario.usuario = User.objects.get(username=self.request.user)
-        usuario.save()
-        return HttpResponseRedirect(self.success_url)
-
-
 class ProfileDetail(DetailView):
     """
     Vista de un Perfil de un usuario.Hereda de django.views.generic.DetailView
