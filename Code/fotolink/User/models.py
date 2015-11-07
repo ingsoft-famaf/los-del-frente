@@ -4,6 +4,7 @@ from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+from django.core.validators import MaxValueValidator
 
 
 class Perfil(models.Model):
@@ -13,7 +14,9 @@ class Perfil(models.Model):
     """
     usuario = models.OneToOneField(User, null=True)
     nombre = models.CharField(max_length=30, blank=True)
-    edad = models.IntegerField(blank=True, null=True)
+    edad = models.PositiveIntegerField(blank=True,
+                                       null=True,
+                                       validators=[MaxValueValidator(150)])
     edad_privacidad = models.BooleanField("privacidad", default=True)
     residencia = models.CharField(max_length=40, blank=True)
     residencia_privacidad = models.BooleanField("privacidad", default=True)
