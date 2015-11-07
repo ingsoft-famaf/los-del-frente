@@ -7,7 +7,7 @@ from django.db.models.signals import post_save
 from django.core.validators import MaxValueValidator
 
 
-privacidad = {'choices':[(1,'Privado'),(2,'Publico')], 'default':2, 'blank':False}
+privacidad = {'choices':[(True,'Privado'),(False,'Publico')], 'default':2, 'blank':False}
 
 class Perfil(models.Model):
     """
