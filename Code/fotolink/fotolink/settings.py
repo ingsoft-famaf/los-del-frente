@@ -118,7 +118,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             # insert your TEMPLATE_DIRS here
-            os.path.join(BASE_DIR, "PhotoApp/Templates")
+            os.path.join(BASE_DIR, "templates_compartidos")
         ],
         'APP_DIRS': True,
         'OPTIONS': {
