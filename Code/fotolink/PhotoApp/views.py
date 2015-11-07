@@ -109,8 +109,20 @@ class PhotoList(ListView):
                 #picDate= form.cleaned_data['date']
                 #picTime=form.cleaned_data['time']
         '''
-        print "filtering"
-        print self.request.GET
-        picPlace = self.request.GET.get('place','')
+        qPlace = self.request.GET.get('place','')
+        qTime = self.request.GET.get('time','')
+        qYear = self.request.GET.get('year','')
+        qMonth = self.request.GET.get('month','')
+        qDay = self.request.GET.get('day','')
         qset = super(PhotoList, self).get_queryset()
-        return qset.filter(place=Place.objects.filter(placeName__contains=picPlace))
+        if qTime != "":
+            qset=qset.filter(time__startswith = qTime)
+        if qYear != "":
+            qset=qset.filter(date__year=qYear)
+        if qMonth != "":
+            qset=qset.filter(date__month=qMonth)
+        if qDay != "":
+            qset=qset.filter(date__day=qDay)
+        if qPlace != "":
+            qset=qset.filter(place__placeName__startswith=qPlace)
+        return qset
