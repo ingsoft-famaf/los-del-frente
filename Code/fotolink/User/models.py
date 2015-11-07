@@ -17,15 +17,15 @@ class Perfil(models.Model):
     edad = models.PositiveIntegerField(blank=True,
                                        null=True,
                                        validators=[MaxValueValidator(150)])
-    edad_privacidad = models.BooleanField("privacidad", default=True)
+    edad_privacidad = models.BooleanField("privado", default=True)
     residencia = models.CharField(max_length=40, blank=True)
-    residencia_privacidad = models.BooleanField("privacidad", default=True)
+    residencia_privacidad = models.BooleanField("privado", default=True)
     mail = models.EmailField(max_length=70, blank=True)
-    mail_privacidad = models.BooleanField("privacidad", default=True)
+    mail_privacidad = models.BooleanField("privado", default=True)
     facebook = models.URLField(max_length=60, blank=True)
-    facebook_privacidad = models.BooleanField("privacidad", default=True)
+    facebook_privacidad = models.BooleanField("privado", default=True)
     web = models.URLField(max_length=200, blank=True)
-    web_privacidad = models.BooleanField("privacidad", default=True)
+    web_privacidad = models.BooleanField("privado", default=True)
     avatar = ProcessedImageField(upload_to='avatars',
                                  processors=[ResizeToFill(300, 300)],
                                  format='JPEG',
