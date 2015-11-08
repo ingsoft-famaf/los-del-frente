@@ -7,7 +7,9 @@ from django.db.models.signals import post_save
 from django.core.validators import MaxValueValidator
 
 
-privacidad = {'choices':[(True,'Privado'),(False,'Publico')], 'default':2, 'blank':False}
+privacidad = {'choices': [(True, 'Privado'), (False, 'Publico')], 'default': 2,
+              'blank': False}
+
 
 class Perfil(models.Model):
     """
@@ -43,6 +45,7 @@ class Perfil(models.Model):
     def __string__(self):
         """Retorna el nombre de un usuario al imprimir un objeto Perfil"""
         return str(nombre)
+
 
 @receiver(post_save, sender=User)
 def create_profile_for_new_user(sender, created, instance, **kwargs):
