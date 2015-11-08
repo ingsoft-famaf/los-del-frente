@@ -92,4 +92,4 @@ administrador serán definidos por el web administrator.
 
 ### Instrucciones para correr tests de PhotoApp
 
-    `$ python manage test PhotoApp/tests`
+    `$ python manage test PhotoApp/tests
