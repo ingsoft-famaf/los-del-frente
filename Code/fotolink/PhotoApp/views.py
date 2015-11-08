@@ -67,6 +67,7 @@ class PhotoList(ListView):
     previo. Hereda de django.views.generic.ListView
     """
     model = Photo
+    template_name = 'PhotoApp/photo_list.html'
 
     @method_decorator(login_required(login_url='/login/'))
     def dispatch(self, request, *args, **kwargs):
@@ -85,29 +86,10 @@ class PhotoList(ListView):
         context = super(PhotoList, self).get_context_data()
         return context
 
-    '''
-    Filtrar fotos. Una primera aproximacion al problema de buscar foto
-    de acuerdo a ciertos parametros. Propongo:
-    1- nombre de lugar contiene 'string':
-        place_id=Place.objects.filter(placeName__contains='string')[0].id
-        Mal: solo te da el primer resultado del conjunto de lugares cuyos
-        nombres contienen 'string'.
-    2- Por fecha y hora:
-        En el ejemplo estan todas las fotos de julio entre las 8am y 6pm
-    3- Fecha, hora y lugar
-        Concatenar los filters.
-    Manejar excepcion de empty queryset. No hay una forma mejor de hacer esto?
-    Inputs del usuario...
-
-    '''
     def get_queryset(self):
         '''
-        if self.request.method=='POST':
-            form = PhotoForm(self.request.POST)
-            if form.is_valid():
-                picPlace = form.cleaned_data['place']
-                #picDate= form.cleaned_data['date']
-                #picTime=form.cleaned_data['time']
+        Filtra segun el formulario enviado por el usuario y retorna una lista
+        de objetos con las caracteristicas adecuadas.
         '''
         qPlace = self.request.GET.get('place','')
         qTime = self.request.GET.get('time','')
