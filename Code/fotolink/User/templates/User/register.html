@@ -36,14 +36,32 @@
 		<form  action="" method="post">
 		    {% csrf_token %}			
 			{% render_field form.username placeholder="Username" required="required" %}
+			{% render_field form.username.errors %}
 			{% render_field form.password1 placeholder="Password" required="required" %}
+			{% render_field form.password1.errors %}
 			{% render_field form.password2 placeholder="Password confirmation" required="required" %}
+			{% render_field form.password2.errors %}
 		    <button type="submit" class="btn btn-primary btn-block btn-large">Sign Up.</button>
 		    <style type="text/css">
 		    body {
 		    	background: url("{% static "background_register_low.jpg" %}");
 		    	background-position: center;
 		    }
+		    ul {
+			    margin: 0;
+			    padding: 0;
+			    padding-bottom: 5px;
+			}
+			li {
+				font-size: 13px;
+				color: #FFF;
+				list-style: outside none none;
+				padding: 0px;
+				margin: 0px;
+			}
+			li::before {
+				content: "- ";
+			}
 		    </style>
 		</form>		
 	
