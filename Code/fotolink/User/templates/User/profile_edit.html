@@ -1,14 +1,235 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
 {% block title %}Profile Edition{% endblock %}
 
 {% block content %}
-<h1> Edite aquí su perfil, querid@ {{ user }}</h1><br>
-<body>
-    <form  action="" method="post" enctype="multipart/form-data">
+<!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">-->
+<!--<h1> Edite aquí su perfil, querid@ {{ user }}</h1><br>-->
+	<article id="perfil">
+    <legend>Perfil - {{ user }}</legend>
+    <form  action="" method=POST enctype=multipart/form-data>
+    <div id="errData" style="visibility:hidden">{{ form.edad.errors }}</div>
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Update"><br>
+    {% render_field form.nombre placeholder="Name" required="required" class="user" %}
+    <!--<input type="text" class="user" placeholder="Name"></input>-->
+    {% render_field form.mail required="required" placeholder="Email" class="email" %}
+    <!--http://stackoverflow.com/questions/469357/html-text-input-allow-only-numeric-input-->
+    <div>   
+        {% render_field form.edad required="required" class="edad" placeholder="Edad" %}
+        {% render_field form.edad_privacidad class="privacidad" id="edad_privacidad" %}
+        <!--<input type="checkbox" class="privacidad" id="edad_privacidad"></input>-->
+        <label for="edad_privacidad" title="Privacidad"></label>
+    </div>
+    <div>
+        {% render_field form.residencia class="residencia" placeholder="Residencia" %}
+        {% render_field form.residencia_privacidad class="privacidad" id="residencia_privacidad" %}
+        <label for="residencia_privacidad" title="Privacidad"></label>
+    </div>
+    <div>
+        {% render_field form.facebook class="facebook" placeholder="Facebook" %}        
+        {% render_field form.facebook_privacidad class="privacidad" id="facebook_privacidad" %}
+        <label for="facebook_privacidad" title="Privacidad"></label>
+    </div>
+    <div>
+        {% render_field form.web class="website" placeholder="Website" %} 
+        {% render_field form.web_privacidad class="privacidad" id="website_privacidad" %}
+        <label for="website_privacidad" title="Privacidad"></label>
+    </div>
+    <div class="uploadContainer">
+        <img src="{{ object.avatar.url }}" class="avatar"/>
+        <!--<input type="text" id="uploadFileName" class="file" placeholder="Esto no deberia verse :S"/>
+        <div class="fileUpload">
+            <span>Upload</span>
+            {% render_field form.avatar class="file_ulpoad" id="uploadForm" %}
+        </div>-->
+        <input type="text" id="uploadFileName" placeholder="Choose File" disabled="disabled" class="file"/>
+        {% render_field form.avatar id="uploadForm" style="display: none" %}
+        <input type="button" class="btn" id="uploadBtn" style="margin:3px"value="Browse"></input>
+    </div>    
+    {#{ form.as_p }#}
+    <input type="submit" value="Update" class="btn"><br>
     </form>
-</body>
+    <div style="height:100px"></div>
+	</article>
+    <script type="text/javascript">
+        var uploadFileNameElement = document.getElementById("uploadFileName");
+        var uploadContainerElement = document.getElementsByClassName("uploadContainer")[0];
+        //setear valor inicial al input que contiene la dir de la foto actual.
+        var a = uploadContainerElement.getElementsByTagName("a")[0];
+        uploadFileNameElement.value = a.innerHTML;
+        //truco input file tuneado
+        document.getElementById("uploadForm").onchange = function () {
+            uploadFileNameElement.value = this.value;
+        };
+        document.getElementById("uploadBtn").onclick = function () {
+            document.getElementById("uploadForm").click();
+        }
+        //eliminar texto molesto de django
+        var e = uploadContainerElement;
+        var ns = e.childNodes;
+        for (var i=0; i < ns.length; i++) { var n = ns[i]; if (n.nodeName == "#text") n.remove();}
+    </script>
+    <style type="text/css">        
+        #perfil {
+        	color: white;
+            width: 600px;
+            position: relative;
+            margin-top: 50px;
+            left: 50%;            
+            margin-left: -300px;
+            /*border: 1px solid rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.3);*/
+        }
+        #perfil legend {
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            border-bottom: 1px solid #ECF0F1;
+            width: 100%;
+        }
+        #perfil input[type=text], 
+        #perfil input[type=email], 
+        #perfil input[type=url], 
+        #perfil input[type=number] {
+            box-sizing: border-box;
+            border: 1px solid #CFD9DB;
+            background-color: #FFF;
+            border-radius: 0.25em;            
+            width: 100%;
+            padding: 16px;            
+            color: white;
+            font-family: "Open Sans",sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+        #perfil .btn {
+            border: solid 1px white;
+            background-color: transparent;
+            border-radius: 0.25em;
+            padding: 16px 20px;
+            color: #FFF;
+            font-weight: bold;
+            float: right;
+            cursor: pointer;
+            -moz-appearance: none;
+            transition: 0.5s background-color;
+        }
+        #perfil .btn:hover {
+            background-color: rgba(201, 200, 200, 0.17);
+        }
+        #perfil input[type="submit"] {
+            width: 100%;
+        }
+        #perfil input:focus {
+            outline: medium none;
+            border-color: #2C97DE;
+            box-shadow: 0px 0px 5px rgba(44, 151, 222, 0.2);
+        }
+        #perfil input.user {
+            background: url('{% static "profile_edit/cd-icon-user.svg" %}') no-repeat scroll 16px center;
+            padding-left: 54px !important;
+        }        
+        #perfil input.email {
+            background: url('{% static "profile_edit/cd-icon-email.svg" %}') no-repeat scroll 16px center;   
+            padding-left: 54px !important;
+        }
+        #perfil input.edad {
+            background-color: transparent;
+            width: calc(100% - 60px);
+        }
+        #perfil input.residencia {
+            background: url('{% static "profile_edit/residencia.svg" %}') no-repeat scroll 16px center;   
+            padding-left: 54px !important;
+            width: calc(100% - 60px);
+        }
+        #perfil input.facebook {
+            background: url('{% static "profile_edit/facebook_white.svg" %}') no-repeat scroll 16px center transparent;
+            padding-left: 54px !important;
+            width: calc(100% - 60px);
+            background-size: 40px 40px;
+        }
+        #perfil input.website {
+            background: url('{% static "profile_edit/link.svg" %}') no-repeat scroll 16px center;
+            padding-left: 54px !important;
+            width: calc(100% - 60px);
+            background-size: 40px 40px;
+        }
+        #perfil input.file {
+            background-color: transparent;
+            width: calc(100% - 180px);
+        }
+        #perfil input.privacidad[type='checkbox'] {
+            opacity: 0;            
+            position: relative;
+            display: none;
+            top:0px;
+            left:0px;
+        }
+
+        #perfil input.privacidad[type='checkbox'] + label {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            margin: 0;
+            clear: none;
+            cursor: pointer;            
+            background: url('{% static "profile_edit/lock.png" %}');
+            background-size: 40px 40px;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: transparent;
+            position: relative;
+            top: 10px;
+            left: 0px;
+            float: right;
+        }
+        #perfil input[type='checkbox']:checked + label {
+            background: url('{% static "profile_edit/lock-open.png" %}');
+            background-size: 40px 40px;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: transparent;
+            top: 7px;
+            left: -4px;
+        }
+
+        #perfil .uploadContainer {
+            color: transparent;
+        }
+        #perfil .uploadContainer br { 
+            display: none; 
+        }
+        #perfil .uploadContainer a { 
+            display: none;
+        }
+        #perfil .avatar {
+            width: 50px;
+            position: relative;
+            float: left;
+            top: 3px;
+            margin-right: 10px;
+            border-radius: 20%;
+        }
+
+        .fileUpload {
+            position: relative;
+            overflow: hidden;
+            margin: 0px;
+        }
+        .fileUpload input.upload {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin: 0;
+            padding: 0;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0;
+            filter: alpha(opacity=0);
+        }
+
+    </style>
 {% endblock %}
 

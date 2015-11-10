@@ -1,0 +1,41 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fotolink|{% block title %}{% endblock %}</title>
+    <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">-->
+    <link rel="stylesheet" type="text/css" href="{% static "base.css" %}">
+</head>
+<body>
+    <div class="wrapper">
+    <div class="shadow"></div>
+    <nav>
+        <div class=logo>
+            <span>PhotoLink</span>
+        </div>
+        <div class=menu>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/upload/">Upload</a></li>
+                <li><a href="/photos/">Photos</a></li>
+                <li><a href="/accounts/profile">Configuration</a></li>                
+            </ul>
+        </div>
+        <div class="menu left" style="margin-top:-10px">
+            <ul>
+                <li><a href="/password_change">Change password</a></li>
+                <li><a href="/logout" class="left">
+                    <img src="{% static "log_out.png" %}" 
+                    style="width: 30px;position: relative;top: 9px;">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <section>
+        {% block content %}{% endblock %}
+    </section>
+    </div>
+</body>
+</html>
+

@@ -37,8 +37,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.admin',
-    'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -49,6 +47,8 @@ INSTALLED_APPS = (
     # Our particular apps
     'PhotoApp',
     'User',
+    'django.contrib.admin',
+    'django.contrib.auth',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -124,7 +124,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             # insert your TEMPLATE_DIRS here
-            os.path.join(BASE_DIR, "PhotoApp/Templates")
+            os.path.join(BASE_DIR, "templates_compartidos")
         ],
         'APP_DIRS': True,
         'OPTIONS': {
