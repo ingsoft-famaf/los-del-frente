@@ -90,6 +90,7 @@ administrador serán definidos por el web administrator.
 
 * Cuando el trabajo este listo para ser verificado realizar **pull-request** online y esperar la verificacion de los compañeros luego hacer **merge** online
 
-### Instrucciones para correr tests de PhotoApp(para caso de User, reemplazar User por PhotoApp):
+### Instrucciones para correr tests individuales:
 
     `$ python manage test PhotoApp/tests
+    `$ python manage test User/tests
