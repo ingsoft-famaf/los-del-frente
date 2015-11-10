@@ -215,14 +215,12 @@ class PhotoAppTestCase(TestCase):
         response = cliente.get("/%2F2/")
         self.assertEqual(response.status_code, 200)
         ##Filtro solo Neuquen
-        response = cliente.get\
-            ('/photos/?csrfmiddlewaretoken=fSuRgFpRXVPd7OsAVpsc6tnFBWo9bokb&pl'
-             'ace=neu&year=&month=&day=&time=&submit=Filter')
+        response = cliente.get('/photos/?csrfmiddlewaretoken=fSuRgFpRXVPd7OsA'
+                               'Vpsc6tnFBWo9bokb&place=neu&year=&mon'
+                               'th=&day=&time=&submit=Filter')
         '''
         Hay fotos en Neuquen, pero en ningun otro lado
         '''
         for foto in response.context['photo_list']:
-            self.assertTrue(foto.place_id ==
-                        'Neuquen' )
-            self.assertFalse(foto.place_id ==
-                        'Catamarca' )
+            self.assertTrue(foto.place_id == 'Neuquen')
+            self.assertFalse(foto.place_id == 'Catamarca')

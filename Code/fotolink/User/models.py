@@ -39,6 +39,7 @@ class Perfil(models.Model):
         """Retorna el nombre de un usuario al imprimir un objeto Perfil"""
         return str(nombre)
 
+
 @receiver(post_save, sender=User)
 def create_profile_for_new_user(sender, created, instance, **kwargs):
     if created:
