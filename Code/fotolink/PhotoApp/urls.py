@@ -1,5 +1,5 @@
 from django.conf.urls import include, url
-from PhotoApp.views import PhotoList, PhotoUpload, PhotoDetail, PhotoDelete
+from views import PhotoList, PhotoUpload, PhotoDetail, PhotoDelete
 
 urlpatterns = [
     url(r'^photos/', PhotoList.as_view(), name='list'),

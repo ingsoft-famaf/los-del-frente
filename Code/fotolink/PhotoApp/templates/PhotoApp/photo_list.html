@@ -3,7 +3,18 @@
 
 {% block content %}
 <h1>Photos</h1>
+    <form method="GET">
+    {% csrf_token %}
+        <h1>Filters</h1>
+        Place: <input type="text" name="place" id="place" placeholder="name"><br>
+        Date: <input type="number" name="year" min=1900 max=2100 placeholder="year">
+              <input type="number" name="month" min=1 max=12 placeholder="month">
+              <input type="number" name="day" min=1 max=31 placeholder="day"><br>
+        Time: <input type="text" name="time" pattern="([01]?[0-9]{1}|2[0-3]{1})" placeholder="only hours"/><br>
+        <input type="submit" name ="submit" value="Filter"><br>
+    </form>
 <ul>
+
 {% for photo in object_list %}
     <li>
         <a href="{% url 'photos:detail' photo.pk %}">
