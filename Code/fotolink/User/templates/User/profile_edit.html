@@ -8,7 +8,7 @@
 <!--<h1> Edite aquí su perfil, querid@ {{ user }}</h1><br>-->
 	<article id="perfil">
     <legend>Perfil - {{ user }}</legend>
-    <form  action="" method="post">
+    <form  action="" method=POST enctype=multipart/form-data>
     <div id="errData" style="visibility:hidden">{{ form.edad.errors }}</div>
     {% csrf_token %}
     {% render_field form.nombre placeholder="Name" required="required" class="user" %}
