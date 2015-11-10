@@ -1,11 +1,19 @@
 from django.views.generic import ListView, CreateView
-from django.views.generic import FormView, DetailView, DeleteView
+from django.views.generic import DetailView, DeleteView
 from django.core.urlresolvers import reverse
-from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from .forms import PhotoForm
-from .models import Photo
+from .models import Photo, Place
+
+
+class CancelUpload(DeleteView):
+    """
+    Preview de upload con posibilidad de cancelar
+    """
+    model = Photo
+    template_name = 'PhotoApp/cancel_upload.html'
+    success_url = '/upload/'
 
 
 class PhotoDelete(DeleteView):
@@ -15,7 +23,7 @@ class PhotoDelete(DeleteView):
     """
     model = Photo
     template_name = 'PhotoApp/photo_delete.html'
-    success_url = '/upload/'
+    success_url = '/photos/'
 
 
 class PhotoDetail(DetailView):
@@ -59,7 +67,7 @@ class PhotoUpload(CreateView):
         """
         Retorna un html para confirmar el subir una foto dado un primarykey
         """
-        return reverse('photos:delete', kwargs={'pk': self.object.pk})
+        return reverse('photos:cancelupload', kwargs={'pk': self.object.pk})
 
 
 class PhotoList(ListView):
@@ -68,6 +76,7 @@ class PhotoList(ListView):
     previo. Hereda de django.views.generic.ListView
     """
     model = Photo
+    template_name = 'PhotoApp/photo_list.html'
 
     @method_decorator(login_required(login_url='/login/'))
     def dispatch(self, request, *args, **kwargs):
@@ -85,3 +94,26 @@ class PhotoList(ListView):
         """
         context = super(PhotoList, self).get_context_data()
         return context
+
+    def get_queryset(self):
+        '''
+        Filtra segun el formulario enviado por el usuario y retorna una lista
+        de objetos con las caracteristicas adecuadas.
+        '''
+        qPlace = self.request.GET.get('place', '')
+        qTime = self.request.GET.get('time', '')
+        qYear = self.request.GET.get('year', '')
+        qMonth = self.request.GET.get('month', '')
+        qDay = self.request.GET.get('day', '')
+        qset = super(PhotoList, self).get_queryset()
+        if qTime != "":
+            qset = qset.filter(time__startswith=qTime)
+        if qYear != "":
+            qset = qset.filter(date__year=qYear)
+        if qMonth != "":
+            qset = qset.filter(date__month=qMonth)
+        if qDay != "":
+            qset = qset.filter(date__day=qDay)
+        if qPlace != "":
+            qset = qset.filter(place__placeName__startswith=qPlace)
+        return qset
