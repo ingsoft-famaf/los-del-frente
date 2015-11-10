@@ -15,7 +15,7 @@ class PhotoDelete(DeleteView):
     """
     model = Photo
     template_name = 'PhotoApp/photo_delete.html'
-    success_url = '/upload/'
+    success_url = '/photos/'
 
 
 class PhotoDetail(DetailView):
