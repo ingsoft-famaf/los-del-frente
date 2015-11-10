@@ -1,6 +1,7 @@
-<title>Fotolink | Sign Up</title>
+<!--<title>Fotolink | Sign Up</title>
 {% block content %}
 <h1> Registrate a fotoLink</h1><br>
+<textarea onclick="this.focus();this.select()" style="width: 100%;"> {% filter force_escape %} {% debug %} {% endfilter %}</textarea>
 <h1> Es gratis!(por ahora...)</h1><br>
     <form  action="" method="post">
     {% csrf_token %}
@@ -8,3 +9,48 @@
         <input type="submit" value="submit"><br>
     </form>
 {% endblock %}
+-->
+{% load staticfiles %}
+{% load widget_tweaks %}
+<html>
+<head>
+    <title>Sign Up</title>    
+    <link rel="stylesheet" type="text/css" href="{% static "login.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "notify.css" %}">
+    <script type="text/javascript">
+    window.onload = function(){
+    	var error = document.getElementById('errData');
+    	var errorMsg = error.innerHTML
+    	if (errorMsg != "") {
+    		console.log(errorMsg)
+    		document.getElementById('notifErrMsg').innerHTML = error.getElementsByTagName('li')[0].innerHTML
+    		var e = document.getElementById("errorBox")
+    		e.className = e.className + " is-visible";
+    	}
+    }
+    </script>
+</head>
+<body>
+	<div class="login">
+		<h1>Photo <img class="mini-logo" src="{% static "link_icon.png" %}"> Link</h1>
+		<form  action="" method="post">
+		    {% csrf_token %}			
+			{% render_field form.username placeholder="Username" required="required" %}
+			{% render_field form.password1 placeholder="Password" required="required" %}
+			{% render_field form.password2 placeholder="Password confirmation" required="required" %}
+		    <button type="submit" class="btn btn-primary btn-block btn-large">Sign Up.</button>
+		    <style type="text/css">
+		    body {
+		    	background: url("{% static "background_register_low.jpg" %}");
+		    	background-position: center;
+		    }
+		    </style>
+		</form>		
+	
+	</div>	
+	<div id="errorBox" class="notification error"><h5>Uh oh</h5><p id="notifErrMsg">This is an error D:</p> <a class="close" href="#">×</a></div>
+	<div id="errData" style="visibility:hidden">{{ form.non_field_errors }}</div>
+</body>
+</html>
+			
+-->
