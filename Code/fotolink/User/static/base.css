@@ -7,8 +7,7 @@
             src: url("FiraSans-Bold.otf") format("opentype");
             /*src: url("JosefinSans-Bold.ttf") format("truetype");*/
         }        
-        body, html {
-            overflow: hidden;
+        body, html {            
             height: 100%;
         }
         body {
@@ -18,7 +17,7 @@
             /*background-image: url('http://localhost:8000/static/background_low.jpg');*/
             background-image: url('background_profile_low.jpg');
             background-repeat: no-repeat;
-            background-attachment: scroll;
+            background-attachment: fixed;
             background-size: cover;
             background-color: rgba(0, 0, 0, 0.6);
             background-position: center center;
