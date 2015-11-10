@@ -7,10 +7,6 @@ from django.db.models.signals import post_save
 from django.core.validators import MaxValueValidator
 
 
-privacidad = {'choices': [(True, 'Privado'), (False, 'Publico')], 'default': 2,
-              'blank': False}
-
-
 class Perfil(models.Model):
     """
     Clase Perfil que modela los datos visibles o no, de un usuario registrado.
@@ -21,15 +17,15 @@ class Perfil(models.Model):
     edad = models.PositiveIntegerField(blank=True,
                                        null=True,
                                        validators=[MaxValueValidator(150)])
-    edad_privacidad = models.BooleanField("Privacidad", **privacidad)
+    edad_privacidad = models.BooleanField("Privacidad", default=False)
     residencia = models.CharField(max_length=40, blank=True)
-    residencia_privacidad = models.BooleanField("Privacidad", **privacidad)
+    residencia_privacidad = models.BooleanField("Privacidad", default=False)
     mail = models.EmailField(max_length=70, blank=True)
-    mail_privacidad = models.BooleanField("Privacidad", **privacidad)
+    mail_privacidad = models.BooleanField("Privacidad", default=False)
     facebook = models.URLField(max_length=60, blank=True)
-    facebook_privacidad = models.BooleanField("Privacidad", **privacidad)
+    facebook_privacidad = models.BooleanField("Privacidad", default=False)
     web = models.URLField(max_length=200, blank=True)
-    web_privacidad = models.BooleanField("Privacidad", **privacidad)
+    web_privacidad = models.BooleanField("Privacidad", default=False)
     avatar = ProcessedImageField(upload_to='avatars',
                                  processors=[ResizeToFill(300, 300)],
                                  format='JPEG',
@@ -45,7 +41,6 @@ class Perfil(models.Model):
     def __string__(self):
         """Retorna el nombre de un usuario al imprimir un objeto Perfil"""
         return str(nombre)
-
 
 @receiver(post_save, sender=User)
 def create_profile_for_new_user(sender, created, instance, **kwargs):
