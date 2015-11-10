@@ -8,11 +8,14 @@ from .forms import PhotoForm
 from .models import Photo
 
 
-
 class CancelUpload(DeleteView):
+    """
+    Preview de upload con posibilidad de cancelar
+    """
     model = Photo
     template_name = 'PhotoApp/cancel_upload.html'
     success_url = '/upload/'
+
 
 class PhotoDelete(DeleteView):
     """
@@ -39,7 +42,7 @@ class PhotoDetail(DetailView):
 
         :param request: http request
         :returns: http response
-        """ 
+        """
         return super(self.__class__, self).dispatch(request, *args, **kwargs)
 
 
