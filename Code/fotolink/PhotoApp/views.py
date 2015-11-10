@@ -8,6 +8,12 @@ from .forms import PhotoForm
 from .models import Photo
 
 
+
+class CancelUpload(DeleteView):
+    model = Photo
+    template_name = 'PhotoApp/cancel_upload.html'
+    success_url = '/upload/'
+
 class PhotoDelete(DeleteView):
     """
     Vista de eliminacion de una foto para uso de django. Hereda de
@@ -33,7 +39,7 @@ class PhotoDetail(DetailView):
 
         :param request: http request
         :returns: http response
-        """
+        """ 
         return super(self.__class__, self).dispatch(request, *args, **kwargs)
 
 
@@ -59,7 +65,7 @@ class PhotoUpload(CreateView):
         """
         Retorna un html para confirmar el subir una foto dado un primarykey
         """
-        return reverse('photos:delete', kwargs={'pk': self.object.pk})
+        return reverse('photos:cancelupload', kwargs={'pk': self.object.pk})
 
 
 class PhotoList(ListView):
