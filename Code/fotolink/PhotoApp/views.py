@@ -91,20 +91,20 @@ class PhotoList(ListView):
         Filtra segun el formulario enviado por el usuario y retorna una lista
         de objetos con las caracteristicas adecuadas.
         '''
-        qPlace = self.request.GET.get('place','')
-        qTime = self.request.GET.get('time','')
-        qYear = self.request.GET.get('year','')
-        qMonth = self.request.GET.get('month','')
-        qDay = self.request.GET.get('day','')
+        qPlace = self.request.GET.get('place', '')
+        qTime = self.request.GET.get('time', '')
+        qYear = self.request.GET.get('year', '')
+        qMonth = self.request.GET.get('month', '')
+        qDay = self.request.GET.get('day', '')
         qset = super(PhotoList, self).get_queryset()
         if qTime != "":
-            qset=qset.filter(time__startswith = qTime)
+            qset = qset.filter(time__startswith=qTime)
         if qYear != "":
-            qset=qset.filter(date__year=qYear)
+            qset = qset.filter(date__year=qYear)
         if qMonth != "":
-            qset=qset.filter(date__month=qMonth)
+            qset = qset.filter(date__month=qMonth)
         if qDay != "":
-            qset=qset.filter(date__day=qDay)
+            qset = qset.filter(date__day=qDay)
         if qPlace != "":
-            qset=qset.filter(place__placeName__startswith=qPlace)
+            qset = qset.filter(place__placeName__startswith=qPlace)
         return qset
