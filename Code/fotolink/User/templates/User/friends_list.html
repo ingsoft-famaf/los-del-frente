@@ -9,10 +9,11 @@
 
 {% for object in object_list %}
     <li>
-        <a href="{% url 'user:oprofile' object.pk %}">
-            <img src="{{ object.avatar.url }}" alt="avatarNotFound">
-            <a href="{% url 'user:oprofile' object.pk %}">ViewProfile</a>
-        </a>
+        <p>
+            <img src="{{ object.avatar_crop.url }}" alt="avatarNotFound">
+            <a href="{% url 'user:oprofile' object.pk %}">{{object.nombre}}</a>
+            <a>({{object.usuario}})</a>
+        </p>
     </li>
 {% empty %}
     <li>No friends yet.</li>
