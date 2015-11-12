@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Photo, Place, Notification
+from .models import Photo, Place, Notification, Tag
 
 
 class PhotoAdmin(admin.ModelAdmin):
@@ -17,6 +17,10 @@ class PlaceAdmin(admin.ModelAdmin):
     """
     list_display = ('placeName',)
 
+class TagAdmin(admin.ModelAdmin):
+    """
+    """
+    list_display = ('photo','user','x_pos','y_pos', 'pk')
 
 class NotificationAdmin(admin.ModelAdmin):
     """
@@ -25,7 +29,7 @@ class NotificationAdmin(admin.ModelAdmin):
     """
     list_display = ('sender','receiver','text','dateTime','seen')
 
-
+admin.site.register(Tag, TagAdmin)
 admin.site.register(Notification, NotificationAdmin)
 admin.site.register(Photo, PhotoAdmin)
 admin.site.register(Place, PlaceAdmin)

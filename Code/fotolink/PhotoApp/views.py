@@ -5,9 +5,28 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.http import HttpResponse, JsonResponse
 from .forms import PhotoForm
-from .models import Photo, Place, Notification
+from .models import Photo, Place, Notification, Tag
+
+
+def AddTag(request):
+    #http://localhost:8000/addtag?photo_id=1&x=1&y=3
+    getDict = dict(request.GET.iterlists())
+    print request.GET.get("photfadfsdf", )
+    
+    photo_id = int(getDict['photo_id'][0])
+    x = int(getDict['x'][0])
+    y = int(getDict['y'][0])
+    photoInstance = Photo.objects.get(pk=photo_id)
+    
+    
+    #tag = Tag(photo=getDict['photo_id'], user=actualUser)
+    tag = Tag(photo=photoInstance, user=request.user, x_pos=x, y_pos=y)
+    tag.save()
+
+    return JsonResponse({'result':'OK'})
 
 def notifications(request):
+    
     notisJson = {}
     actualUser = request.user
     allNotis = Notification.objects.get_queryset()

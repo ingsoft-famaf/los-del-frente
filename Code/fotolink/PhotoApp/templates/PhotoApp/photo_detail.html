@@ -2,7 +2,18 @@
 {% block title %} Detail {% endblock %}
 
 {% block content %}
-
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>
+function etiquetar() {
+    $.ajax({
+      url: "http://localhost:8000/addtag",
+      data: {'photo_id':{{ photo.pk }}, 'x':34, 'y':45},
+      context: document.body
+    }).done(function() {
+      alert("OK");
+    });
+}
+</script>
 <h1>Details</h1>
 <p>Date and Time: {{ object.date }} at {{object.time}}</p>
 <p>Place: {{ object.place }}</p>
@@ -10,6 +21,10 @@
     {% if user.is_staff %}
     <a href="{% url 'photos:delete' photo.pk %}">Eliminar</a>
     {% endif %}
+
+
+   <button onclick="etiquetar()" href="{% url 'photos:addtag'  %}">Etiquetarse en </button>
+
 
 {% endblock %}
 

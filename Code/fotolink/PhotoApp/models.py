@@ -67,3 +67,11 @@ class Photo(models.Model):
         return u'<img src="%s" alt= "404"/>' % self.picture_crop.url
     image_tag.short_description = 'Image'
     image_tag.allow_tags = True
+
+class Tag(models.Model):
+    photo = models.ForeignKey(Photo, null=True)
+    user = models.ForeignKey(User, null=True)
+    x_pos = models.IntegerField(default=0)
+    y_pos = models.IntegerField(default=0)
+
+
