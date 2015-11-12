@@ -4,6 +4,25 @@ from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFit
 from imagekit.processors import ResizeToFill
 from django.forms.extras.widgets import SelectDateWidget
+from django.contrib.auth.models import User
+
+class Notification(models.Model):
+    """
+    Clase Notification que dimensiona las notifiaciones que recibe un usuario.
+    Hereda de django.db.models.Model y es para casi uso exclusivo de django.
+    """
+    text = models.CharField(max_length=200,
+                                 blank=False)
+    sender = models.ForeignKey(User,
+                               null = True,
+                               related_name='sender')
+    receiver = models.ForeignKey(User,
+                                 null = True,
+                                 related_name='receiver')
+
+    def __unicode__(self):
+        """Retorna el nombre de un lugar al imprimir un objeto Place"""
+        return str(self.text)
 
 
 class Place(models.Model):
