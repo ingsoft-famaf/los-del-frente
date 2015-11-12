@@ -10,6 +10,6 @@ urlpatterns = [
     url(r'^accounts/profile/edit/$', ProfileEdit.as_view(), name='edit'),
     url(r'^edit_ok/', TemplateView.as_view(template_name='User/edit_ok.html')),
     url(r'^$', ProfileDetail.as_view(), name='home'),
-    url(r'^/users/(?P<pk>[0-9]+)/$', OthersProfile.as_view(), name='oprofile'),
+    url(r'^accounts/(?P<pk>[0-9]+)/$', OthersProfile.as_view(), name='oprofile'),
     url(r'^friends', FriendsList.as_view(), name='friends')
 ]
