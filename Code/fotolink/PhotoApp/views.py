@@ -3,8 +3,18 @@ from django.views.generic import DetailView, DeleteView
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.http import HttpResponse, JsonResponse
 from .forms import PhotoForm
-from .models import Photo, Place
+from .models import Photo, Place, Notification
+
+def notifications(request):
+    notisJson = {}
+    actualUser = request.user
+    allNotis = Notification.objects.get_queryset()
+    notiForUser = allNotis.filter(receiver = actualUser)
+    for each in notiForUser:
+        notisJson[str(each.dateTime)] = each.text + ' from ' + str(each.sender)
+    return JsonResponse(notisJson)
 
 
 class CancelUpload(DeleteView):

@@ -1,6 +1,6 @@
 from django.conf.urls import include, url
 from PhotoApp.views import PhotoList, PhotoUpload, PhotoDetail
-from PhotoApp.views import PhotoDelete, CancelUpload
+from PhotoApp.views import PhotoDelete, CancelUpload, notifications
 
 urlpatterns = [
     url(r'^photos/', PhotoList.as_view(), name='list'),
@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^/(?P<pk>[0-9]+)/$', PhotoDetail.as_view(), name='detail'),
     url(r'^/delete/(?P<pk>[0-9]+)/$', PhotoDelete.as_view(), name='delete'),
     url(r'^/cancelupload/(?P<pk>[0-9]+)/$', CancelUpload.as_view(), name='cancelupload'),
+    url(r'^notification', notifications, name='notifications')
 ]

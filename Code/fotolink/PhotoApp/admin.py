@@ -23,7 +23,7 @@ class NotificationAdmin(admin.ModelAdmin):
     Clase para manejo del modelo Notification, desde la interfaz de admin,
     tambien de django. Hereda de django.contrib.admin.ModelAdmin
     """
-    list_display = ('sender','receiver','text',)
+    list_display = ('sender','receiver','text','dateTime','seen')
 
 
 admin.site.register(Notification, NotificationAdmin)

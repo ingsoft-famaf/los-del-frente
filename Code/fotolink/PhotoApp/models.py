@@ -19,6 +19,9 @@ class Notification(models.Model):
     receiver = models.ForeignKey(User,
                                  null = True,
                                  related_name='receiver')
+    dateTime = models.DateTimeField(auto_now_add=True,
+                                    null = True)
+    seen = models.BooleanField(default = False)
 
     def __unicode__(self):
         """Retorna el nombre de un lugar al imprimir un objeto Place"""
