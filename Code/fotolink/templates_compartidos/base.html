@@ -27,12 +27,9 @@
                 <li><a href="/password_change">Change password</a></li>
                 <li><a href="/logout" class="left">
                     <img src="{% static "log_out.png" %}" 
-                    style="width: 30px;position: relative;top: 9px;">Logout</a>
+                    style="width: 30px;position: relative;top: 9px;">Logout({{user.username}})</a>
                 </li>
                 <li>
-                <img src="{{object.avatar_crop.url}}"
-                    style="width: 30px;position: relative;top: 9px;"> {{object.usuario}}</a>
-                </li>
             </ul>
         </div>
     </nav>
