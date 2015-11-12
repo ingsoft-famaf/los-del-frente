@@ -29,6 +29,10 @@
                     <img src="{% static "log_out.png" %}" 
                     style="width: 30px;position: relative;top: 9px;">Logout</a>
                 </li>
+                <li>
+                <img src="{{object.avatar_crop.url}}"
+                    style="width: 30px;position: relative;top: 9px;"> {{object.usuario}}</a>
+                </li>
             </ul>
         </div>
     </nav>
