@@ -12,7 +12,7 @@
         <p>
             <img src="{{ object.avatar_crop.url }}" alt="avatarNotFound">
             <a href="{% url 'user:oprofile' object.pk %}">{{object.nombre}}</a>
-            <a>({{object.usuario}})</a>
+            <a href="{% url 'user:oprofile' object.pk %}">({{object.usuario}})</a>
         </p>
     </li>
 {% empty %}

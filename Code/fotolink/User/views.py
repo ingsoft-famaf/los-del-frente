@@ -108,12 +108,16 @@ class OthersProfile(DetailView):
     @method_decorator(login_required(login_url='/login/'))
     def dispatch(self, request, *args, **kwargs):
         """
-        Metodo agregado para requerir login con decorador.
+        Disparador de redireccion en caso de que sea una consulta sobre 
+        mi perfil, en ese caso redireccion a detailView de mi perfil.
 
         :param request: http request
         :returns: http response
         """
-        return super(self.__class__, self).dispatch(request, *args, **kwargs)
+        if (int(request.user.pk) == int(kwargs['pk'])):
+            return HttpResponseRedirect("/accounts/profile")
+        else:
+            return super(self.__class__, self).dispatch(request, *args, **kwargs)
 
 
 class FriendsList(ListView):
