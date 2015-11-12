@@ -1,10 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
-from imagekit.models import ProcessedImageField
+from imagekit.models import ProcessedImageField, ImageSpecField
 from imagekit.processors import ResizeToFill
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.core.validators import MaxValueValidator
+from PhotoApp.models import Place
 
 
 class Perfil(models.Model):
@@ -31,10 +32,14 @@ class Perfil(models.Model):
                                  format='JPEG',
                                  default='avatars/no_avatar.jpg',
                                  options={'quality': 90})
+    avatar_crop = ImageSpecField(source='avatar',
+                                 processors=[ResizeToFill(40, 40)],
+                                 format='JPEG',
+                                 options={'quality': 60})
 
     def image_tag(self):
         """Retorna url absoluta para uso html del avatar (imagen)"""
-        return u'<img src="%s" alt= "404"/>' % self.avatar.url
+        return u'<img src="%s" alt= "404"/>' % self.avatar_crop.url
     image_tag.short_description = 'Image'
     image_tag.allow_tags = True
 

@@ -31,7 +31,7 @@ class Photo(models.Model):
                                   format='JPEG',
                                   options={'quality': 90})
     picture_crop = ImageSpecField(source='picture',
-                                  processors=[ResizeToFill(50, 50)],
+                                  processors=[ResizeToFill(300, 300)],
                                   format='JPEG',
                                   options={'quality': 60})
     date = models.DateField(null=True,
