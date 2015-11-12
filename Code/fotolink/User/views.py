@@ -1,4 +1,4 @@
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, ListView
 from django.views.generic import DetailView, TemplateView
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
@@ -24,7 +24,7 @@ class Register(CreateView):
 
 class ProfileDetail(DetailView):
     """
-    Vista de un Perfil de un usuario.Hereda de django.views.generic.DetailView
+    Vista de mi Perfil de usuario.Hereda de django.views.generic.DetailView
     Requiere estar logueado en el sistema.
 
     Overrides: dispatch, get_object
@@ -35,7 +35,7 @@ class ProfileDetail(DetailView):
     @method_decorator(login_required(login_url='/login/'))
     def dispatch(self, request, *args, **kwargs):
         """
-        Metodo de salida de la vista que llama a su superclase. Requiere login
+        Metodo agregado para requerir login con decorador.
 
         :param request: http request
         :returns: http response
@@ -94,3 +94,43 @@ class ProfileEdit(UpdateView):
         usuario.usuario = User.objects.get(username=self.request.user)
         usuario.save()
         return HttpResponseRedirect(self.get_success_url())
+
+
+class OthersProfile(DetailView):
+    """
+    Vista de un Perfil de otro usuario.
+    Hereda de django.views.generic.DetailView.
+    Requiere estar logueado en el sistema.
+    """
+    model = Perfil
+    template_name = 'User/othersprofile.html'
+
+    @method_decorator(login_required(login_url='/login/'))
+    def dispatch(self, request, *args, **kwargs):
+        """
+        Metodo agregado para requerir login con decorador.
+
+        :param request: http request
+        :returns: http response
+        """
+        return super(self.__class__, self).dispatch(request, *args, **kwargs)
+
+
+class FriendsList(ListView):
+    """
+    Muestra una lista de los amigos actuales del usuario logueado.
+    """
+    model = Perfil
+    template_name = 'User/friends_list.html'
+
+    @method_decorator(login_required(login_url='/login/'))
+    def dispatch(self, request, *args, **kwargs):
+        """
+        Metodo agregado para requerir login con decorador.
+
+        :param request: http request
+        :returns: http response
+        """
+        return super(self.__class__, self).dispatch(request, *args, **kwargs)
+
+

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %} Friends {% endblock %}
+
+{% block content %}
+<h1>Friends</h1>
+    <form method="GET">
+    {% csrf_token %}
+        <h1>Filter?¡?¡?</h1>
+
+{% for object in object_list %}
+    <li>
+        <a href="{% url 'user:oprofile' object.pk %}">
+            <img src="{{ object.avatar.url }}" alt="avatarNotFound">
+            <a href="{% url 'user:oprofile' object.pk %}">ViewProfile</a>
+        </a>
+    </li>
+{% empty %}
+    <li>No friends yet.</li>
+{% endfor %}
+</ul>
+{% endblock %}
