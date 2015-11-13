@@ -26,6 +26,7 @@ class Perfil(models.Model):
     facebook_privacidad = models.BooleanField("Privacidad", default=False)
     web = models.URLField(max_length=200, blank=True)
     web_privacidad = models.BooleanField("Privacidad", default=False)
+    vinculos = models.ManyToManyField("self", blank=True)
     avatar = ProcessedImageField(upload_to='avatars',
                                  processors=[ResizeToFill(300, 300)],
                                  format='JPEG',
@@ -41,6 +42,10 @@ class Perfil(models.Model):
     def __string__(self):
         """Retorna el nombre de un usuario al imprimir un objeto Perfil"""
         return str(nombre)
+
+    def get_vinculos(self):
+        if self.vinculos:
+            return '%s' % " / ".join([perfil.nombre for perfil in self.vinculos.all()])
 
 @receiver(post_save, sender=User)
 def create_profile_for_new_user(sender, created, instance, **kwargs):

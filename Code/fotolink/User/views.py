@@ -1,4 +1,4 @@
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, ListView
 from django.views.generic import DetailView, TemplateView
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
@@ -94,3 +94,27 @@ class ProfileEdit(UpdateView):
         usuario.usuario = User.objects.get(username=self.request.user)
         usuario.save()
         return HttpResponseRedirect(self.get_success_url())
+
+
+class LinkList(ListView):
+
+    model = Perfil
+    template_name = 'User/link_list.html'
+    queryset = Perfil.objects.prefetch_related('vinculos')
+
+    @method_decorator(login_required(login_url='/login/'))
+    def dispatch(self, request, *args, **kwargs):
+        """
+        Metodo de salida de la vista que llama a su superclase. Requiere login
+
+        :param request: http request
+        :returns: http response
+        """
+        return super(self.__class__, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        """
+        Retorna el contexto de todas las fotos en PhotoList
+        """
+        context = super(LinkList, self).get_context_data()
+        return context
