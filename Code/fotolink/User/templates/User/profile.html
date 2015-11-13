@@ -3,6 +3,32 @@
 {% block title %}Profile{% endblock %}
 
 {% block content %}
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
+<script language="javascript" type="text/javascript">
+var action = 1
+function loadlink(){
+    $('#links').load('/notifications',function () {
+         $(this).unwrap();
+    });
+}
+var interval;
+function notifications(){
+        interval = setInterval(function(){
+            loadlink()
+        }, 500);
+}
+function stopNotis(){
+        clearInterval(interval);
+        document.getElementById("links").innerHTML = ""
+}
+</script>
+
+<div>
+    <button onclick=notifications() >Check notifications</button>
+    <button onclick=stopNotis() >Stop</button>
+    <div id="links"></div>
+</div>
+
 	<article id="perfil">
 		<a href="/accounts/profile/edit">
 			<img id="edit_icon" src="{% static "edit.png" %}">
