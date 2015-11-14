@@ -101,6 +101,7 @@ class PhotoAppTestCase(TestCase):
         '''
         cliente = Client()
         cliente.login(username="matias1", password="matias1")
+        ##Subo una foto de Neuquen
         pictureFile = File(open("./PhotoApp/tests/picture.jpg"))
         response = cliente.post('/upload/',
                                 {'picture': pictureFile,
@@ -109,8 +110,8 @@ class PhotoAppTestCase(TestCase):
                                  'place': Place.objects.get
                                  (placeName='Neuquen')})
         self.assertEqual(response.status_code, 302)
-        response = cliente.get("/%2F1/")
-        self.assertEqual(response.status_code, 200)
+        response = cliente.get("/%2Fphotos/1")
+        self.assertEqual(response.status_code, 301)
 
     def test_reg_Photo_failed_badDateTime_with_login(self):
         '''
@@ -127,7 +128,7 @@ class PhotoAppTestCase(TestCase):
                                  'place': Place.objects.get
                                  (placeName='Neuquen')})
         self.assertEqual(response.status_code, 200)
-        self.assertTrue("Enter a valid date" in response.content)
+        self.assertTrue("Enter a valid date" in response)
         response = cliente.post('/upload/',
                                 {'picture': pictureFile,
                                  'date': '2015-10-10',
@@ -135,7 +136,7 @@ class PhotoAppTestCase(TestCase):
                                  'place': Place.objects.get
                                  (placeName='Neuquen')})
         self.assertEqual(response.status_code, 200)
-        self.assertTrue("Enter a valid time" in response.content)
+        self.assertTrue("Enter a valid time" in response)
 
     def test_reg_Photo_failed_badFile_with_login(self):
         '''
@@ -168,8 +169,8 @@ class PhotoAppTestCase(TestCase):
                                  'place': Place.objects.get
                                  (placeName='Neuquen')})
         self.assertEqual(response.status_code, 302)
-        response = cliente.get("/%2F1/")
-        self.assertEqual(response.status_code, 200)
+        response = cliente.get("/%2Fphotos/1")
+        self.assertEqual(response.status_code, 301)
         ##Subo una foto de Catamarca
         pictureFile = File(open("./PhotoApp/tests/picture.jpg"))
         response = cliente.post('/upload/',
@@ -179,11 +180,13 @@ class PhotoAppTestCase(TestCase):
                                  'place': Place.objects.get
                                  (placeName='Catamarca')})
         self.assertEqual(response.status_code, 302)
-        response = cliente.get("/%2F2/")
-        self.assertEqual(response.status_code, 200)
+        response = cliente.get("/%2Fphotos/2")
+        self.assertEqual(response.status_code, 301)
         ##Obtengo photolist
         response = cliente.get('/photos/')
-        self.assertEqual(response.status_code, 200)
+        ##Me fijo si estan mis fotos
+        for foto in response.context['photo_list']:
+            self.assertTrue(foto.place_id == 'Neuquen' or foto.place_id == 'Catamarca')
 
     def test_get_photoList_filtered_success(self):
         '''
@@ -201,8 +204,8 @@ class PhotoAppTestCase(TestCase):
                                  'place': Place.objects.get
                                  (placeName='Neuquen')})
         self.assertEqual(response.status_code, 302)
-        response = cliente.get("/%2F1/")
-        self.assertEqual(response.status_code, 200)
+        response = cliente.get("/%2Fphotos/1")
+        self.assertEqual(response.status_code, 301)
         ##Subo una foto de Catamarca
         pictureFile = File(open("./PhotoApp/tests/picture.jpg"))
         response = cliente.post('/upload/',
@@ -212,15 +215,14 @@ class PhotoAppTestCase(TestCase):
                                  'place': Place.objects.get
                                  (placeName='Catamarca')})
         self.assertEqual(response.status_code, 302)
-        response = cliente.get("/%2F2/")
-        self.assertEqual(response.status_code, 200)
+        response = cliente.get("/%2Fphotos/2")
+        self.assertEqual(response.status_code, 301)
+        ##Obtengo photolist
+        response = cliente.get('/photos/')
         ##Filtro solo Neuquen
         response = cliente.get('/photos/?csrfmiddlewaretoken=fSuRgFpRXVPd7OsA'
                                'Vpsc6tnFBWo9bokb&place=neu&year=&mon'
                                'th=&day=&time=&submit=Filter')
-        '''
-        Hay fotos en Neuquen, pero en ningun otro lado
-        '''
         for foto in response.context['photo_list']:
             self.assertTrue(foto.place_id == 'Neuquen')
             self.assertFalse(foto.place_id == 'Catamarca')
