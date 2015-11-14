@@ -3,7 +3,7 @@
 
 {% for perfil in object_list %}
     <li>
-        {{ perfil.get_vinculos }}
+        {{ perfil.get_relationships }}
     </li>
 {% empty %}
     <li>You don't have any links yet...</li>

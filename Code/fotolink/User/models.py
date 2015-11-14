@@ -26,12 +26,15 @@ class Perfil(models.Model):
     facebook_privacidad = models.BooleanField("Privacidad", default=False)
     web = models.URLField(max_length=200, blank=True)
     web_privacidad = models.BooleanField("Privacidad", default=False)
-    vinculos = models.ManyToManyField("self", blank=True)
     avatar = ProcessedImageField(upload_to='avatars',
                                  processors=[ResizeToFill(300, 300)],
                                  format='JPEG',
                                  default='avatars/no_avatar.jpg',
                                  options={'quality': 90})
+    # Lista de vinculos
+    vinculos = models.ManyToManyField("self", through='Relationship',
+                                      symmetrical=False,
+                                      related_name='related_to+')
 
     def image_tag(self):
         """Retorna url absoluta para uso html del avatar (imagen)"""
@@ -41,14 +44,40 @@ class Perfil(models.Model):
 
     def __string__(self):
         """Retorna el nombre de un usuario al imprimir un objeto Perfil"""
-        return str(nombre)
+        return str(self.nombre)
 
-    def get_vinculos(self):
-        if self.vinculos:
-            return '%s' % " / ".join([perfil.nombre for perfil in self.vinculos.all()])
+    def add_relationship(self, perfil, status, symm=True):
+        relationship, created = Relationship.objects.get_or_create(
+                                from_person=self,
+                                to_person=perfil,
+                                status=status)
+        if symm:
+            # avoid recursion by passing `symm=False`
+            perfil.add_relationship(self, status, False)
+        return relationship
+
+    def get_relationships(self, status):
+        return self.relationships.filter(
+            to_people__status=status,
+            to_people__from_person=self)
+
 
 @receiver(post_save, sender=User)
 def create_profile_for_new_user(sender, created, instance, **kwargs):
     if created:
         perfil = Perfil(usuario=instance)
         perfil.save()
+
+
+RELATIONSHIP_FOLLOWING = 1
+RELATIONSHIP_BLOCKED = 2
+RELATIONSHIP_STATUSES = (
+    (RELATIONSHIP_FOLLOWING, 'Following'),
+    (RELATIONSHIP_BLOCKED, 'Blocked'),
+)
+
+
+class Relationship(models.Model):
+    from_perfil = models.ForeignKey(Perfil, related_name='from_people')
+    to_perfil = models.ForeignKey(Perfil, related_name='to_people')
+    status = models.IntegerField(choices=RELATIONSHIP_STATUSES)

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Perfil
+from .models import Perfil, Relationship
 
 
 class ProfileAdmin(admin.ModelAdmin):
@@ -11,3 +11,8 @@ class ProfileAdmin(admin.ModelAdmin):
                     'web', 'image_tag', 'usuario')
 
 admin.site.register(Perfil, ProfileAdmin)
+
+
+class RelationshipInline(admin.StackedInline):
+    model = Relationship
+    fk_name = 'from_person'

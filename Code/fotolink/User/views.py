@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from forms import UserCreationForm, ProfileForm
-from .models import Perfil
+from .models import Perfil, Relationship
 from .forms import ProfileForm
 
 
@@ -98,9 +98,9 @@ class ProfileEdit(UpdateView):
 
 class LinkList(ListView):
 
-    model = Perfil
+    model = Relationship
     template_name = 'User/link_list.html'
-    queryset = Perfil.objects.prefetch_related('vinculos')
+    # queryset = Relationship.objects.all()
 
     @method_decorator(login_required(login_url='/login/'))
     def dispatch(self, request, *args, **kwargs):
@@ -118,3 +118,7 @@ class LinkList(ListView):
         """
         context = super(LinkList, self).get_context_data()
         return context
+
+    def get_queryset(self):
+        queryset = Relationship.objects.all()
+        return queryset
