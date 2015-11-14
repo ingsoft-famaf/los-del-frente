@@ -2,10 +2,12 @@
 {% block title %} Friends {% endblock %}
 
 {% block content %}
-<h1>Friends</h1>
+<h1>People</h1>
     <form method="GET">
     {% csrf_token %}
-        <h1>Filter?¡?¡?</h1>
+        Search: <input type="text" name="people" id="people" placeholder="Name, Mail or Username">
+        <input type="submit" name ="submit" value="Search"><br>
+    </form>
 
 {% for object in object_list %}
     <li>

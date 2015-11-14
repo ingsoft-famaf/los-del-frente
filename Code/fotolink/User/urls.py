@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from .views import Register, ProfileEdit, ProfileDetail
-from .views import FriendsList, OthersProfile
+from .views import PeopleList, OthersProfile
 from django.views.generic import TemplateView
 
 urlpatterns = [
@@ -11,5 +11,5 @@ urlpatterns = [
     url(r'^edit_ok/', TemplateView.as_view(template_name='User/edit_ok.html')),
     url(r'^$', ProfileDetail.as_view(), name='home'),
     url(r'^accounts/(?P<pk>[0-9]+)/$', OthersProfile.as_view(), name='oprofile'),
-    url(r'^friends', FriendsList.as_view(), name='friends')
+    url(r'^people', PeopleList.as_view(), name='people')
 ]

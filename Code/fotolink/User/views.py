@@ -120,7 +120,7 @@ class OthersProfile(DetailView):
             return super(self.__class__, self).dispatch(request, *args, **kwargs)
 
 
-class FriendsList(ListView):
+class PeopleList(ListView):
     """
     Muestra una lista de los amigos actuales del usuario logueado.
     """
@@ -136,5 +136,18 @@ class FriendsList(ListView):
         :returns: http response
         """
         return super(self.__class__, self).dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        '''
+        Filtra segun el formulario enviado por el usuario y retorna una lista
+        de objetos con las caracteristicas adecuadas.
+        En este caso filtra coincidencias en nombre, usuario, mail empezando
+        con el argumento enviado por el usuario
+        '''
+        qName = self.request.GET.get('people', '')
+        qset = super(PeopleList, self).get_queryset()
+        if qName != "":
+            qset = qset.filter(usuario__username__startswith=qName ) | qset.filter(mail__startswith=qName) | qset.filter(nombre__startswith=qName)
+        return qset
 
 
