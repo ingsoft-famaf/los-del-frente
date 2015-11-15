@@ -31,10 +31,6 @@ class Perfil(models.Model):
                                  format='JPEG',
                                  default='avatars/no_avatar.jpg',
                                  options={'quality': 90})
-    # Lista de vinculos
-    vinculos = models.ManyToManyField("self", through='Relationship',
-                                      symmetrical=False,
-                                      related_name='related_to+')
 
     def image_tag(self):
         """Retorna url absoluta para uso html del avatar (imagen)"""
@@ -46,20 +42,53 @@ class Perfil(models.Model):
         """Retorna el nombre de un usuario al imprimir un objeto Perfil"""
         return str(self.nombre)
 
-    def add_relationship(self, perfil, status, symm=True):
-        relationship, created = Relationship.objects.get_or_create(
-                                from_person=self,
-                                to_person=perfil,
-                                status=status)
-        if symm:
-            # avoid recursion by passing `symm=False`
-            perfil.add_relationship(self, status, False)
-        return relationship
 
-    def get_relationships(self, status):
-        return self.relationships.filter(
-            to_people__status=status,
-            to_people__from_person=self)
+'''
+ Tomada de aplicacion django-friends
+'''
+
+
+class FriendshipManager(models.Manager):
+
+    # Lista de amistades para tal usuario
+    def friends_for_user(self, user):
+        friends = []
+        for friendship in self.filter(from_user=user).select_related(depth=1):
+            friends.append({"friend": friendship.to_user, "friendship": friendship})
+        for friendship in self.filter(to_user=user).select_related(depth=1):
+            friends.append({"friend": friendship.from_user, "friendship": friendship})
+        return friends
+
+    # 2 usuarios son amigos?
+    def are_friends(self, user1, user2):
+        if self.filter(from_user=user1, to_user=user2).count() > 0:
+            return True
+        if self.filter(from_user=user2, to_user=user1).count() > 0:
+            return True
+        return False
+
+
+class Friendship(models.Model):
+    """
+    A friendship is a bi-directional association between two users who
+    have both agreed to the association.
+    """
+
+    to_user = models.ForeignKey(User, related_name="friends")
+    from_user = models.ForeignKey(User, related_name="_unused_")
+
+    objects = FriendshipManager()
+
+    class Meta:
+        unique_together = (('to_user', 'from_user'),)
+
+'''
+ Lista de amistades para el usuario; accesible para una vista(espero)
+'''
+
+
+def friend_set_for(user):
+    return set([obj["friend"] for obj in Friendship.objects.friends_for_user(user)])
 
 
 @receiver(post_save, sender=User)
@@ -67,17 +96,3 @@ def create_profile_for_new_user(sender, created, instance, **kwargs):
     if created:
         perfil = Perfil(usuario=instance)
         perfil.save()
-
-
-RELATIONSHIP_FOLLOWING = 1
-RELATIONSHIP_BLOCKED = 2
-RELATIONSHIP_STATUSES = (
-    (RELATIONSHIP_FOLLOWING, 'Following'),
-    (RELATIONSHIP_BLOCKED, 'Blocked'),
-)
-
-
-class Relationship(models.Model):
-    from_perfil = models.ForeignKey(Perfil, related_name='from_people')
-    to_perfil = models.ForeignKey(Perfil, related_name='to_people')
-    status = models.IntegerField(choices=RELATIONSHIP_STATUSES)

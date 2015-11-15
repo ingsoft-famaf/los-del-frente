@@ -1,9 +1,9 @@
 {% block content %}
 <h1>Vinculos</h1>
 
-{% for perfil in object_list %}
+{% for object in object_list %}
     <li>
-        {{ perfil.get_relationships }}
+        {{ object.to_user }}
     </li>
 {% empty %}
     <li>You don't have any links yet...</li>

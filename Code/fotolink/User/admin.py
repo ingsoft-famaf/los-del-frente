@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Perfil, Relationship
+from .models import Perfil, Friendship
 
 
 class ProfileAdmin(admin.ModelAdmin):
@@ -10,9 +10,8 @@ class ProfileAdmin(admin.ModelAdmin):
     list_display = ('nombre', 'edad', 'residencia', 'mail', 'facebook',
                     'web', 'image_tag', 'usuario')
 
+class FriendshipAdmin(admin.ModelAdmin):
+    list_display = ('id', 'from_user', 'to_user')
+
 admin.site.register(Perfil, ProfileAdmin)
-
-
-class RelationshipInline(admin.StackedInline):
-    model = Relationship
-    fk_name = 'from_person'
+admin.site.register(Friendship, FriendshipAdmin)

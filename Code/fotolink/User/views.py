@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from forms import UserCreationForm, ProfileForm
-from .models import Perfil, Relationship
+from .models import Perfil, Friendship
 from .forms import ProfileForm
 
 
@@ -98,7 +98,7 @@ class ProfileEdit(UpdateView):
 
 class LinkList(ListView):
 
-    model = Relationship
+    model = Friendship
     template_name = 'User/link_list.html'
     # queryset = Relationship.objects.all()
 
@@ -120,5 +120,5 @@ class LinkList(ListView):
         return context
 
     def get_queryset(self):
-        queryset = Relationship.objects.all()
+        queryset = Friendship.objects.all()
         return queryset
