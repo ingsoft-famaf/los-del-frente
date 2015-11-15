@@ -137,7 +137,7 @@ class PeopleList(ListView):
         qName = self.request.GET.get('people', '')
         qset = super(PeopleList, self).get_queryset()
         if qName != "":
-            qset = qset.filter(usuario__username__startswith=qName ) | qset.filter(mail__startswith=qName) | qset.filter(nombre__startswith=qName)
+            qset = qset.filter(usuario__username__startswith=qName) | qset.filter(mail__startswith=qName) | qset.filter(nombre__startswith=qName)
         else:
             return []
         return qset
@@ -157,22 +157,27 @@ class OthersProfile(DetailView):
         """
         Disparador selectivo segun si es mi perfil, si es el de un amigo o si
         es hacia un contacto desconocido.
-        
+
         :param request: http request
         :returns: http response
         """
         userToShow = User.objects.get(pk=kwargs['pk'])
         actualUser = self.request.user
-        ct = ContentType.objects.get_for_model(model = Perfil)
-        perm = Permission.objects.get_or_create(codename='Can_see', name='Can see pr_profile', content_type=ct)
+        ct = ContentType.objects.get_for_model(model=Perfil)
+        perm = Permission.objects.get_or_create(codename='Can_see',
+                                                name='Can see pr_profile',
+                                                content_type=ct)
         if (int(request.user.pk) == int(kwargs['pk'])):
             return HttpResponseRedirect("/accounts/profile")
         elif(userToShow in friend_set_for(actualUser)):
             perm = Permission.objects.get(codename='Can_see')
             actualUser.user_permissions.add(perm)
-            return super(self.__class__, self).dispatch(request, *args, **kwargs)
+            return super(self.__class__, self).dispatch(request,
+                                                        *args,
+                                                        **kwargs)
         else:
             perm = Permission.objects.get(codename='Can_see')
             actualUser.user_permissions.remove(perm)
-            return super(self.__class__, self).dispatch(request, *args, **kwargs)
-
+            return super(self.__class__, self).dispatch(request,
+                                                        *args,
+                                                        **kwargs)

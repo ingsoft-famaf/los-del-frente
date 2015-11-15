@@ -136,7 +136,7 @@ class PhotoAppTestCase(TestCase):
                                  'place': Place.objects.get
                                  (placeName='Neuquen')})
         self.assertEqual(response.status_code, 200)
-        self.assertTrue("Enter a valid time" in response)
+        self.assertTrue("Enter a valid time" in str(response))
 
     def test_reg_Photo_failed_badFile_with_login(self):
         '''
@@ -186,7 +186,8 @@ class PhotoAppTestCase(TestCase):
         response = cliente.get('/photos/')
         ##Me fijo si estan mis fotos
         for foto in response.context['photo_list']:
-            self.assertTrue(foto.place_id == 'Neuquen' or foto.place_id == 'Catamarca')
+            self.assertTrue(foto.place_id == 'Neuquen' or
+                            foto.place_id == 'Catamarca')
 
     def test_get_photoList_filtered_success(self):
         '''

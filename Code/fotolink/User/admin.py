@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import Perfil, Friendship
-
 from django.contrib.auth.models import Permission
+
 
 class ProfileAdmin(admin.ModelAdmin):
     """
@@ -10,6 +10,7 @@ class ProfileAdmin(admin.ModelAdmin):
     """
     list_display = ('nombre', 'edad', 'residencia', 'mail', 'facebook',
                     'web', 'image_tag', 'usuario')
+
 
 class FriendshipAdmin(admin.ModelAdmin):
     '''
@@ -29,4 +30,3 @@ class PermissionAdmin(admin.ModelAdmin):
 admin.site.register(Perfil, ProfileAdmin)
 admin.site.register(Friendship, FriendshipAdmin)
 admin.site.register(Permission, PermissionAdmin)
-

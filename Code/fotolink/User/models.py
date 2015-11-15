@@ -7,6 +7,7 @@ from django.db.models.signals import post_save
 from django.core.validators import MaxValueValidator
 from PhotoApp.models import Place
 
+
 class Perfil(models.Model):
     """
     Clase Perfil que modela los datos visibles o no, de un usuario registrado.
@@ -66,9 +67,11 @@ class FriendshipManager(models.Manager):
     def friends_for_user(self, user):
         friends = []
         for friendship in self.filter(from_user=user):
-            friends.append({"friend": friendship.to_user, "friendship": friendship})
+            friends.append({"friend": friendship.to_user,
+                            "friendship": friendship})
         for friendship in self.filter(to_user=user):
-            friends.append({"friend": friendship.from_user, "friendship": friendship})
+            friends.append({"friend": friendship.from_user,
+                            "friendship": friendship})
         return friends
 
     # 2 usuarios son amigos?
@@ -99,5 +102,5 @@ def friend_set_for(user):
     '''
     Metodo que retorna el grupo de amigos para un determinado usuario.
     '''
-    return set([obj["friend"] for obj in Friendship.objects.friends_for_user(user)])
-
+    return set([obj["friend"] for obj in
+               Friendship.objects.friends_for_user(user)])
