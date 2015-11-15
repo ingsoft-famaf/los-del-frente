@@ -6,7 +6,7 @@
 <script>
 function etiquetar() {
     $.ajax({
-      url: "http://localhost:8000/addtag",
+      url: "/addtag",
       data: {'photo_id':{{ photo.pk }}, 'x':34, 'y':45},
       context: document.body
     }).done(function() {

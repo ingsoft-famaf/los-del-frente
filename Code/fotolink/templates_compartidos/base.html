@@ -15,7 +15,7 @@
     $(function(){
         function actualizar() {
             $.ajax({
-              url: "http://localhost:8000/notifications",
+              url: "/notifications",
               //data: {'photo_id':{{ photo.pk }}, 'x':34, 'y':45},
               context: document.body
             }).done(function(data) {

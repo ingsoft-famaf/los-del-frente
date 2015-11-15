@@ -11,7 +11,6 @@ from .models import Photo, Place, Notification, Tag
 def AddTag(request):
     #http://localhost:8000/addtag?photo_id=1&x=1&y=3
     getDict = dict(request.GET.iterlists())
-    print request.GET.get("photfadfsdf", )
     
     photo_id = int(getDict['photo_id'][0])
     x = int(getDict['x'][0])
