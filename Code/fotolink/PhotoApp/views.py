@@ -26,13 +26,17 @@ def AddTag(request):
     return JsonResponse({'result':'OK'})
 
 def notifications(request):
-    
-    notisJson = {}
+    notisJson = {'notif_list':[]}
     actualUser = request.user
     allNotis = Notification.objects.get_queryset()
     notiForUser = allNotis.filter(receiver = actualUser)
     for each in notiForUser:
-        notisJson[str(each.dateTime)] = each.text + ' from ' + str(each.sender)
+        notisJson['notif_list'].append({
+            'id':each.pk, 
+            'time':each.dateTime, 
+            'text': each.text , 
+            'sender': str(each.sender), 
+            'seen': each.seen})
     return JsonResponse(notisJson)
 
 

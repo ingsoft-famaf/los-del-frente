@@ -89,6 +89,57 @@
             opacity: 1;
         }
 
+        li.notif {
+            margin-right: 15px;
+        }
+        li #jewelCount {
+            font-size: 12px;
+            border-radius: 50%;
+            color: #FFF;
+            padding: 1px 3px;
+            text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.4);
+            background-image: linear-gradient(#FA3C45, #DC0D17);
+            height: auto;
+            display: inline-block;
+            position: absolute;
+            left: 15px;
+        }
+
+        nav li.with-dropdown {
+            position: relative;
+        }
+
+        nav ul.dropdown {
+            z-index: 100;
+            display: none;
+            position: absolute;
+            padding-left: 0px;
+            color: #FFF;
+            width: 200px;
+            left: -110px;
+            top: 50px;
+            margin-left: 50%;
+            height: auto;
+            background-color: rgba(0, 0, 0, 0.21);
+            border-radius: 8px;
+        }
+
+        nav ul li.notif ul.dropdown li.seen {
+            background-color: rgba(255, 255, 0, 0.13);
+            border-radius: 8px;
+        }
+
+        nav ul.dropdown > li {
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 253, 253, 0.18);
+            width: 100%;
+            text-align: center;
+            padding-top: 5px;
+        }
+        nav ul.dropdown > li:last-child {
+            border-bottom: none;
+        }
+
         section {
             top: 60px;
             position: relative;

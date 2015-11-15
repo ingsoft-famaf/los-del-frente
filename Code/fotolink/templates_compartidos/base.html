@@ -6,6 +6,44 @@
     <title>Fotolink|{% block title %}{% endblock %}</title>
     <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">-->
     <link rel="stylesheet" type="text/css" href="{% static "base.css" %}">
+     <link rel="stylesheet" href="{% static "jqueryui/jquery-ui.css" %}">
+    <!--<script src="{% static "jqueryui/jquery-1.10.2.js" %}"></script>-->    
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="{% static "jqueryui/jquery-ui.js" %}"></script>    
+    <!--Notificaciones-->
+    <script type="text/javascript">    
+    $(function(){
+        function actualizar() {
+            $.ajax({
+              url: "http://localhost:8000/notifications",
+              //data: {'photo_id':{{ photo.pk }}, 'x':34, 'y':45},
+              context: document.body
+            }).done(function(data) {
+                //console.log(data.notif_list[0])
+                var notifs = data.notif_list
+                $("li.notif ul.dropdown").empty()
+                $("#jewelCount").text(notifs.length)
+                if (notifs.length > 0)
+                    $("#jewelCount").show()
+                for(var i=0; i < notifs.length; i++) {
+                    var notif = notifs[i]
+                    var li = document.createElement('li')
+                    if (!notif.seen)
+                        li.setAttribute('class',"seen")
+                    li.innerHTML = notif.sender + " te ah etiquetado! ("+ notif.text+")"
+                    $("li.notif ul.dropdown").append(li);
+                }                
+                setTimeout(function(){actualizar()}, 5000)
+            });            
+        }
+        actualizar()
+        mouse_is_inside = false;
+        $('li.notif img').click(function(){
+            $("#jewelCount").hide()
+            $('li.notif ul.dropdown').toggle()
+        })
+    });    
+    </script>
 </head>
 <body>
     <div class="wrapper">
@@ -24,10 +62,18 @@
         </div>
         <div class="menu left" style="margin-top:-10px">
             <ul>
-                <li><a href="/password_change">Change password</a></li>
-                <li><a href="/logout" class="left">
-                    <img src="{% static "log_out.png" %}" 
-                    style="width: 30px;position: relative;top: 9px;">Logout</a>
+                <li class="notif with-dropdown">
+                    <img src="{% static "bell.svg" %}"
+                            style="width: 30px;position: relative;top: 9px;">
+                    <span id="jewelCount">12</span>
+                    <ul class="dropdown">
+                    </ul>
+                </li>
+                <li><a href="/password_change">Change password</a></li>                
+                <li>
+                    <a href="/logout" class="left">
+                        <img src="{% static "log_out.png" %}" 
+                            style="width: 30px;position: relative;top: 9px;">Logout</a>
                 </li>
             </ul>
         </div>
