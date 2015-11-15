@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from forms import UserCreationForm, ProfileForm
-from .models import Perfil
+from .models import Perfil, Friendship, friend_set_for
 from .forms import ProfileForm
 
 
@@ -110,7 +110,6 @@ class OthersProfile(DetailView):
         """
         Disparador de redireccion en caso de que sea una consulta sobre 
         mi perfil, en ese caso redireccion a detailView de mi perfil.
-
         :param request: http request
         :returns: http response
         """
@@ -119,6 +118,22 @@ class OthersProfile(DetailView):
         else:
             return super(self.__class__, self).dispatch(request, *args, **kwargs)
 
+
+class LinkList(ListView):
+
+    model = Friendship
+    template_name = 'User/link_list.html'
+
+    def get_context_data(self, **kwargs):
+        """
+        Retorna el contexto de todas las fotos en PhotoList
+        """
+        context = super(LinkList, self).get_context_data()
+        return context
+
+    def get_queryset(self):
+        ActualUser = get_object_or_404(User, username=self.request.user)
+        return friend_set_for(ActualUser)
 
 class PeopleList(ListView):
     """
@@ -149,5 +164,4 @@ class PeopleList(ListView):
         if qName != "":
             qset = qset.filter(usuario__username__startswith=qName ) | qset.filter(mail__startswith=qName) | qset.filter(nombre__startswith=qName)
         return qset
-
 

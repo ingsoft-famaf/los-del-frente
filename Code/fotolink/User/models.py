@@ -45,7 +45,56 @@ class Perfil(models.Model):
 
     def __string__(self):
         """Retorna el nombre de un usuario al imprimir un objeto Perfil"""
-        return str(nombre)
+        return str(self.nombre)
+
+
+'''
+ Tomada de aplicacion django-friends
+'''
+
+
+class FriendshipManager(models.Manager):
+
+    # Lista de amistades para tal usuario
+    def friends_for_user(self, user):
+        friends = []
+        for friendship in self.filter(from_user=user):
+            friends.append({"friend": friendship.to_user, "friendship": friendship})
+        for friendship in self.filter(to_user=user):
+            friends.append({"friend": friendship.from_user, "friendship": friendship})
+        return friends
+
+    # 2 usuarios son amigos?
+    def are_friends(self, user1, user2):
+        if self.filter(from_user=user1, to_user=user2).count() > 0:
+            return True
+        if self.filter(from_user=user2, to_user=user1).count() > 0:
+            return True
+        return False
+
+
+class Friendship(models.Model):
+    """
+    A friendship is a bi-directional association between two users who
+    have both agreed to the association.
+    """
+
+    to_user = models.ForeignKey(User, related_name="friends")
+    from_user = models.ForeignKey(User, related_name="_unused_")
+
+    objects = FriendshipManager()
+
+    class Meta:
+        unique_together = (('to_user', 'from_user'),)
+
+'''
+ Lista de amistades para el usuario; accesible para una vista
+'''
+
+
+def friend_set_for(user):
+    return set([obj["friend"] for obj in Friendship.objects.friends_for_user(user)])
+
 
 @receiver(post_save, sender=User)
 def create_profile_for_new_user(sender, created, instance, **kwargs):
