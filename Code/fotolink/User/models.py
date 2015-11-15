@@ -53,9 +53,9 @@ class FriendshipManager(models.Manager):
     # Lista de amistades para tal usuario
     def friends_for_user(self, user):
         friends = []
-        for friendship in self.filter(from_user=user).select_related(depth=1):
+        for friendship in self.filter(from_user=user):
             friends.append({"friend": friendship.to_user, "friendship": friendship})
-        for friendship in self.filter(to_user=user).select_related(depth=1):
+        for friendship in self.filter(to_user=user):
             friends.append({"friend": friendship.from_user, "friendship": friendship})
         return friends
 
@@ -83,7 +83,7 @@ class Friendship(models.Model):
         unique_together = (('to_user', 'from_user'),)
 
 '''
- Lista de amistades para el usuario; accesible para una vista(espero)
+ Lista de amistades para el usuario; accesible para una vista
 '''
 
 

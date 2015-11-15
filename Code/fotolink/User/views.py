@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from forms import UserCreationForm, ProfileForm
-from .models import Perfil, Friendship
+from .models import Perfil, Friendship, friend_set_for
 from .forms import ProfileForm
 
 
@@ -120,5 +120,5 @@ class LinkList(ListView):
         return context
 
     def get_queryset(self):
-        queryset = Friendship.objects.all()
-        return queryset
+        ActualUser = get_object_or_404(User, username=self.request.user)
+        return friend_set_for(ActualUser)
