@@ -4,41 +4,79 @@
 
 {% block content %}
 	<article id="perfil">
-		<h1 class="titulo">Perfil publico de {{object.usuario}}</h1>
-		<div class="content">
-	        <div class="img">
-	            <img src="{{ object.avatar.url }}" alt="">
-	        </div>
-	        <div class="detalles">
-	        	{% if object.nombre %}
-	            <h2 class="name cursive">{{object.nombre}}</h2>
-                {% if object.edad and object.edad_privacidad %}
-	            <p>Edad: {{object.edad}}</p>
-                {% endif %}
-                {% if object.residencia and object.residencia_privacidad %}
-                <p>Residencia: {{object.residencia}}.</p>
-                {% endif %}
-	            {% else %}
-	            <p>No tiene datos aun cargados <a href="#">Enviale una sugerencia</a>.</p>
-				</a>    
-	            {% endif %}
-	    		{% if object.web and object.web_privacidad %}
-	    		<a href="{{object.web}}">{{object.web}}</a>
-	    		{% endif %}
-	    		<div id="contactitos">
-	    			{% if object.facebook and object.facebook_privacidad %}
-	    			<a href="{{object.facebook}}" title={{object.facebook}}>
-	    				<img src="{% static "facebook_blue.png" %}" style="height:25px">
-	    			</a>
-	    			{% endif %}
-	    			{% if object.mail and object.mail.mail_privacidad %}
-	    			<a href="mailto:{{object.mail}}" title="{{object.mail}}">
-	    				<img src="{% static "mail_blue.png" %}" style="height: 40px;">
-	    			</a>
-	    			{% endif %}
-	    		</div>
-	        </div> 
-        </div>
+        {% if not perms.User.Can_see %}
+		    <h1 class="titulo">Perfil publico de {{object.usuario}}</h1>
+		    <div class="content">
+	            <div class="img">
+	                <img src="{{ object.avatar.url }}" alt="">
+	            </div>
+	            <div class="detalles">
+	            	{% if object.nombre %}
+	                <h2 class="name cursive">{{object.nombre}}</h2>
+                    {% if object.edad and object.edad_privacidad %}
+	                <p>Edad: {{object.edad}}</p>
+                    {% endif %}
+                    {% if object.residencia and object.residencia_privacidad %}
+                    <p>Residencia: {{object.residencia}}.</p>
+                    {% endif %}
+	                {% else %}
+				    </a>    
+	                {% endif %}
+	        		{% if object.web and object.web_privacidad %}
+	        		<a href="{{object.web}}">{{object.web}}</a>
+	        		{% endif %}
+	        		<div id="contactitos">
+	        			{% if object.facebook and object.facebook_privacidad %}
+	        			<a href="{{object.facebook}}" title={{object.facebook}}>
+	        				<img src="{% static "facebook_blue.png" %}" style="height:25px">
+	        			</a>
+	        			{% endif %}
+	        			{% if object.mail and object.mail.mail_privacidad %}
+	        			<a href="mailto:{{object.mail}}" title="{{object.mail}}">
+	        				<img src="{% static "mail_blue.png" %}" style="height: 40px;">
+	        			</a>
+	        			{% endif %}
+	        		</div>
+                    <p>Tu y {{object.usuario}} no son amigos aun</p>
+	            </div> 
+            </div>
+        {% else %}
+		    <h1 class="titulo">Perfil de {{object.usuario}}</h1>
+		    <div class="content">
+	            <div class="img">
+	                <img src="{{ object.avatar.url }}" alt="">
+	            </div>
+	            <div class="detalles">
+	            	{% if object.nombre %}
+	                <h2 class="name cursive">{{object.nombre}}</h2>
+                    {% if object.edad %}
+	                <p>Edad: {{object.edad}}</p>
+                    {% endif %}
+                    {% if object.residencia %}
+                    <p>Residencia: {{object.residencia}}.</p>
+                    {% endif %}
+	                {% else %}
+	                <p>No tiene datos aun cargados <a href="#">Enviale una sugerencia</a>.</p>
+				    </a>    
+	                {% endif %}
+	        		{% if object.web %}
+	        		<a href="{{object.web}}">{{object.web}}</a>
+	        		{% endif %}
+	        		<div id="contactitos">
+	        			{% if object.facebook %}
+	        			<a href="{{object.facebook}}" title={{object.facebook}}>
+	        				<img src="{% static "facebook_blue.png" %}" style="height:25px">
+	        			</a>
+	        			{% endif %}
+	        			{% if object.mail %}
+	        			<a href="mailto:{{object.mail}}" title="{{object.mail}}">
+	        				<img src="{% static "mail_blue.png" %}" style="height: 40px;">
+	        			</a>
+	        			{% endif %}
+	        		</div>
+	            </div> 
+            </div>
+        {% endif %}
     </article>
     <style type="text/css">
 		.content {

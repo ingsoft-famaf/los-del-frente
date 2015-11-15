@@ -7,7 +7,6 @@ from django.db.models.signals import post_save
 from django.core.validators import MaxValueValidator
 from PhotoApp.models import Place
 
-
 class Perfil(models.Model):
     """
     Clase Perfil que modela los datos visibles o no, de un usuario registrado.
@@ -48,13 +47,21 @@ class Perfil(models.Model):
         return str(self.nombre)
 
 
-'''
- Tomada de aplicacion django-friends
-'''
+@receiver(post_save, sender=User)
+def create_profile_for_new_user(sender, created, instance, **kwargs):
+    '''
+    Metodo que crea automaticamente un perfil (minimal) para un usuario nuevo
+    recientemente registrado
+    '''
+    if created:
+        perfil = Perfil(usuario=instance)
+        perfil.save()
 
 
 class FriendshipManager(models.Manager):
-
+    '''
+     Tomada de aplicacion django-friends
+    '''
     # Lista de amistades para tal usuario
     def friends_for_user(self, user):
         friends = []
@@ -87,17 +94,10 @@ class Friendship(models.Model):
     class Meta:
         unique_together = (('to_user', 'from_user'),)
 
-'''
- Lista de amistades para el usuario; accesible para una vista
-'''
-
 
 def friend_set_for(user):
+    '''
+    Metodo que retorna el grupo de amigos para un determinado usuario.
+    '''
     return set([obj["friend"] for obj in Friendship.objects.friends_for_user(user)])
 
-
-@receiver(post_save, sender=User)
-def create_profile_for_new_user(sender, created, instance, **kwargs):
-    if created:
-        perfil = Perfil(usuario=instance)
-        perfil.save()

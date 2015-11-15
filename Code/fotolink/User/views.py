@@ -1,14 +1,15 @@
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User, Permission
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth import views
 from django.views.generic import CreateView, UpdateView, ListView
 from django.views.generic import DetailView, TemplateView
-from django.http import HttpResponseRedirect
-from django.contrib.auth.models import User
-from django.contrib.auth import views
 from django.shortcuts import get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-from forms import UserCreationForm, ProfileForm
+from django.http import HttpResponseRedirect
 from .models import Perfil, Friendship, friend_set_for
 from .forms import ProfileForm
+from forms import UserCreationForm
 
 
 class Register(CreateView):
@@ -96,51 +97,25 @@ class ProfileEdit(UpdateView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class OthersProfile(DetailView):
-    """
-    Vista de un Perfil de otro usuario.
-    Hereda de django.views.generic.DetailView.
-    Requiere estar logueado en el sistema.
-    """
-    model = Perfil
-    template_name = 'User/othersprofile.html'
-
-    @method_decorator(login_required(login_url='/login/'))
-    def dispatch(self, request, *args, **kwargs):
-        """
-        Disparador de redireccion en caso de que sea una consulta sobre 
-        mi perfil, en ese caso redireccion a detailView de mi perfil.
-        :param request: http request
-        :returns: http response
-        """
-        if (int(request.user.pk) == int(kwargs['pk'])):
-            return HttpResponseRedirect("/accounts/profile")
-        else:
-            return super(self.__class__, self).dispatch(request, *args, **kwargs)
-
-
 class LinkList(ListView):
-
+    '''
+    '''
     model = Friendship
     template_name = 'User/link_list.html'
 
-    def get_context_data(self, **kwargs):
-        """
-        Retorna el contexto de todas las fotos en PhotoList
-        """
-        context = super(LinkList, self).get_context_data()
-        return context
-
     def get_queryset(self):
+        '''
+        '''
         ActualUser = get_object_or_404(User, username=self.request.user)
         return friend_set_for(ActualUser)
 
+
 class PeopleList(ListView):
     """
-    Muestra una lista de los amigos actuales del usuario logueado.
+    Permite buscar amigos en la red.
     """
     model = Perfil
-    template_name = 'User/friends_list.html'
+    template_name = 'User/people_list.html'
 
     @method_decorator(login_required(login_url='/login/'))
     def dispatch(self, request, *args, **kwargs):
@@ -163,5 +138,41 @@ class PeopleList(ListView):
         qset = super(PeopleList, self).get_queryset()
         if qName != "":
             qset = qset.filter(usuario__username__startswith=qName ) | qset.filter(mail__startswith=qName) | qset.filter(nombre__startswith=qName)
+        else:
+            return []
         return qset
+
+
+class OthersProfile(DetailView):
+    """
+    Vista de un Perfil de otro usuario con restricciones si no son amigos.
+    Hereda de django.views.generic.DetailView.
+    Requiere estar logueado en el sistema.
+    """
+    model = Perfil
+    template_name = 'User/othersprofile.html'
+
+    @method_decorator(login_required(login_url='/login/'))
+    def dispatch(self, request, *args, **kwargs):
+        """
+        Disparador selectivo segun si es mi perfil, si es el de un amigo o si
+        es hacia un contacto desconocido.
+        
+        :param request: http request
+        :returns: http response
+        """
+        userToShow = User.objects.get(pk=kwargs['pk'])
+        actualUser = self.request.user
+        ct = ContentType.objects.get_for_model(model = Perfil)
+        perm = Permission.objects.get_or_create(codename='Can_see', name='Can see pr_profile', content_type=ct)
+        if (int(request.user.pk) == int(kwargs['pk'])):
+            return HttpResponseRedirect("/accounts/profile")
+        elif(userToShow in friend_set_for(actualUser)):
+            perm = Permission.objects.get(codename='Can_see')
+            actualUser.user_permissions.add(perm)
+            return super(self.__class__, self).dispatch(request, *args, **kwargs)
+        else:
+            perm = Permission.objects.get(codename='Can_see')
+            actualUser.user_permissions.remove(perm)
+            return super(self.__class__, self).dispatch(request, *args, **kwargs)
 
