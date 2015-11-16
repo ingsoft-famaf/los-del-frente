@@ -8,6 +8,7 @@ from django.views.generic import DetailView, TemplateView
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from .models import Perfil, Friendship, FriendshipInvitation, friend_set_for
+from .models import friend_set_for, wanna_be_friends
 from .forms import ProfileForm
 from forms import UserCreationForm
 
@@ -125,6 +126,7 @@ class InviteList(ListView):
 
         qset = super(InviteList, self).get_queryset()
         ActualUser = get_object_or_404(User, username=self.request.user)
+
         accept = self.request.GET.get('Accept', '')
         decline = self.request.GET.get('Decline', '')
         frReqId = self.request.GET.get('requestID', '')
@@ -136,7 +138,7 @@ class InviteList(ListView):
         if decline != '':
             Invitation = FriendshipInvitation.objects.get(id=frReqId)
             Invitation.decline()
-        return qset.filter(to_user=ActualUser).filter(status="0")
+        return qset.filter(to_user=ActualUser).exclude(from_user=ActualUser).filter(status="0")
 
 
 
