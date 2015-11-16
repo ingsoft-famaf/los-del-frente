@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from User.views import Register, ProfileEdit, ProfileDetail, LinkList, InviteList
 #from User.views import AcceptInvitation
-from .views import PeopleList, OthersProfile
+from .views import PeopleList, OthersProfile, SendFriendRequest
 from django.views.generic import TemplateView
 
 urlpatterns = [
@@ -14,5 +14,6 @@ urlpatterns = [
     url(r'^accounts/(?P<pk>[0-9]+)/$', OthersProfile.as_view(), name='oprofile'),
     url(r'^accounts/links', LinkList.as_view(), name='vinculos'),
     url(r'^accounts/invitations', InviteList.as_view(), name='invitations'),
-    url(r'^accounts/people', PeopleList.as_view(), name='people')
+    url(r'^accounts/people', PeopleList.as_view(), name='people'),
+    url(r'^accounts/friend_request', SendFriendRequest.as_view(), name='friendrequest')
 ]

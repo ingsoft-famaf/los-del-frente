@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from .models import Perfil, Friendship, FriendshipInvitation, friend_set_for
 from .models import friend_set_for, wanna_be_friends
-from .forms import ProfileForm
+from .forms import ProfileForm, InvitationForm
 from forms import UserCreationForm
 
 
@@ -213,3 +213,15 @@ class OthersProfile(DetailView):
             return super(self.__class__, self).dispatch(request,
                                                         *args,
                                                         **kwargs)
+
+
+class SendFriendRequest(CreateView):
+    """
+    Vista de un Perfil de otro usuario con restricciones si no son amigos.
+    Hereda de django.views.generic.DetailView.
+    Requiere estar logueado en el sistema.
+    """
+    model = FriendshipInvitation
+    template_name = 'User/friendship.html'
+    form_class = InvitationForm
+
