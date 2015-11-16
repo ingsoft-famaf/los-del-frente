@@ -15,7 +15,7 @@ function etiquetar(a, b) {
 }
 
 $(function() {
-$("#foto").click(function(e) {
+$("#foto img").click(function(e) {
   var offset = $(this).offset();
   var relativeX = Math.round(e.pageX - offset.left);
   var relativeY = Math.round(e.pageY - offset.top);

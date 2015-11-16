@@ -84,4 +84,7 @@ class Tag(models.Model):
     x_pos = models.IntegerField(default=0)
     y_pos = models.IntegerField(default=0)
 
+    def __unicode__(self):
+        """Retorna el nombre de un lugar al imprimir un objeto Place"""
+        return str(self.user)+" "+str(self.photo)
 
