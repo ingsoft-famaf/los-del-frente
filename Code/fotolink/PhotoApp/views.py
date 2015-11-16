@@ -11,7 +11,6 @@ from .models import Photo, Place, Notification, Tag
 def AddTag(request):
     #http://localhost:8000/addtag?photo_id=1&x=1&y=3
     getDict = dict(request.GET.iterlists())
-    print request.GET.get("photfadfsdf", )
     
     photo_id = int(getDict['photo_id'][0])
     x = int(getDict['x'][0])
@@ -26,18 +25,30 @@ def AddTag(request):
     return JsonResponse({'result':'OK'})
 
 def notifications(request):
-    notisJson = {'notif_list':[]}
-    actualUser = request.user
     allNotis = Notification.objects.get_queryset()
-    notiForUser = allNotis.filter(receiver = actualUser)
-    for each in notiForUser:
-        notisJson['notif_list'].append({
-            'id':each.pk, 
-            'time':each.dateTime, 
-            'text': each.text , 
-            'sender': str(each.sender), 
-            'seen': each.seen})
-    return JsonResponse(notisJson)
+    notiForUser = allNotis.filter(receiver = request.user)
+    if request.GET.get('action') == "all_seen":
+        for each in notiForUser:
+            each.seen = True
+            each.save()
+        return JsonResponse({'status':'OK'})
+    else:
+        notisJson = {'notif_list':[]}
+        for each in notiForUser:
+            data = {
+                'id':each.pk, 
+                'time':each.dateTime, 
+                'text': each.text , 
+                'sender': str(each.sender),                 
+                'type': each.notif_type,
+                'seen': each.seen,
+            }            
+            if each.sender:
+                data['sender_id'] = each.sender.pk
+            if each.tagged_photo:
+                data['tagged_photo_id'] = each.tagged_photo.pk
+            notisJson['notif_list'].append(data)
+        return JsonResponse(notisJson)
 
 
 class CancelUpload(DeleteView):

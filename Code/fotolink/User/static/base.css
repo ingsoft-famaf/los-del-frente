@@ -73,7 +73,7 @@
         nav .menu.left {
             float: right;
         }
-        nav .menu ul li a {
+        nav .menu ul li a.menu-item {
             text-decoration: none;
             color: #FFF;
             opacity: 0.7;
@@ -85,7 +85,7 @@
             transition: opacity 1s;
         }
 
-        nav .menu li a:hover {
+        nav .menu li a.menu-item:hover {
             opacity: 1;
         }
 
@@ -103,6 +103,8 @@
             display: inline-block;
             position: absolute;
             left: 15px;
+            top: 0px;
+            display: none;
         }
 
         nav li.with-dropdown {
@@ -120,11 +122,11 @@
             top: 50px;
             margin-left: 50%;
             height: auto;
-            background-color: rgba(0, 0, 0, 0.21);
+            background-color: rgba(125, 0, 0, 0.91);
             border-radius: 8px;
         }
 
-        nav ul li.notif ul.dropdown li.seen {
+        nav ul li.notif ul.dropdown li.new {
             background-color: rgba(255, 255, 0, 0.13);
             border-radius: 8px;
         }
