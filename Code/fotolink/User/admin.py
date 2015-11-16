@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Perfil, Friendship
+from .models import Perfil, Friendship, FriendshipInvitation
 from django.contrib.auth.models import Permission
 
 
@@ -17,6 +17,9 @@ class FriendshipAdmin(admin.ModelAdmin):
     '''
     list_display = ('id', 'from_user', 'to_user')
 
+class FriendshipInvitationAdmin(admin.ModelAdmin):
+    list_display = ('id', 'from_user', 'to_user', 'status')
+
 
 class PermissionAdmin(admin.ModelAdmin):
     '''
@@ -29,4 +32,5 @@ class PermissionAdmin(admin.ModelAdmin):
 
 admin.site.register(Perfil, ProfileAdmin)
 admin.site.register(Friendship, FriendshipAdmin)
+admin.site.register(FriendshipInvitation, FriendshipInvitationAdmin)
 admin.site.register(Permission, PermissionAdmin)

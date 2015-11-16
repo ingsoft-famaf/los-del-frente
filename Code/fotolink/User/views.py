@@ -7,7 +7,7 @@ from django.views.generic import CreateView, UpdateView, ListView
 from django.views.generic import DetailView, TemplateView
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
-from .models import Perfil, Friendship, friend_set_for
+from .models import Perfil, Friendship, FriendshipInvitation, friend_set_for
 from .forms import ProfileForm
 from forms import UserCreationForm
 
@@ -106,8 +106,33 @@ class LinkList(ListView):
     def get_queryset(self):
         '''
         '''
+        qset = super(LinkList, self).get_queryset()
         ActualUser = get_object_or_404(User, username=self.request.user)
-        return friend_set_for(ActualUser)
+        return qset.filter(from_user=ActualUser).filter(to_user=ActualUser)
+
+
+class InviteList(ListView):
+    '''
+    '''
+    model = FriendshipInvitation
+    template_name = 'User/invite_list.html'
+
+    def get_queryset(self):
+        '''
+        '''
+        qset = super(InviteList, self).get_queryset()
+        ActualUser = get_object_or_404(User, username=self.request.user)
+        #Invitation = get_object_or_404(FriendshipInvitation, id=self.request.id)
+        #print self.object_list
+        accept = self.request.GET.get('Accept', '')
+        decline = self.request.GET.get('Decline', '')
+        
+        if accept != '':
+            self.accept()
+        if decline != '':
+            self.decline()
+        return qset.filter(to_user=ActualUser).filter(status="0")
+
 
 
 class PeopleList(ListView):

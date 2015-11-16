@@ -104,3 +104,42 @@ def friend_set_for(user):
     '''
     return set([obj["friend"] for obj in
                Friendship.objects.friends_for_user(user)])
+
+
+INVITE_STATUS = (
+    ("0", "Unanswered"),
+    ("1", "Accepted"),
+    ("2", "Declined"),
+)
+
+
+class FriendshipInvitationManager(models.Manager):
+
+    def invitations(self, *args, **kwargs):
+        return self.filter(*args, **kwargs).exclude(status__in=["2"])
+
+
+
+class FriendshipInvitation(models.Model):
+    """
+    A frienship invite is an invitation from one user to another to be
+    associated as friends.
+    """
+
+    from_user = models.ForeignKey(User, related_name="invitations_from")
+    to_user = models.ForeignKey(User, related_name="invitations_to")
+    status = models.CharField(max_length=1, choices=INVITE_STATUS)
+
+    objects = FriendshipInvitationManager()
+
+    def accept(self):
+        if not Friendship.objects.are_friends(self.to_user, self.from_user):
+            friendship = Friendship(to_user=self.to_user, from_user=self.from_user)
+            friendship.save()
+            self.status = "1"
+            self.save()
+
+    def decline(self):
+        if not Friendship.objects.are_friends(self.to_user, self.from_user):
+            self.status = "2"
+            self.save()
