@@ -98,39 +98,44 @@ class ProfileEdit(UpdateView):
 
 
 class LinkList(ListView):
-    '''
-    '''
+    """
+    Clase para mostrar la lista de amistades del usuario
+    """
+
     model = Friendship
     template_name = 'User/link_list.html'
 
     def get_queryset(self):
-        '''
-        '''
-        qset = super(LinkList, self).get_queryset()
+
         ActualUser = get_object_or_404(User, username=self.request.user)
-        return qset.filter(from_user=ActualUser).filter(to_user=ActualUser)
+        return friend_set_for(ActualUser)
 
 
 class InviteList(ListView):
-    '''
-    '''
+    """
+    Aqui se listan todas las solicitudes de amistad pendientes
+    del usuario, dandole tambien la posibilidad de aceptarlas o
+    rechazarlas.
+    """
+
     model = FriendshipInvitation
     template_name = 'User/invite_list.html'
 
     def get_queryset(self):
-        '''
-        '''
+
         qset = super(InviteList, self).get_queryset()
         ActualUser = get_object_or_404(User, username=self.request.user)
-        #Invitation = get_object_or_404(FriendshipInvitation, id=self.request.id)
-        #print self.object_list
         accept = self.request.GET.get('Accept', '')
         decline = self.request.GET.get('Decline', '')
-        
+        frReqId = self.request.GET.get('requestID', '')
+
         if accept != '':
-            self.accept()
+            Invitation = FriendshipInvitation.objects.get(id=frReqId)
+            # poner aca metodo para decirle al 'aceptado' que somos amiguitos
+            Invitation.accept()
         if decline != '':
-            self.decline()
+            Invitation = FriendshipInvitation.objects.get(id=frReqId)
+            Invitation.decline()
         return qset.filter(to_user=ActualUser).filter(status="0")
 
 

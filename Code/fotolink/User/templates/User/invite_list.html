@@ -10,7 +10,8 @@
             <form method="GET">
             {% csrf_token %}
             <input type="submit" name="Decline" value="Decline"/>
-            <input type="submit" name={{object.pk}} value="Accept"/>
+            <input type="submit" name="Accept" value="Accept"/>
+            <input type="hidden" name="requestID" value="{{ object.pk }}" />
         </form>
     </li>
 {% empty %}
