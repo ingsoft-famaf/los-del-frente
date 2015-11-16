@@ -14,6 +14,5 @@ urlpatterns = [
     url(r'^accounts/(?P<pk>[0-9]+)/$', OthersProfile.as_view(), name='oprofile'),
     url(r'^accounts/links', LinkList.as_view(), name='vinculos'),
     url(r'^accounts/invitations', InviteList.as_view(), name='invitations'),
-    #url(r'^accounts/invitations/(?P<pk>[0-9]+)/$', AcceptInvitation.as_view(), name='accept'),
     url(r'^accounts/people', PeopleList.as_view(), name='people')
 ]

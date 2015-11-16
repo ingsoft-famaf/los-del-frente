@@ -6,7 +6,7 @@
 
 {% for object in object_list %}
     <li>
-        {{ object.from_user }}
+        <a href="{% url 'user:oprofile' object.from_user_id %}">{{ object.from_user }}</a>
             <form method="GET">
             {% csrf_token %}
             <input type="submit" name="Decline" value="Decline"/>
