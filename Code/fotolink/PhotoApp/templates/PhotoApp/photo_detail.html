@@ -4,23 +4,37 @@
 {% block content %}
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script>
-function etiquetar() {
+function etiquetar(a, b) {
     $.ajax({
       url: "/addtag",
-      data: {'photo_id':{{ photo.pk }}, 'x':34, 'y':45},
+      data: {'photo_id':{{ photo.pk }}, 'x':a, 'y': b},
       context: document.body
     }).done(function() {
-      alert("OK");
+      alert("Te has etiquetado correctamente");
     });
 }
+
+$(function() {
+$("#foto").click(function(e) {
+  var offset = $(this).offset();
+  var relativeX = Math.round(e.pageX - offset.left);
+  var relativeY = Math.round(e.pageY - offset.top);
+  alert('la posición es: '+relativeX+':'+relativeY);
+  etiquetar(relativeX, relativeY);
+});
+});
+
 </script>
 <h1>Details</h1>
 <p>Date and Time: {{ object.date }} at {{object.time}}</p>
 <p>Place: {{ object.place }}</p>
-<img src="{{ object.picture.url }}" class="img-responsive img-detail" alt="">
-    {% if user.is_staff %}
-    <a href="{% url 'photos:delete' photo.pk %}">Eliminar</a>
-    {% endif %}
+
+<a id = "foto">
+<img src="{{ object.picture.url }}" class="img-responsive img-detail" alt=""></a>
+
+{% if user.is_staff %}
+<a href="{% url 'photos:delete' photo.pk %}">Eliminar</a>
+{% endif %}
 
 
    <button onclick="etiquetar()" href="{% url 'photos:addtag'  %}">Etiquetarse en </button>
