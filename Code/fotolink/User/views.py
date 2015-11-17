@@ -142,12 +142,19 @@ class InviteList(ListView):
         frReqId = self.request.GET.get('requestID', '')
 
         if accept != '':
-            Invitation = FriendshipInvitation.objects.get(id=frReqId)
-            # poner aca metodo para decirle al 'aceptado' que somos amiguitos
-            Invitation.accept()
+            invitation = FriendshipInvitation.objects.get(id=frReqId)
+            user_from = invitation.from_user
+            user_to = invitation.to_user
+            invitation.accept()
+            notif = Notification.objects.create(sender=user_to,                                            receiver=user_from,                                            notif_type='custom',
+text=str(user_to)+" acepto tu solicitud de amistad")
         if decline != '':
-            Invitation = FriendshipInvitation.objects.get(id=frReqId)
-            Invitation.decline()
+            invitation = FriendshipInvitation.objects.get(id=frReqId)
+            user_from = invitation.from_user
+            user_to = invitation.to_user
+            invitation.decline()
+            notif = Notification.objects.create(sender=user_to,                                            receiver=user_from,                                            notif_type='custom',
+text=str(user_to)+" rechazo tu solicitud de amistad")
         return qset.filter(to_user=ActualUser).exclude(from_user=ActualUser).filter(status="0")
 
 
