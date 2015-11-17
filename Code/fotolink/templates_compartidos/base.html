@@ -23,7 +23,7 @@
                 var notifs = data.notif_list
                 $("li.notif ul.dropdown").empty()                
                 var news = 0
-                for(var i=0; i < notifs.length; i++) {
+                for(var i=notifs.length - 1; i >= 0; i--) {
                     var notif = notifs[i]
                     var li = document.createElement('li')
                     if (!notif.seen) {
@@ -31,8 +31,9 @@
                         news++
                     }
                     if (notif.type == 'tag') {
-                        li.innerHTML = notif.sender 
-                            + " se ha etiquetado en <a href='/%2F"
+                        li.innerHTML = "<a href='/accounts/" 
+                            + notif.sender_id + "'>" + notif.sender + "</a>"  
+                            + " se ha etiquetado en <a href='/%2Fphotos/"
                             + notif.tagged_photo_id
                             +"'>esta foto</a>!"
                     } else {
@@ -90,7 +91,6 @@
                 <li><a href="/accounts/people" class="menu-item">People</a></li>
                 <li><a href="/accounts/links/" class="menu-item">Friends</a></li>
                 <li><a href="/accounts/invitations/" class="menu-item">Invitations</a></li>
-                <li><a href="/accounts/profile/edit" class="menu-item">Configuration</a></li>
             </ul>
         </div>
         <div class="menu left" style="margin-top:-10px">
