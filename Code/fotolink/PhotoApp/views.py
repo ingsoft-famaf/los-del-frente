@@ -46,7 +46,7 @@ def notifications(request):
             each.save()
         return JsonResponse({'status':'OK'})
     else:
-        notisJson = {'notif_list':[]}
+        notisJson = {'notif_list':[], 'me':request.user.username}
         for each in notiForUser:
             data = {
                 'id':each.pk, 

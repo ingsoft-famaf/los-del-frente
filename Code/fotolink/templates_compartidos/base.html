@@ -36,6 +36,10 @@
                             + " se ha etiquetado en <a href='/%2Fphotos/"
                             + notif.tagged_photo_id
                             +"'>esta foto</a>!"
+                    } else if (notif.type == 'friend_request') {
+                        li.innerHTML = "<a href='/accounts/" 
+                            + notif.sender_id + "'>" + notif.sender + "</a>"  
+                            + " te ha enviado una <a href='/accounts/invitations/'>solicitud de amitad</a>!"
                     } else {
                         li.innerHTML = notif.text;
                     }
