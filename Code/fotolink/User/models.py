@@ -5,6 +5,7 @@ from imagekit.processors import ResizeToFill
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.core.validators import MaxValueValidator
+from PhotoApp.models import Notification
 from PhotoApp.models import Place
 
 
@@ -57,6 +58,9 @@ def create_profile_for_new_user(sender, created, instance, **kwargs):
     if created:
         perfil = Perfil(usuario=instance)
         perfil.save()
+        welcome = Notification(text="Bienvenido a Photolink :)",
+                               receiver=instance)
+        welcome.save()
 
 
 class FriendshipManager(models.Manager):

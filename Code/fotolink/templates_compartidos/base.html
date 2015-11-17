@@ -6,6 +6,74 @@
     <title>Fotolink|{% block title %}{% endblock %}</title>
     <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">-->
     <link rel="stylesheet" type="text/css" href="{% static "base.css" %}">
+     <link rel="stylesheet" href="{% static "jqueryui/jquery-ui.css" %}">
+    <!--<script src="{% static "jqueryui/jquery-1.10.2.js" %}"></script>-->    
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="{% static "jqueryui/jquery-ui.js" %}"></script>    
+    <!--Notificaciones-->
+    <script type="text/javascript">    
+    $(function(){
+        function actualizar() {
+            $.ajax({
+              url: "/notifications",
+              //data: {'photo_id':{{ photo.pk }}, 'x':34, 'y':45},
+              context: document.body
+            }).done(function(data) {
+                //console.log(data.notif_list[0])
+                var notifs = data.notif_list
+                $("li.notif ul.dropdown").empty()                
+                var news = 0
+                for(var i=0; i < notifs.length; i++) {
+                    var notif = notifs[i]
+                    var li = document.createElement('li')
+                    if (!notif.seen) {
+                        li.setAttribute('class',"new")
+                        news++
+                    }
+                    if (notif.type == 'tag') {
+                        li.innerHTML = notif.sender 
+                            + " se ha etiquetado en <a href='/%2F"
+                            + notif.tagged_photo_id
+                            +"'>esta foto</a>!"
+                    } else {
+                        li.innerHTML = notif.text;
+                    }
+                    $("li.notif ul.dropdown").append(li);
+                }
+                $("#jewelCount").text(news)                              
+                if (news > 0)
+                    $("#jewelCount").show()
+                else
+                    $("#jewelCount").hide()
+            }).fail(function(){
+                console.log("daemon error, not connected?")
+            });            
+        }
+        actualizar()
+        var daemon = setInterval(function(){actualizar()}, 5000)
+        mouse_is_inside = false;
+        $('li.notif img').click(function(){
+            $("#jewelCount").hide()
+            $('li.notif ul.dropdown').toggle()
+            $.ajax({
+              url: "/notifications",
+              data: {'action':'all_seen'},
+              context: document.body
+            }).done(function(data) {
+                
+            }); 
+        })
+        $('ul.dropdown').hover(function(){ 
+            mouse_is_inside=true; 
+        }, function(){ 
+            mouse_is_inside=false; 
+        });
+
+        $("body").mouseup(function(){ 
+            if(! mouse_is_inside) $('ul.dropdown').hide();
+        });
+    }); 
+    </script>
 </head>
 <body>
     <div class="wrapper">
@@ -16,22 +84,29 @@
         </div>
         <div class=menu>
             <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/upload/">Upload</a></li>
-                <li><a href="/photos/">Photos</a></li>
-                <li><a href="/accounts/people">People</a></li>
-                <li><a href="/accounts/links/">Friends</a></li>
-                <li><a href="/accounts/invitations/">Invitations</a></li>
-                <li><a href="/accounts/profile/edit">Configuration</a></li>
+                <li><a href="/" class="menu-item">Home</a></li>
+                <li><a href="/upload/" class="menu-item">Upload</a></li>
+                <li><a href="/photos/" class="menu-item">Photos</a></li>
+                <li><a href="/accounts/people" class="menu-item">People</a></li>
+                <li><a href="/accounts/links/" class="menu-item">Friends</a></li>
+                <li><a href="/accounts/invitations/" class="menu-item">Invitations</a></li>
+                <li><a href="/accounts/profile/edit" class="menu-item">Configuration</a></li>
             </ul>
         </div>
         <div class="menu left" style="margin-top:-10px">
             <ul>
-                <li><a href="/password_change">Change password</a></li>
-                <li><a href="/logout" class="left">
+                <li class="notif with-dropdown">
+                    <img src="{% static "bell.svg" %}"
+                            style="width: 30px;position: relative;top: 9px;">
+                    <span id="jewelCount">?</span>
+                    <ul class="dropdown">
+                    </ul>
+                </li>
+                <li><a href="/password_change" class="menu-item">Change password</a></li>
+                <li><a href="/logout" class="left menu-item">
                     {% if user.is_staff %}
                     <img src="{% static "log_out.png" %}"
-                    style="width: 30px;position: relative;top: 9px;">Logout<({{user.username}})></a>
+                    style="width: 30px;position: relative;top: 9px;">Logout({{user.username}})-soysuper</a>
                     {% else %}
                     <img src="{% static "log_out.png" %}"
                     style="width: 30px;position: relative;top: 9px;">Logout({{user.username}})</a>

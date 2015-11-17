@@ -3,8 +3,65 @@ from django.views.generic import DetailView, DeleteView
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.http import HttpResponse, JsonResponse
 from .forms import PhotoForm
-from .models import Photo, Place
+from .models import Photo, Place, Notification, Tag
+
+
+
+def AddTag(request):
+
+    getDict = dict(request.GET.iterlists()) 
+    photo_id = int(getDict['photo_id'][0])
+    x = int(getDict['x'][0])
+    y = int(getDict['y'][0])
+
+    photoInstance = Photo.objects.get(pk=photo_id)
+    tags_anteriores = Tag.objects.all().filter(photo = photoInstance)
+    oldtag = tags_anteriores.filter(user = request.user)
+
+    if len(oldtag) == 0:
+        tag = Tag(photo=photoInstance, user=request.user, x_pos=x, y_pos=y)
+        tag.save()
+    else:
+        oldtag[0].x_pos= x
+        oldtag[0].y_pos= y
+        oldtag[0].save()
+
+    for each in tags_anteriores:
+        if each.user != request.user:
+            notification = Notification(sender=request.user,receiver=each.user,
+                                        tagged_photo=photoInstance,
+                                        notif_type='tag')
+        notification.save()
+
+    return JsonResponse({'result':'OK'})
+
+def notifications(request):
+    allNotis = Notification.objects.get_queryset()
+    notiForUser = allNotis.filter(receiver = request.user)
+    if request.GET.get('action') == "all_seen":
+        for each in notiForUser:
+            each.seen = True
+            each.save()
+        return JsonResponse({'status':'OK'})
+    else:
+        notisJson = {'notif_list':[]}
+        for each in notiForUser:
+            data = {
+                'id':each.pk, 
+                'time':each.dateTime, 
+                'text': each.text , 
+                'sender': str(each.sender),                 
+                'type': each.notif_type,
+                'seen': each.seen,
+            }            
+            if each.sender:
+                data['sender_id'] = each.sender.pk
+            if each.tagged_photo:
+                data['tagged_photo_id'] = each.tagged_photo.pk
+            notisJson['notif_list'].append(data)
+        return JsonResponse(notisJson)
 
 
 class CancelUpload(DeleteView):
