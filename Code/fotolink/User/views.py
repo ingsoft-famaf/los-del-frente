@@ -10,6 +10,7 @@ from django.http import HttpResponseRedirect
 from .models import Perfil, Friendship, FriendshipInvitation, friend_set_for
 from .models import friend_set_for, wanna_be_friends
 from .forms import ProfileForm, InvitationForm
+from PhotoApp.models import Notification
 from forms import UserCreationForm
 
 
@@ -225,3 +226,21 @@ class SendFriendRequest(CreateView):
     template_name = 'User/friendship.html'
     form_class = InvitationForm
 
+    @method_decorator(login_required(login_url='/login/'))
+    def dispatch(self, request, *args, **kwargs):
+        """
+        Disparador selectivo segun si es mi perfil, si es el de un amigo o si
+        es hacia un contacto desconocido.
+
+        :param request: http request
+        :returns: http response
+        """
+        user_to = User.objects.get(pk=kwargs['pk'])
+        user_from = self.request.user
+        friendship = FriendshipInvitation.objects.create(from_user=user_from,
+                                               to_user=user_to,
+                                               status="0")
+        notif = Notification.objects.create(sender=user_from,
+                                            receiver=user_to,
+                                            notif_type='friend_request')
+        return HttpResponseRedirect("/")

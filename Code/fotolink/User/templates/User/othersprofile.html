@@ -38,7 +38,7 @@
 	        			{% endif %}
 	        		</div>
                     <p>Tu y {{object.usuario}} no son amigos aun</p>
-                    <a href="/accounts/friend_request" type="submit">Enviale una solicitud!</a>
+                    <a href="/accounts/friend_request/{{object.pk}}" type="submit">Enviale una solicitud!</a>
 	            </div> 
             </div>
         {% else %}

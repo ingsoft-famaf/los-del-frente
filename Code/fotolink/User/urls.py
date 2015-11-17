@@ -15,5 +15,5 @@ urlpatterns = [
     url(r'^accounts/links', LinkList.as_view(), name='vinculos'),
     url(r'^accounts/invitations', InviteList.as_view(), name='invitations'),
     url(r'^accounts/people', PeopleList.as_view(), name='people'),
-    url(r'^accounts/friend_request', SendFriendRequest.as_view(), name='friendrequest')
+    url(r'^accounts/friend_request/(?P<pk>[0-9]+)/$', SendFriendRequest.as_view(), name='friendrequest')
 ]
