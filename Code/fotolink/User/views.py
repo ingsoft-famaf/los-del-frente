@@ -13,6 +13,15 @@ from .forms import ProfileForm, InvitationForm
 from PhotoApp.models import Notification
 from forms import UserCreationForm
 
+def sugComplete(request,**kwargs):
+    to_user = User.objects.get(pk = kwargs['pk'])
+    from_user = request.user
+    notif = Notification.objects.create(sender=from_user,
+                                        receiver=to_user,
+                                        notif_type='custom',
+                                        text='Hey completa el perfil! - ' + str(to_user))
+    return HttpResponseRedirect('/')
+
 
 class Register(CreateView):
     """
