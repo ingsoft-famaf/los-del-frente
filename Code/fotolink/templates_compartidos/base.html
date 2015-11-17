@@ -87,7 +87,10 @@
                 <li><a href="/" class="menu-item">Home</a></li>
                 <li><a href="/upload/" class="menu-item">Upload</a></li>
                 <li><a href="/photos/" class="menu-item">Photos</a></li>
-                <li><a href="/accounts/profile" class="menu-item">Configuration</a></li>                
+                <li><a href="/accounts/people" class="menu-item">People</a></li>
+                <li><a href="/accounts/links/" class="menu-item">Friends</a></li>
+                <li><a href="/accounts/invitations/" class="menu-item">Invitations</a></li>
+                <li><a href="/accounts/profile/edit" class="menu-item">Configuration</a></li>
             </ul>
         </div>
         <div class="menu left" style="margin-top:-10px">
@@ -99,17 +102,23 @@
                     <ul class="dropdown">
                     </ul>
                 </li>
-                <li><a href="/password_change" class="menu-item">Change password</a></li>                
-                <li>
-                    <a href="/logout" class="left menu-item" >
-                        <img src="{% static "log_out.png" %}" 
-                            style="width: 30px;position: relative;top: 9px;">Logout</a>
+                <li><a href="/password_change" class="menu-item">Change password</a></li>
+                <li><a href="/logout" class="left menu-item">
+                    {% if user.is_staff %}
+                    <img src="{% static "log_out.png" %}"
+                    style="width: 30px;position: relative;top: 9px;">Logout({{user.username}})-soysuper</a>
+                    {% else %}
+                    <img src="{% static "log_out.png" %}"
+                    style="width: 30px;position: relative;top: 9px;">Logout({{user.username}})</a>
+                    {% endif %}
                 </li>
+                <li>
             </ul>
         </div>
     </nav>
     <section>
-        {% block content %}{% endblock %}
+        {% block content %}
+        {% endblock %}
     </section>
     </div>
 </body>

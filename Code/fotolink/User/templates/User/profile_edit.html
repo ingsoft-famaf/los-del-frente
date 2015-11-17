@@ -13,10 +13,14 @@
     {% csrf_token %}
     {% render_field form.nombre placeholder="Name" required="required" class="user" %}
     <!--<input type="text" class="user" placeholder="Name"></input>-->
-    {% render_field form.mail required="required" placeholder="Email" class="email" %}
-    <!--http://stackoverflow.com/questions/469357/html-text-input-allow-only-numeric-input-->
+    <div>
+        {% render_field form.mail required="required" placeholder="Email" class="email" %}
+        <!--http://stackoverflow.com/questions/469357/html-text-input-allow-only-numeric-input-->
+        {% render_field form.mail_privacidad class="privacidad" id="mail_privacidad" %}
+        <label for="mail_privacidad" title="Privacidad"></label>
+    </div>
     <div>   
-        {% render_field form.edad required="required" class="edad" placeholder="Edad" %}
+        {% render_field form.edad class="edad" placeholder="Edad" %}
         {% render_field form.edad_privacidad class="privacidad" id="edad_privacidad" %}
         <!--<input type="checkbox" class="privacidad" id="edad_privacidad"></input>-->
         <label for="edad_privacidad" title="Privacidad"></label>
@@ -134,6 +138,7 @@
         #perfil input.email {
             background: url('{% static "profile_edit/cd-icon-email.svg" %}') no-repeat scroll 16px center;   
             padding-left: 54px !important;
+            width: calc(100% - 60px);
         }
         #perfil input.edad {
             background-color: transparent;
@@ -232,4 +237,3 @@
 
     </style>
 {% endblock %}
-

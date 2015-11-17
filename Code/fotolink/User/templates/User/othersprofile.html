@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Friend Profile{% endblock %}
+
+{% block content %}
+	<article id="perfil">
+        {% if not perms.User.Can_see %}
+		    <h1 class="titulo">Perfil publico de {{object.usuario}}</h1>
+		    <div class="content">
+	            <div class="img">
+	                <img src="{{ object.avatar.url }}" alt="">
+	            </div>
+	            <div class="detalles">
+	            	{% if object.nombre %}
+	                <h2 class="name cursive">{{object.nombre}}</h2>
+                    {% if object.edad and object.edad_privacidad %}
+	                <p>Edad: {{object.edad}}</p>
+                    {% endif %}
+                    {% if object.residencia and object.residencia_privacidad %}
+                    <p>Residencia: {{object.residencia}}.</p>
+                    {% endif %}
+	                {% else %}
+				    </a>    
+	                {% endif %}
+	        		{% if object.web and object.web_privacidad %}
+	        		<a href="{{object.web}}">{{object.web}}</a>
+	        		{% endif %}
+	        		<div id="contactitos">
+	        			{% if object.facebook and object.facebook_privacidad %}
+	        			<a href="{{object.facebook}}" title={{object.facebook}}>
+	        				<img src="{% static "facebook_blue.png" %}" style="height:25px">
+	        			</a>
+	        			{% endif %}
+	        			{% if object.mail and object.mail.mail_privacidad %}
+	        			<a href="mailto:{{object.mail}}" title="{{object.mail}}">
+	        				<img src="{% static "mail_blue.png" %}" style="height: 40px;">
+	        			</a>
+	        			{% endif %}
+	        		</div>
+                    <p>Tu y {{object.usuario}} no son amigos aun</p>
+                    <a href="/accounts/friend_request" type="submit">Enviale una solicitud!</a>
+	            </div> 
+            </div>
+        {% else %}
+		    <h1 class="titulo">Perfil de {{object.usuario}}</h1>
+		    <div class="content">
+	            <div class="img">
+	                <img src="{{ object.avatar.url }}" alt="">
+	            </div>
+	            <div class="detalles">
+	            	{% if object.nombre %}
+	                <h2 class="name cursive">{{object.nombre}}</h2>
+                    {% if object.edad %}
+	                <p>Edad: {{object.edad}}</p>
+                    {% endif %}
+                    {% if object.residencia %}
+                    <p>Residencia: {{object.residencia}}.</p>
+                    {% endif %}
+	                {% else %}
+	                <p>No tiene datos aun cargados <a href="#">Enviale una sugerencia</a>.</p>
+				    </a>    
+	                {% endif %}
+	        		{% if object.web %}
+	        		<a href="{{object.web}}">{{object.web}}</a>
+	        		{% endif %}
+	        		<div id="contactitos">
+	        			{% if object.facebook %}
+	        			<a href="{{object.facebook}}" title={{object.facebook}}>
+	        				<img src="{% static "facebook_blue.png" %}" style="height:25px">
+	        			</a>
+	        			{% endif %}
+	        			{% if object.mail %}
+	        			<a href="mailto:{{object.mail}}" title="{{object.mail}}">
+	        				<img src="{% static "mail_blue.png" %}" style="height: 40px;">
+	        			</a>
+	        			{% endif %}
+	        		</div>
+	            </div> 
+            </div>
+        {% endif %}
+    </article>
+    <style type="text/css">
+		.content {
+			margin-left: 20px;
+		}
+        .titulo {
+        	text-align: center;
+            border-bottom: 1px solid !important;
+            margin-top: 10px;
+            padding-bottom: 10px;
+        }
+    	#edit_icon {
+    		width: 30px;
+    		position: relative;
+    		float: right;
+    		left: 15px;
+    		bottom: 15px;
+    	} 
+        #perfil {
+        	color: white;
+            width: 600px;
+            position: absolute;
+            margin-top: 50px;
+            left: 50%;            
+            margin-left: -300px;
+            border: 1px solid rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.3);
+        }
+        #edit_icon {
+        	opacity: 0;
+        	-webkit-transition: opacity 1s;            
+            transition: opacity 1s;
+        }
+        #perfil:hover #edit_icon {
+        	opacity: 1;
+        }
+        #perfil .img {
+            width: 300px;
+            height: 300px;
+            display: inline-block;            
+            box-sizing: border-box;
+        }
+        #perfil .img img {
+            width: 286px;
+            margin: 7px;
+            border: 5px solid #FFF;
+        }
+        #perfil .detalles {
+            margin-left: 30px;
+            width: 200px;
+            display: inline-block;
+            vertical-align: top;
+        }
+        #perfil .detalles .name {
+        	font-size: 45px;
+        	margin-top: 0px;
+        }
+        #contactitos img {
+        	vertical-align:middle;
+        }
+
+    </style>
+{% endblock %}

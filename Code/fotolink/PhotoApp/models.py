@@ -2,7 +2,7 @@ from django.db import models
 from imagekit.models import ProcessedImageField
 from imagekit.models import ImageSpecField
 from imagekit.processors import SmartResize
-from imagekit.processors import SmartResize
+from imagekit.processors import ResizeToFill
 from django.forms.extras.widgets import SelectDateWidget
 from django.contrib.auth.models import User
 
@@ -32,7 +32,7 @@ class Photo(models.Model):
                                   format='JPEG',
                                   options={'quality': 90})
     picture_crop = ImageSpecField(source='picture',
-                                  processors=[SmartResize(640, 480)],
+                                  processors=[ResizeToFill(300, 300)],
                                   format='JPEG',
                                   options={'quality': 60})
     date = models.DateField(null=True,

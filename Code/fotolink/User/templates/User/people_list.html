@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %} People {% endblock %}
+
+{% block content %}
+<h1>People</h1>
+    <form method="GET">
+    {% csrf_token %}
+        Search: <input type="text" name="people" id="people" placeholder="Name, Mail or Username">
+        <input type="submit" name ="submit" value="Search"><br>
+    </form>
+
+{% for object in object_list %}
+    <li>
+        <p>
+            <img src="{{ object.avatar_crop.url }}" alt="avatarNotFound">
+            <a href="{% url 'user:oprofile' object.pk %}">{{object.nombre}}</a>
+            <a href="{% url 'user:oprofile' object.pk %}">({{object.usuario}})</a>
+        </p>
+    </li>
+{% endfor %}
+</ul>
+{% endblock %}
