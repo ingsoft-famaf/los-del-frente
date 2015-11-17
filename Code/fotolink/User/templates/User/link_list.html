@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %} Friends {% endblock %}
+
+{% block content %}
+<h1>Vinculos</h1>
+
+{% for object in object_list %}
+    <li>
+        {{ object.username }}
+    </li>
+{% empty %}
+    <li>You don't have any links yet...</li>
+{% endfor %}
+</ul>
+{% endblock %}

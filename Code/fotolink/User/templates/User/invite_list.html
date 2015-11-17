@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %} Friends {% endblock %}
+
+{% block content %}
+<h1>These people want to be you friend!</h1>
+
+{% for object in object_list %}
+    <li>
+        <a href="{% url 'user:oprofile' object.from_user_id %}">{{ object.from_user }}</a>
+            <form method="GET">
+            {% csrf_token %}
+            <input type="submit" name="Decline" value="Decline"/>
+            <input type="submit" name="Accept" value="Accept"/>
+            <input type="hidden" name="requestID" value="{{ object.pk }}" />
+        </form>
+    </li>
+{% empty %}
+    <li>You don't have any friendship request yet</li>
+{% endfor %}
+</ul>
+{% endblock %}

@@ -19,22 +19,31 @@
                 <li><a href="/">Home</a></li>
                 <li><a href="/upload/">Upload</a></li>
                 <li><a href="/photos/">Photos</a></li>
-                <li><a href="/accounts/profile">Configuration</a></li>                
+                <li><a href="/accounts/people">People</a></li>
+                <li><a href="/accounts/links/">Friends</a></li>
+                <li><a href="/accounts/invitations/">Invitations</a></li>
+                <li><a href="/accounts/profile/edit">Configuration</a></li>
             </ul>
         </div>
         <div class="menu left" style="margin-top:-10px">
             <ul>
                 <li><a href="/password_change">Change password</a></li>
                 <li><a href="/logout" class="left">
-                    <img src="{% static "log_out.png" %}" 
+                    {% if user.is_staff %}
+                    <img src="{% static "log_out.png" %}"
+                    style="width: 30px;position: relative;top: 9px;">Logout<({{user.username}})></a>
+                    {% else %}
+                    <img src="{% static "log_out.png" %}"
                     style="width: 30px;position: relative;top: 9px;">Logout({{user.username}})</a>
+                    {% endif %}
                 </li>
                 <li>
             </ul>
         </div>
     </nav>
     <section>
-        {% block content %}{% endblock %}
+        {% block content %}
+        {% endblock %}
     </section>
     </div>
 </body>
