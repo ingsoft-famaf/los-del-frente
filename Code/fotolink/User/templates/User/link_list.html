@@ -6,7 +6,7 @@
 
 {% for object in object_list %}
     <li>
-        {{ object.username }}
+        <a href="{% url 'user:oprofile' object.pk %}" >{{object.username}}</a>
     </li>
 {% empty %}
     <li>You don't have any links yet...</li>
