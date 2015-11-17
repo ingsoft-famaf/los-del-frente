@@ -237,10 +237,13 @@ class SendFriendRequest(CreateView):
         """
         user_to = User.objects.get(pk=kwargs['pk'])
         user_from = self.request.user
-        friendship = FriendshipInvitation.objects.create(from_user=user_from,
+        ###
+        if user_to not in wanna_be_friends(user_from):
+            friendship = FriendshipInvitation.objects.create(from_user=user_from,
                                                to_user=user_to,
                                                status="0")
-        notif = Notification.objects.create(sender=user_from,
-                                            receiver=user_to,
-                                            notif_type='friend_request')
+            notif = Notification.objects.create(sender=user_from,                                            receiver=user_to,                                            notif_type='friend_request')
+            # Aca se ha enviado la solicitud
+        else:
+            return HttpResponseRedirect("/fr_req_fail/")
         return HttpResponseRedirect("/")
