@@ -34,9 +34,9 @@ class Perfil(models.Model):
                                  default='avatars/no_avatar.jpg',
                                  options={'quality': 90})
     avatar_crop = ImageSpecField(source='avatar',
-                                 processors=[ResizeToFill(40, 40)],
+                                 processors=[ResizeToFill(80, 80)],
                                  format='JPEG',
-                                 options={'quality': 60})
+                                 options={'quality': 90})
 
     def image_tag(self):
         """Retorna url absoluta para uso html del avatar (imagen)"""
