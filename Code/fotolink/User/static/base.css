@@ -145,6 +145,7 @@ nav ul.dropdown > li:last-child {
 section {
     top: 60px;
     position: relative;
+    margin-top: 50px;
 }
 
 h1, .h1 {
@@ -171,8 +172,7 @@ a {
 article {
     color: white;
     width: 600px;
-    position: relative;
-    margin-top: 50px;
+    position: relative;    
     left: 50%;            
     margin-left: -300px;
     /*border: 1px solid rgba(0, 0, 0, 0.3);

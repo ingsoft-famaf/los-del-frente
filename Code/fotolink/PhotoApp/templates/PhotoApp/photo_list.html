@@ -2,31 +2,48 @@
 {% block title %} Photos {% endblock %}
 
 {% block content %}
-<h1>Photos</h1>
+<article>
+    <style>
+    article {
+        left: 0;
+        margin-left: 0;
+        width: 400px;
+        display: inline-block;
+    }
+    .photo_list {
+        float: right;
+        width: 700px;        
+    }
+    .photo_list li {
+        list-style: none;
+        display: inline-block;
+    }
+    </style>
     <form method="GET">
     {% csrf_token %}
-        <h1>Filters</h1>
-        Place: <input type="text" name="place" id="place" placeholder="name"><br>
-        Date: <input type="number" name="year" min=1900 max=2100 placeholder="year">
+        <legend>Filters</legend>
+        <input type="text" name="place" id="place" placeholder="Place name"><br>
+        <input type="number" name="year" min=1900 max=2100 placeholder="year">
               <input type="number" name="month" min=1 max=12 placeholder="month">
               <input type="number" name="day" min=1 max=31 placeholder="day"><br>
-        Time: <input type="text" name="time" pattern="([01]?[0-9]{1}|2[0-3]{1})" placeholder="only hours"/><br>
-        <input type="submit" name ="submit" value="Filter"><br>
+        <input type="text" name="time" pattern="([01]?[0-9]{1}|2[0-3]{1})" placeholder="Time only hours"/><br>
+        <input class="btn" type="submit" name ="submit" value="Filter"><br>
     </form>
-<ul>
-
+    </article>
+<div class="photo_list">
+    <legend style="color: white">Photos</legend>
+    <ul>
 {% for photo in object_list %}
     <li>
         <a href="{% url 'photos:detail' photo.pk %}">
             <img src="{{ photo.picture_crop.url }}" alt="?">
-            <a href="{% url 'photos:detail' photo.pk %}">View More</a>
         </a>
     </li>
 {% empty %}
-
-    <li>No photos yet.</li>
+<li>No photos yet.</li>
 {% endfor %}
 </ul>
+</div>
 {% if is_paginated %}
 <div class="pagination">
     <span class="step-links">
