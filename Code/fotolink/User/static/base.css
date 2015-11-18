@@ -24,6 +24,21 @@ body {
     color: white;
 }
 
+#logout, #logout-cancel {
+    cursor: pointer;
+}
+
+#logout-prompt {
+    position: fixed;
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.6);
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+
 /*hace que un link cubra un div*/
 .elastic-link {
     position: absolute;
@@ -294,4 +309,80 @@ input.file {
     cursor: pointer;
     opacity: 0;
     filter: alpha(opacity=0);
+}
+
+.cd-popup {
+    position: fixed;
+    z-index: 3;
+    left: 0px;
+    top: 0px;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease 0s, visibility 0s ease 0.3s;
+}
+ 
+.cd-popup.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease 0s, visibility 0s ease 0s;
+}
+ 
+.cd-popup-container {
+    z-index: 5;
+    position: relative;
+    width: 90%;
+    max-width: 400px;
+    margin: 4em auto;
+    background: none repeat scroll 0% 0% #FFF;
+    border-radius: 0.25em 0.25em 0.4em 0.4em;
+    text-align: center;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.4);
+    transform: translateY(-40px);
+    transition-property: transform;
+    transition-duration: 0.3s;
+    top: 200px;
+}
+.cd-popup .cd-buttons {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+ 
+.is-visible .cd-popup-container {
+  transform: translateY(0);
+}
+
+.cd-popup-container .cd-buttons li:first-child a {
+    background: none repeat scroll 0% 0% #FC7169;
+    border-radius: 0px 0px 0px 0.25em;
+}
+
+.cd-popup-container .cd-buttons li:last-child a {
+    background: none repeat scroll 0% 0% #B6BECE;
+    border-radius: 0px 0px 0.25em;
+}
+
+.cd-popup-container p {
+    color: black;
+    padding: 3em 1em;
+}
+
+.cd-popup-container .cd-buttons li {
+    width: 50%;
+    display: inline-block;
+    margin-left: -2px;
+    margin-right: -2px;
+}
+
+.cd-popup-container .cd-buttons a {
+    width: 100%;
+    display: inline-block;
+    height: 60px;
+    line-height: 60px;
+    text-transform: uppercase;
+    color: #FFF;
+    transition: background-color 0.2s ease 0s;
 }

@@ -90,12 +90,27 @@
                 e.removeClass("is-visible")
             });
         }
+        $("#logout").click(function(){
+            $(".cd-popup").addClass("is-visible")
+        })
+        $("#logout-cancel").click(function(){
+            $(".cd-popup").removeClass("is-visible")
+        })
     }); 
     </script>
 </head>
 <body>
     <div class="wrapper">
     <div class="shadow"></div>
+    <div class="cd-popup" role="alert"> <!--https://codyhouse.co/gem/simple-confirmation-popup/-->
+        <div class="cd-popup-container">
+        <p>Are you sure you want to log out?</p>
+        <ul class="cd-buttons">
+            <li><a href="/logout/">Yes</a></li>
+            <li><a id="logout-cancel">No</a></li>
+        </ul>
+        </div> <!-- cd-popup-container -->
+    </div> <!-- cd-popup -->
     <nav>
         <div class=logo>
             <span>PhotoLink</span>
@@ -120,7 +135,7 @@
                     </ul>
                 </li>
                 <li><a href="/password_change" class="menu-item">Change password</a></li>
-                <li><a href="/logout" class="left menu-item">
+                <li><a id="logout" class="left menu-item">
                     {% if user.is_staff %}
                     <img src="{% static "log_out.png" %}"
                     style="width: 30px;position: relative;top: 9px;">Logout({{user.username}})-soysuper</a>
