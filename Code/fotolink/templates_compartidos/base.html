@@ -81,7 +81,7 @@
         //mensaje de error
         var error = document.getElementById('errData');
         var errorMsg = error.innerHTML
-        if (errorMsg != "") {
+        if (error.getElementsByTagName('li').length > 0) {
             console.log(errorMsg)
             document.getElementById('notifErrMsg').innerHTML = error.getElementsByTagName('li')[0].innerHTML
             var e = $("#errorBox")
