@@ -55,7 +55,9 @@
     </article>
 <div class="photo_list">
     <legend style="color: white">Photos - ({{ page_obj.number }} of {{ page_obj.paginator.num_pages }})</legend>
-    <botton class="btn arrow previous"></botton>
+    {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj_page_number }}"><botton class="btn arrow previous"></botton></a>
+    {% endif %}
     <ul style="display: inline-block; width: 800px;">
     {% for photo in object_list %}
         <li>
@@ -67,7 +69,9 @@
     <li>No photos yet.</li>
     {% endfor %}
     </ul>
-    <botton href="?page={{ page_obj.next_page_number }}" class="btn arrow next"></botton>
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}"><botton class="btn arrow next"></botton></a>
+    {% endif %}
 </div>
 {% if is_paginated %}
 <div class="pagination">
