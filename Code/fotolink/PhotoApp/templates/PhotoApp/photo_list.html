@@ -85,6 +85,7 @@
             <a href="{% url 'photos:detail' photo.pk %}">
                 <img src="{{ photo.picture_crop.url }}" alt="?">
             </a>
+            <!--{{ photo.date }}-->
         </li>
     {% empty %}
     <li>No photos yet.</li>

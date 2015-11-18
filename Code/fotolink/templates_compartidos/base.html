@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Fotolink|{% block title %}{% endblock %}</title>
     <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">-->
+    <link rel="stylesheet" type="text/css" href="{% static "notify.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "base.css" %}">
      <link rel="stylesheet" href="{% static "jqueryui/jquery-ui.css" %}">
     <!--<script src="{% static "jqueryui/jquery-1.10.2.js" %}"></script>-->    
@@ -77,6 +78,18 @@
         $("body").mouseup(function(){ 
             if(! mouse_is_inside) $('ul.dropdown').hide();
         });
+        //mensaje de error
+        var error = document.getElementById('errData');
+        var errorMsg = error.innerHTML
+        if (errorMsg != "") {
+            console.log(errorMsg)
+            document.getElementById('notifErrMsg').innerHTML = error.getElementsByTagName('li')[0].innerHTML
+            var e = $("#errorBox")
+            e.addClass("is-visible");
+            e.hover(function(){
+                e.removeClass("is-visible")
+            });
+        }
     }); 
     </script>
 </head>
@@ -124,6 +137,10 @@
         {% block content %}
         {% endblock %}
     </section>
+    <footer>
+            <div id="errorBox" class="notification error"><h5>Uh oh</h5><p id="notifErrMsg">This is an error D:</p> <a class="close" href="#">×</a></div>
+            <div id="errData" style="display: none">{{ form.non_field_errors }}</div>
+    </footer> 
     </div>
 </body>
 </html>

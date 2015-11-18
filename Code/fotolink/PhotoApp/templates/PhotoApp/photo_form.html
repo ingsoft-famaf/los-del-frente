@@ -25,7 +25,12 @@ $(function() {
 	<article class="form">
     <legend>Subir una foto nueva</legend>
     <form  action="" method="post" method=POST enctype="multipart/form-data">
-    <div id="errData" style="visibility:hidden">{{ form.picture.errors }}</div>
+    <div id="errData" style="display:none">
+        {{ form.picture.errors }}
+        {{ form.date.errors }}
+        {{ form.time.errors }}
+        {{ form.place.errors }}
+    </div>
     {% csrf_token %}
     <div class="uploadContainer">
         <input type="text" id="uploadFileName" required="required" placeholder="Choose File" class="file"/>
