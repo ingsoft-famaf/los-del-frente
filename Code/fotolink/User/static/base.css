@@ -248,6 +248,7 @@ input.file {
     background-color: transparent;
     width: calc(100% - 120px);
 }
+
 .uploadContainer {
     color: transparent;
 }
