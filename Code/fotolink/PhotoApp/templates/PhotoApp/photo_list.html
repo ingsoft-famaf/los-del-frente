@@ -10,29 +10,37 @@
         width: 100%;    
     }
     .photo_list {
-        margin-top: 80px;
+        /*margin-top: 80px;*/
+        margin-top: -20px;
+        position: relative;
     }
     .photo_list li {
         list-style: none;
         display: inline-block;
     }
+    .photo_list ul {
+        display: inline-block;
+        width: 950px;
+        position: absolute;
+        left: 40px;
+    }
     .photo_list img {
-        width: 250px;
+        width: 230px;
     }
     .arrow {
+        position: absolute;
         width: 20px;
-        height: 270px;        
+        height: 470px;    
         display: inline-block;
         margin-right: 16px;
         border: medium none;        
     }
     .previous {
         background: url('/static/arrow-left.svg') no-repeat center;      
-        float: left;
     }
     .next {
-        background: url('/static/arrow-right.svg') no-repeat center;      
-        float: right;
+        background: url('/static/arrow-right.svg') no-repeat center;
+        right: 0px; 
     }
     form input[type=text], input[type=number] {        
         display: inline-block;        
@@ -42,23 +50,36 @@
         width: 400px;
     }
     </style>
+    <script type="text/javascript">
+    $(document).keydown(function(k){        
+        if (k.key == "Left") {
+            var a = $(".previous a")[0]
+            a.click()
+        }
+        else if (k.key == "Right") {
+            var a = $(".next a")[0]
+            a.click()
+        }
+    });
+    </script>
     <form method="GET">
     {% csrf_token %}
-        <legend>Filters</legend>
-        <input type="text" class="place" name="place" id="place" placeholder="Place name">
+        <legend>Photos - ({{ page_obj.number }} of {{ page_obj.paginator.num_pages }})</legend>
+        <input autofocus type="text" class="place" name="place" id="place" placeholder="Place name">
         <input type="number" name="year" min=1900 max=2100 placeholder="year">
         <input type="number" name="month" min=1 max=12 placeholder="month">
         <input type="number" name="day" min=1 max=31 placeholder="day">
         <input type="text" name="time" pattern="([01]?[0-9]{1}|2[0-3]{1})" placeholder="Time only hours"/><br>
-        <input class="btn" type="submit" name ="submit" value="Filter">
+        <input class="btn" type="submit" name ="submit" value="Filter" style="visibility: hidden; display: absolute; top: -99999px">
     </form>
     </article>
-<div class="photo_list">
-    <legend style="color: white">Photos - ({{ page_obj.number }} of {{ page_obj.paginator.num_pages }})</legend>
+<div class="photo_list">    
     {% if page_obj.has_previous %}
-    <a href="?page={{ page_obj_page_number }}"><botton class="btn arrow previous"></botton></a>
+    <botton class="btn arrow previous">
+        <a href="?page={{ page_obj_page_number }}"><span class="elastic-link"></span></a>
+    </botton>
     {% endif %}
-    <ul style="display: inline-block; width: 800px;">
+    <ul>
     {% for photo in object_list %}
         <li>
             <a href="{% url 'photos:detail' photo.pk %}">
@@ -70,23 +91,11 @@
     {% endfor %}
     </ul>
     {% if page_obj.has_next %}
-    <a href="?page={{ page_obj.next_page_number }}"><botton class="btn arrow next"></botton></a>
+    <botton class="btn arrow next">
+        <a href="?page={{ page_obj.next_page_number }}">
+            <span class="elastic-link"></span>
+        </a>
+    </botton>
     {% endif %}
 </div>
-{% if is_paginated %}
-<div class="pagination">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj_page_number }}">previous</a>
-        {% endif %}
-
-        <span class="current">
-            ({{ page_obj.number }} of {{ page_obj.paginator.num_pages }})
-        </span>
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">next</a>
-        {% endif %}
-    </span>
-</div>
-{% endif %}
 {% endblock %}

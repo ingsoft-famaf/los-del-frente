@@ -134,7 +134,7 @@ class PhotoList(ListView):
     """
     model = Photo
     template_name = 'PhotoApp/photo_list.html'
-    paginate_by = 4
+    paginate_by = 8
 
     @method_decorator(login_required(login_url='/login/'))
     def dispatch(self, request, *args, **kwargs):
