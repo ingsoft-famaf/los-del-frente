@@ -22,7 +22,7 @@ $(function() {
     <input type="submit" value="Upload" />
 </form>-->
 
-	<article id="perfil">
+	<article class="form">
     <legend>Subir una foto nueva</legend>
     <form  action="" method="post" method=POST enctype="multipart/form-data">
     <div id="errData" style="visibility:hidden">{{ form.picture.errors }}</div>
@@ -61,117 +61,4 @@ $(function() {
         var ns = e.childNodes;
         for (var i=0; i < ns.length; i++) { var n = ns[i]; if (n.nodeName == "#text") n.remove();}
     </script>
-    <style type="text/css">        
-        #perfil {
-        	color: white;
-            width: 600px;
-            position: relative;
-            margin-top: 50px;
-            left: 50%;            
-            margin-left: -300px;
-            /*border: 1px solid rgba(0, 0, 0, 0.3);
-            border-radius: 4px;
-            background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.3);*/
-        }
-        #perfil legend {
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-            border-bottom: 1px solid #ECF0F1;
-            width: 100%;
-        }
-        #perfil input[type=text], 
-        #perfil input[type=email], 
-        #perfil input[type=url], 
-        #perfil select,
-        #perfil input[type=number] {
-            box-sizing: border-box;
-            border: 1px solid #CFD9DB;
-            background-color: #FFF;
-            border-radius: 0.25em;            
-            width: 100%;
-            padding: 16px;            
-            color: white;
-            font-family: "Open Sans",sans-serif;
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-        }
-        #perfil select {
-        	background-color: transparent;
-        }
-        #perfil .btn {
-            border: solid 1px white;
-            background-color: transparent;
-            border-radius: 0.25em;
-            padding: 16px 20px;
-            color: #FFF;
-            font-weight: bold;
-            float: right;
-            cursor: pointer;
-            -moz-appearance: none;
-            transition: 0.5s background-color;
-        }
-        #perfil .btn:hover {
-            background-color: rgba(201, 200, 200, 0.17);
-        }
-        #perfil input[type="submit"] {
-            width: 100%;
-        }
-        #perfil input:focus {
-            outline: medium none;
-            border-color: #2C97DE;
-            box-shadow: 0px 0px 5px rgba(44, 151, 222, 0.2);
-        }
-        #perfil input.time {
-            background: url('{% static "photo_form/clock.svg" %}') no-repeat scroll 16px center transparent;
-            padding-left: 54px !important;
-            width: calc(100%);
-            background-size: 40px 40px;
-        }
-        #perfil input.fecha {
-            background: url('{% static "photo_form/calendar.svg" %}') no-repeat scroll 16px center;
-            padding-left: 60px !important;
-            width: calc(100%);
-            background-size: 40px 40px;
-        }
-        #perfil input.file {
-            background-color: transparent;
-            width: calc(100% - 120px);
-        }
-        #perfil .uploadContainer {
-            color: transparent;
-        }
-        #perfil .uploadContainer br { 
-            display: none; 
-        }
-        #perfil .uploadContainer a { 
-            display: none;
-        }
-        #perfil .avatar {
-            width: 50px;
-            position: relative;
-            float: left;
-            top: 3px;
-            margin-right: 10px;
-            border-radius: 20%;
-        }
-
-        .fileUpload {
-            position: relative;
-            overflow: hidden;
-            margin: 0px;
-        }
-        .fileUpload input.upload {
-            position: absolute;
-            top: 0;
-            right: 0;
-            margin: 0;
-            padding: 0;
-            font-size: 20px;
-            cursor: pointer;
-            opacity: 0;
-            filter: alpha(opacity=0);
-        }
-
-    </style>
 {% endblock %}
