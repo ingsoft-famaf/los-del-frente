@@ -33,7 +33,7 @@ def AddTag(request):
             notification = Notification(sender=request.user,receiver=each.user,
                                         tagged_photo=photoInstance,
                                         notif_type='tag')
-        notification.save()
+            notification.save()
 
     return JsonResponse({'result':'OK'})
 

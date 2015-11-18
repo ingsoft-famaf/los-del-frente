@@ -1,6 +1,6 @@
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
-from PhotoApp.models import Place, Photo
+from PhotoApp.models import Place, Photo, Notification, Tag
 from django.core.files import File
 
 
@@ -227,3 +227,75 @@ class PhotoAppTestCase(TestCase):
         for foto in response.context['photo_list']:
             self.assertTrue(foto.place_id == 'Neuquen')
             self.assertFalse(foto.place_id == 'Catamarca')
+
+
+class NotificationTagTestCase(TestCase):
+    """
+    Notification testing.
+    """
+    def setUp(self):
+        """
+        Configuracion inicial creo lugares y usuarios
+        Agrego "Neuquen" y "Catamarca" a los lugares y creo admin (admin,admin)
+        Creo usuario para iniciar sesion
+        """
+        self.place = Place.objects.create(placeName="Neuquen")
+        self.place = Place.objects.create(placeName="Catamarca")
+        self.adminuser = User.objects.create_superuser('admin',
+                                                       'admin@test.com',
+                                                       'admin')
+        self.user = User.objects.create_user(username="matias1",
+                                             email=None,
+                                             password="matias1")
+
+    def test_welcome_notification(self):
+        """
+        Registrar un nuevo usuario y chequear creacion automatica de 
+        notificacion de bienvenida
+        """
+        cliente = Client()
+        response = cliente.post('/register/', {'username': 'locotito',
+                                'password1': 'lala', 'password2': 'lala'})
+        actualUser = User.objects.get(username='locotito')
+        welcomeNoti = Notification.objects.get(receiver=actualUser)
+        self.assertTrue("Bienvenido" in str(welcomeNoti))
+        self.assertEqual(response.status_code, 302)
+
+    def test_Photo_Tag(self):
+        '''
+        Creo una photo, me etiqueto como usuario 'admin'.
+        Reviso no tener notificaciones de tipo TAG como 'admin'
+        Me etiqueto como usuario 'matias1'
+        Reviso las notificaciones de 'admin' y encuentro una de tipo TAG
+        '''
+        cliente = Client()
+        cliente.login(username="admin", password="admin")
+        pictureFile = File(open("./PhotoApp/tests/picture.jpg"))
+        response = cliente.post('/admin/PhotoApp/photo/add/',
+                                {'picture': pictureFile,
+                                 'date': '2015-10-10',
+                                 'time': '20:15',
+                                 'place': Place.objects.get
+                                 (placeName='Neuquen')})
+        self.assertEqual(response.status_code, 302)
+        response = cliente.get('/%2Fphotos/1/')
+        self.assertTrue("Neuquen" in str(response))
+        response = cliente.get("/addtag?photo_id=1&x=500&y=100")
+        self.assertTrue("OK" in str(response))
+        response = cliente.get('/notification')
+        self.assertTrue("admin" in str(response))
+        self.assertFalse("tag" in str(response))
+        cliente.logout()
+        cliente = Client()
+        cliente.login(username="matias1", password="matias1")
+        response = cliente.get('/%2Fphotos/1/')
+        self.assertTrue("Neuquen" in str(response))
+        response = cliente.get("/addtag?photo_id=1&x=500&y=100")
+        self.assertTrue("OK" in str(response))
+        response = cliente.get('/notification')
+        self.assertTrue("matias1" in str(response))
+        cliente.logout()
+        cliente = Client()
+        cliente.login(username="admin", password="admin")
+        response = cliente.get('/notification')
+        self.assertTrue("tag" in str(response))
