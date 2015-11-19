@@ -35,7 +35,7 @@ def tagsAjax(request):
                                             notif_type='tag')
                 notification.save() 
         response = {'result':'OK'}              
-    elif getDict['action'][0] == "getlist":        
+    elif getDict['action'][0] == "getlist":  
         response = {'tags':[]}                        
         for each in tags_anteriores:
             response['tags'].append({
@@ -43,6 +43,9 @@ def tagsAjax(request):
                 'y':each.y_pos,
                 'user':each.user.username
             })
+    elif getDict['action'][0] == "remove":                
+        tags_anteriores.filter(user = request.user).delete()
+        response = {'result':'OK'}
     return JsonResponse(response)
 
 def notifications(request):
