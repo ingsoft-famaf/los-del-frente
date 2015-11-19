@@ -20,7 +20,7 @@ function cargarEtiquetas() {
         console.log(este_tag)
         var span = document.createElement('span')
         span.setAttribute('class','tag')
-        span.style = "top: " + este_tag.y +'px; left: ' + este_tag.x + 'px'
+        span.setAttribute('style',"top: " + este_tag.y +'px; left: ' + este_tag.x + 'px')
         span.innerHTML = este_tag.user
         $('.img-container').append(span)
       }
