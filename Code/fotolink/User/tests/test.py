@@ -202,7 +202,7 @@ class FriendsProfileTestCase(TestCase):
         self.cliente = Client()
         self.cliente.login(username="user", password="user")
         response = self.cliente.get('/accounts/2/')
-        self.assertTrue("No tiene datos aun" in str(response))
+        self.assertTrue("Dont have profile data yet" in str(response))
 
     def test_view_public_profile(self):
         """
@@ -221,8 +221,8 @@ class FriendsProfileTestCase(TestCase):
         self.cliente.logout()
         self.cliente.login(username="user", password="user")
         response = self.cliente.get('/accounts/3/')
-        self.assertTrue("Perfil publico de " in str(response))
-        self.assertTrue(" no son amigos aun" in str(response))
+        self.assertTrue("'s public profile" in str(response))
+        self.assertTrue("are not friends yet" in str(response))
         self.assertTrue("Lugar" in str(response))
         self.assertFalse("Edad" in str(response))
 
