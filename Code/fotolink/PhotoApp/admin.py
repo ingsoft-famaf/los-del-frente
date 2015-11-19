@@ -17,17 +17,20 @@ class PlaceAdmin(admin.ModelAdmin):
     """
     list_display = ('placeName',)
 
+
 class TagAdmin(admin.ModelAdmin):
     """
     """
-    list_display = ('photo','user','x_pos','y_pos', 'pk')
+    list_display = ('photo', 'user', 'x_pos', 'y_pos', 'pk')
+
 
 class NotificationAdmin(admin.ModelAdmin):
     """
     Clase para manejo del modelo Notification, desde la interfaz de admin,
     tambien de django. Hereda de django.contrib.admin.ModelAdmin
     """
-    list_display = ('sender','receiver','text','dateTime','seen', 'notif_type')
+    list_display = ('sender', 'receiver', 'text', 'dateTime', 'seen',
+                    'notif_type')
 
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Notification, NotificationAdmin)

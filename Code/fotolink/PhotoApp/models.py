@@ -53,38 +53,47 @@ class Notification(models.Model):
     Clase Notification que dimensiona las notifiaciones que recibe un usuario.
     Hereda de django.db.models.Model y es para casi uso exclusivo de django.
     """
-    text = models.CharField(max_length=200,
-                                 blank=False, null=True)
+    text = models.CharField(max_length=200, blank=False, null=True)
     sender = models.ForeignKey(User,
-                               null = True,
+                               null=True,
                                related_name='sender')
-    receiver = models.ForeignKey(User,
-                                 null = True,
-                                 related_name='receiver')
-    dateTime = models.DateTimeField(auto_now_add=True,
-                                    null = True)
-    seen = models.BooleanField(default = False)
 
-    tagged_photo = models.ForeignKey(Photo, null = True, related_name='tagged_photo')
+    receiver = models.ForeignKey(User,
+                                 null=True,
+                                 related_name='receiver')
+
+    dateTime = models.DateTimeField(auto_now_add=True,
+                                    null=True)
+
+    seen = models.BooleanField(default=False)
+
+    tagged_photo = models.ForeignKey(Photo, null=True,
+                                     related_name='tagged_photo')
 
     NOTIF_TYPE = (
         ('tag', 'tag'),
         ('friend_request', 'friend_request'),
-        ('custom', 'custom') #muestra el texto en "text"
+        ('custom', 'custom')  # muestra el texto en "text"
     )
-    notif_type = models.CharField(max_length=20, choices=NOTIF_TYPE, null=False)
+
+    notif_type = models.CharField(max_length=20, choices=NOTIF_TYPE,
+                                  null=False)
 
     def __unicode__(self):
         """Retorna el nombre de un lugar al imprimir un objeto Place"""
         return str(self.text)
 
+
 class Tag(models.Model):
+
     photo = models.ForeignKey(Photo, null=True)
+
     user = models.ForeignKey(User, null=True)
+
     x_pos = models.IntegerField(default=0)
+
     y_pos = models.IntegerField(default=0)
 
     def __unicode__(self):
         """Retorna el nombre de un lugar al imprimir un objeto Place"""
         return str(self.user)+" "+str(self.photo)
-

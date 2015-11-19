@@ -8,65 +8,68 @@ from .forms import PhotoForm
 from .models import Photo, Place, Notification, Tag
 
 
-
 def tagsAjax(request):
-    getDict = dict(request.GET.iterlists()) 
+
+    getDict = dict(request.GET.iterlists())
     photo_id = int(getDict['photo_id'][0])
     photoInstance = Photo.objects.get(pk=photo_id)
-    tags_anteriores = Tag.objects.all().filter(photo = photoInstance)
-    response = {'result':'error'}
+    tags_anteriores = Tag.objects.all().filter(photo=photoInstance)
+    response = {'result': 'error'}
     if getDict['action'][0] == "add":
         x = int(getDict['x'][0])
-        y = int(getDict['y'][0])                
-        oldtag = tags_anteriores.filter(user = request.user)
+        y = int(getDict['y'][0])
+        oldtag = tags_anteriores.filter(user=request.user)
 
         if len(oldtag) == 0:
-            tag = Tag(photo=photoInstance, user=request.user, x_pos=x, y_pos=y)
+            tag = Tag(photo=photoInstance, user=request.user,
+                      x_pos=x, y_pos=y)
             tag.save()
         else:
-            oldtag[0].x_pos= x
-            oldtag[0].y_pos= y
+            oldtag[0].x_pos = x
+            oldtag[0].y_pos = y
             oldtag[0].save()
 
         for each in tags_anteriores:
             if each.user != request.user:
-                notification = Notification(sender=request.user,receiver=each.user,
+                notification = Notification(sender=request.user,
+                                            receiver=each.user,
                                             tagged_photo=photoInstance,
                                             notif_type='tag')
-                notification.save() 
-        response = {'result':'OK'}              
-    elif getDict['action'][0] == "getlist":  
-        response = {'tags':[], 'me':request.user.username}                        
+                notification.save()
+        response = {'result': 'OK'}
+    elif getDict['action'][0] == "getlist":
+        response = {'tags': [], 'me': request.user.username}
         for each in tags_anteriores:
             response['tags'].append({
-                'x':each.x_pos,
-                'y':each.y_pos,
-                'user':each.user.username
+                'x': each.x_pos,
+                'y': each.y_pos,
+                'user': each.user.username
             })
-    elif getDict['action'][0] == "remove":                
-        tags_anteriores.filter(user = request.user).delete()
-        response = {'result':'OK'}
+    elif getDict['action'][0] == "remove":
+        tags_anteriores.filter(user=request.user).delete()
+        response = {'result': 'OK'}
     return JsonResponse(response)
+
 
 def notifications(request):
     allNotis = Notification.objects.get_queryset()
-    notiForUser = allNotis.filter(receiver = request.user)
+    notiForUser = allNotis.filter(receiver=request.user)
     if request.GET.get('action') == "all_seen":
         for each in notiForUser:
             each.seen = True
             each.save()
-        return JsonResponse({'status':'OK'})
+        return JsonResponse({'status': 'OK'})
     else:
-        notisJson = {'notif_list':[], 'me':request.user.username}
+        notisJson = {'notif_list': [], 'me': request.user.username}
         for each in notiForUser:
             data = {
-                'id':each.pk, 
-                'time':each.dateTime, 
-                'text': each.text , 
-                'sender': str(each.sender),                 
+                'id': each.pk,
+                'time': each.dateTime,
+                'text': each.text,
+                'sender': str(each.sender),
                 'type': each.notif_type,
                 'seen': each.seen,
-            }            
+            }
             if each.sender:
                 data['sender_id'] = each.sender.pk
             if each.tagged_photo:
