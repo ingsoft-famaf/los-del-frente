@@ -8,7 +8,7 @@
 		<a href="/accounts/profile/edit">
 			<img id="edit_icon" src="{% static "edit.png" %}">
 		</a>
-		<h1 class="titulo">Perfil de {{object.usuario}}</h1>
+		<h1 class="titulo">{{object.usuario}}'s profile</h1>
 		<div class="content">
 	        <div class="img">
 	            <img src="{{ object.avatar.url }}" alt="">
@@ -16,11 +16,17 @@
 	        <div class="detalles">
 	        	{% if object.nombre %}
 	            <h2 class="name cursive">{{object.nombre}}</h2>
-	            <p>Tiene {{object.edad}} años y es de {{object.residencia}}.</p>
 	            {% else %}
-	            <p>Que pena que aun no tengas datos de perfil! Porfavor, <a href="/accounts/profile/edit">edita tu perfil</a>.</p>	        						
-				</a>    
+	            <p>You dont have profile data yet!</p>
+                <p>Please, <a href="/accounts/profile/edit">complete it</a>.</p>
+				</a>
 	            {% endif %}
+                {% if object.edad %}
+	            <p>Age: {{object.edad}}</p>
+                {% endif %}
+                {% if object.residencia %}
+                <p>From: {{object.residencia}}.</p>
+                {% endif %}
 	    		<!--<p><img src="{% static "LocationArrow.svg" %}" 
 	    			style="position: relative;top: 3px;}"> {{object.residencia}}</p>-->
 	    		{% if object.web %}

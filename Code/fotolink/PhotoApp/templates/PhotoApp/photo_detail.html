@@ -17,7 +17,7 @@ function etiquetar(a, b) {
       data: {'photo_id':{{ photo.pk }}, 'x':a, 'y': b},
       context: document.body
     }).done(function() {
-      alert("Te has etiquetado correctamente");
+      alert("You are correctly tagged on this photo");
     });
     eneable_tagging = false;
     document.getElementById('welcomeDiv').style.display = "none";
@@ -29,7 +29,7 @@ $("#foto img").click(function(e) {
   var offset = $(this).offset();
   var relativeX = Math.round(e.pageX - offset.left);
   var relativeY = Math.round(e.pageY - offset.top);
-  alert('la posición es   X : '+relativeX+'  Y : '+relativeY);
+  alert('the position of your tag is X : '+relativeX+'  Y : '+relativeY);
   etiquetar(relativeX, relativeY);
   }
 });

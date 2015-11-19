@@ -5,7 +5,7 @@
 {% block content %}
 	<article id="perfil">
         {% if not perms.User.Can_see %}
-		    <h1 class="titulo">Perfil publico de {{object.usuario}}</h1>
+		    <h1 class="titulo">{{object.usuario}}'s public profile</h1>
 		    <div class="content">
 	            <div class="img">
 	                <img src="{{ object.avatar.url }}" alt="">
@@ -14,10 +14,10 @@
 	            	{% if object.nombre %}
 	                <h2 class="name cursive">{{object.nombre}}</h2>
                     {% if object.edad and object.edad_privacidad %}
-	                <p>Edad: {{object.edad}}</p>
+	                <p>Age: {{object.edad}}</p>
                     {% endif %}
                     {% if object.residencia and object.residencia_privacidad %}
-                    <p>Residencia: {{object.residencia}}.</p>
+                    <p>Residence: {{object.residencia}}.</p>
                     {% endif %}
 	                {% else %}
 				    </a>    
@@ -37,12 +37,12 @@
 	        			</a>
 	        			{% endif %}
 	        		</div>
-                    <p>Tu y {{object.usuario}} no son amigos aun</p>
-                    <a href="/accounts/friend_request/{{object.pk}}" type="submit">Enviale una solicitud!</a>
+                    <p>You and {{object.usuario}} are not friends yet</p>
+                    <a href="/accounts/friend_request/{{object.pk}}" type="submit">Wanna be friends?</a>
 	            </div> 
             </div>
         {% else %}
-		    <h1 class="titulo">Perfil de {{object.usuario}}</h1>
+		    <h1 class="titulo">{{object.usuario}}' profile</h1>
 		    <div class="content">
 	            <div class="img">
 	                <img src="{{ object.avatar.url }}" alt="">
@@ -51,13 +51,13 @@
 	            	{% if object.nombre %}
 	                <h2 class="name cursive">{{object.nombre}}</h2>
                     {% if object.edad %}
-	                <p>Edad: {{object.edad}}</p>
+	                <p>Age: {{object.edad}}</p>
                     {% endif %}
                     {% if object.residencia %}
-                    <p>Residencia: {{object.residencia}}.</p>
+                    <p>Residence: {{object.residencia}}.</p>
                     {% endif %}
 	                {% else %}
-	                <p>No tiene datos aun cargados <a href="sug">Enviale una sugerencia</a>.</p>
+	                <p>Dont have profile data yet <a href="sug">Suggest complete the profile</a>.</p>
 				    </a>    
 	                {% endif %}
 	        		{% if object.web %}

@@ -7,7 +7,7 @@
 <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">-->
 <!--<h1> Edite aquí su perfil, querid@ {{ user }}</h1><br>-->
 	<article id="perfil">
-    <legend>Perfil - {{ user }}</legend>
+    <legend>{{ user }}'s profile</legend>
     <form  action="" method=POST enctype=multipart/form-data>
     <div id="errData" style="visibility:hidden">{{ form.edad.errors }}</div>
     {% csrf_token %}
@@ -20,13 +20,13 @@
         <label for="mail_privacidad" title="Privacidad"></label>
     </div>
     <div>   
-        {% render_field form.edad class="edad" placeholder="Edad" %}
+        {% render_field form.edad class="edad" placeholder="Age" %}
         {% render_field form.edad_privacidad class="privacidad" id="edad_privacidad" %}
         <!--<input type="checkbox" class="privacidad" id="edad_privacidad"></input>-->
         <label for="edad_privacidad" title="Privacidad"></label>
     </div>
     <div>
-        {% render_field form.residencia class="residencia" placeholder="Residencia" %}
+        {% render_field form.residencia class="residencia" placeholder="Residence" %}
         {% render_field form.residencia_privacidad class="privacidad" id="residencia_privacidad" %}
         <label for="residencia_privacidad" title="Privacidad"></label>
     </div>
