@@ -14,14 +14,17 @@ body {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     margin: 0;
     padding: 0;  
-    /*background-image: url('http://localhost:8000/static/background_low.jpg');*/
-    background-image: url('/static/mount-fuji-highest-mountain-in-japan-osx-lion-wallpaper.jpg');
+    /*background-image: url('http://localhost:8000/static/background_low.jpg');*/    
+    background-image: url('/static/mount-fuji-highest-mountain-in-japan-osx-lion-wallpaper.jpg');    
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
     background-color: rgba(0, 0, 0, 0.6);
     background-position: center center;
     color: white;
+}
+body.monta {
+    background-image: url('/static/rocas.png');
 }
 
 #logout, #logout-cancel {
@@ -385,4 +388,13 @@ input.file {
     text-transform: uppercase;
     color: #FFF;
     transition: background-color 0.2s ease 0s;
+}
+
+#change-bg {
+    display: block;
+    width: 4px;
+    height: 4px;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
 }
