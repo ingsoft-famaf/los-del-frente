@@ -13,13 +13,16 @@ from .forms import ProfileForm, InvitationForm
 from PhotoApp.models import Notification
 from forms import UserCreationForm
 
-def sugComplete(request,**kwargs):
-    to_user = User.objects.get(pk = kwargs['pk'])
+
+def sugComplete(request, **kwargs):
+
+    to_user = User.objects.get(pk=kwargs['pk'])
     from_user = request.user
     notif = Notification.objects.create(sender=from_user,
                                         receiver=to_user,
                                         notif_type='custom',
-                                        text='Hey completa el perfil! - ' + str(to_user))
+                                        text='Hey completa el perfil! - ' +
+                                        str(to_user))
     return HttpResponseRedirect('/')
 
 
@@ -140,23 +143,31 @@ class InviteList(ListView):
         accept = self.request.GET.get('Accept', '')
         decline = self.request.GET.get('Decline', '')
         frReqId = self.request.GET.get('requestID', '')
+        aceptacion = " acepto tu solucitud de amistad"
+        rechazo = " rechazo tu solicitud de amistad"
 
         if accept != '':
             invitation = FriendshipInvitation.objects.get(id=frReqId)
             user_from = invitation.from_user
             user_to = invitation.to_user
             invitation.accept()
-            notif = Notification.objects.create(sender=user_to,                                            receiver=user_from,                                            notif_type='custom',
-text=str(user_to)+" acepto tu solicitud de amistad")
+            notif = Notification.objects.create(sender=user_to,
+                                                receiver=user_from,
+                                                notif_type='custom',
+                                                text=str(user_to) + aceptacion)
+
         if decline != '':
             invitation = FriendshipInvitation.objects.get(id=frReqId)
             user_from = invitation.from_user
             user_to = invitation.to_user
             invitation.decline()
-            notif = Notification.objects.create(sender=user_to,                                            receiver=user_from,                                            notif_type='custom',
-text=str(user_to)+" rechazo tu solicitud de amistad")
-        return qset.filter(to_user=ActualUser).exclude(from_user=ActualUser).filter(status="0")
+            notif = Notification.objects.create(sender=user_to,
+                                                receiver=user_from,
+                                                notif_type='custom',
+                                                text=str(user_to) + rechazo)
 
+        return qset.filter(to_user=ActualUser).exclude(
+            from_user=ActualUser).filter(status="0")
 
 
 class PeopleList(ListView):
@@ -186,7 +197,10 @@ class PeopleList(ListView):
         qName = self.request.GET.get('people', '')
         qset = super(PeopleList, self).get_queryset()
         if qName != "":
-            qset = qset.filter(usuario__username__startswith=qName) | qset.filter(mail__startswith=qName) | qset.filter(nombre__startswith=qName)
+            qset = qset.filter(
+                usuario__username__startswith=qName) | qset.filter(
+                mail__startswith=qName) | qset.filter(
+                nombre__startswith=qName)
         else:
             return []
         return qset
@@ -255,10 +269,12 @@ class SendFriendRequest(CreateView):
         user_from = self.request.user
         ###
         if user_to not in wanna_be_friends(user_from):
-            friendship = FriendshipInvitation.objects.create(from_user=user_from,
-                                               to_user=user_to,
-                                               status="0")
-            notif = Notification.objects.create(sender=user_from,                                            receiver=user_to,                                            notif_type='friend_request')
+            friendship = FriendshipInvitation.objects.create(
+                from_user=user_from, to_user=user_to, status="0")
+
+            notif = Notification.objects.create(sender=user_from,
+                                                receiver=user_to,
+                                                notif_type='friend_request')
             # Aca se ha enviado la solicitud
         else:
             return HttpResponseRedirect("/fr_req_fail/")

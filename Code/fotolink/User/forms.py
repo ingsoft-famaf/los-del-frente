@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-
 from django.forms import ModelForm
 from .models import Perfil, FriendshipInvitation
 
@@ -20,7 +19,6 @@ class ProfileForm(ModelForm):
 
 class InvitationForm(ModelForm):
     """
-
     """
     class Meta:
         model = FriendshipInvitation

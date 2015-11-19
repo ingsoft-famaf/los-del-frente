@@ -250,7 +250,7 @@ class NotificationTagTestCase(TestCase):
 
     def test_welcome_notification(self):
         """
-        Registrar un nuevo usuario y chequear creacion automatica de 
+        Registrar un nuevo usuario y chequear creacion automatica de
         notificacion de bienvenida
         """
         cliente = Client()

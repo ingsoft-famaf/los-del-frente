@@ -17,6 +17,7 @@ class FriendshipAdmin(admin.ModelAdmin):
     '''
     list_display = ('id', 'from_user', 'to_user')
 
+
 class FriendshipInvitationAdmin(admin.ModelAdmin):
     list_display = ('id', 'from_user', 'to_user', 'status')
 

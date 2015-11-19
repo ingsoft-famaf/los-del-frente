@@ -121,8 +121,7 @@ class FriendshipInvitationManager(models.Manager):
 
     def invitations(self, *args, **kwargs):
         return self.filter(*args, **kwargs).exclude(
-                           status__in=["2"]).exclude(status__in=["1"])
-
+            status__in=["2"]).exclude(status__in=["1"])
 
 
 class FriendshipInvitation(models.Model):
@@ -139,7 +138,8 @@ class FriendshipInvitation(models.Model):
 
     def accept(self):
         if not Friendship.objects.are_friends(self.to_user, self.from_user):
-            friendship = Friendship(to_user=self.to_user, from_user=self.from_user)
+            friendship = Friendship(to_user=self.to_user,
+                                    from_user=self.from_user)
             friendship.save()
             self.status = "1"
             self.save()
@@ -149,20 +149,21 @@ class FriendshipInvitation(models.Model):
             self.status = "2"
             self.save()
 
-"""
-Me devuelve todos aquellos que tienen solicitudes pendientes que involucran
-a user.
-Motivacion: que no se le pueda mandar una solicitud a ellos
-"""
+
 def wanna_be_friends(user):
+    """
+    Me devuelve todos aquellos que tienen solicitudes pendientes que involucran
+    a user.
+    Motivacion: que no se le pueda mandar una solicitud a ellos
+    """
 
     my_invitations = FriendshipInvitation.objects.invitations()
-    future_friends=[]
+    future_friends = []
     for invitation in my_invitations:
-        if invitation.to_user==user and invitation.\
+        if invitation.to_user == user and invitation.\
                 from_user not in future_friends:
             future_friends.append(invitation.from_user)
-        if invitation.from_user==user and invitation.\
+        if invitation.from_user == user and invitation.\
                 to_user not in future_friends:
             future_friends.append(invitation.to_user)
     return future_friends
