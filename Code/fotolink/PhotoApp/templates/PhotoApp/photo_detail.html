@@ -5,7 +5,6 @@
 {% block content %}
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script>
-
 function cargarEtiquetas() {
   $('.img-container .tag').remove()
     $.ajax({
@@ -13,8 +12,11 @@ function cargarEtiquetas() {
       data: {'action':'getlist','photo_id':{{ photo.pk }}},
       context: document.body
     }).done(function(data) {
+      $('#remove-tag').hide()
       for (tag in data['tags']) {        
         este_tag = data['tags'][tag]
+        if (este_tag.user == data['me'])
+          $('#remove-tag').show()
         console.log(este_tag)
         var span = document.createElement('span')
         span.setAttribute('class','tag')
@@ -23,7 +25,7 @@ function cargarEtiquetas() {
         $('.img-container').append(span)
       }
     }).fail(function(){
-      console.log("Error cargando etiquetas");
+      console.log("Error trying to load tags");
     });
     document.getElementById('welcomeDiv').style.display = "none";
 }
@@ -34,22 +36,32 @@ function etiquetar(a, b) {
       data: {'action':'add', 'photo_id':{{ photo.pk }}, 'x':a, 'y': b},
       context: document.body
     }).done(function() {
-      alert("You are correctly tagged on this photo");
+      cargarEtiquetas()
+    }).fail(function(){
+      alert("Error trying to tag");
     });
     eneable_tagging = false;
-    document.getElementById('welcomeDiv').style.display = "none";
-    cargarEtiquetas()
+    document.getElementById('welcomeDiv').style.display = "none";    
 }
 
 $(function() {
-  cargarEtiquetas()
-$("#foto img").click(function(e) {
-  var offset = $(this).offset();
-  var relativeX = Math.round(e.pageX - offset.left);
-  var relativeY = Math.round(e.pageY - offset.top);
-  alert('the position of your tag is X : '+relativeX+'  Y : '+relativeY);
-  etiquetar(relativeX, relativeY);
-});
+    cargarEtiquetas()
+  $("#foto img").click(function(e) {
+    var offset = $(this).offset();
+    var relativeX = Math.round(e.pageX - offset.left);
+    var relativeY = Math.round(e.pageY - offset.top);
+    //alert('the position of your tag is X : '+relativeX+'  Y : '+relativeY);
+    etiquetar(relativeX, relativeY);
+  });
+  $('#remove-tag').click(function(){
+  $.ajax({
+      url: "/tagajax",
+      data: {'action':'remove','photo_id':{{ photo.pk }}},
+      context: document.body
+  }).done(function(){
+      cargarEtiquetas()
+  })
+})
 });
 
 
@@ -73,8 +85,8 @@ $("#foto img").click(function(e) {
     background-color: rgba(0, 0, 0, 0.36);
     color: rgba(240, 239, 239, 1);
     position: absolute;
-    left: 30px;
-    bottom: 30px;
+    left: 10px;
+    bottom: 10px;
     padding: 10px;
   }
   .img-container h1 {
@@ -90,6 +102,8 @@ $("#foto img").click(function(e) {
     padding: 10px;
     padding-left: 40px;
     color: #FFF;
+    margin-top: -20px;
+    margin-left: 5px;
   }
   .tag:first-letter {
     text-transform: uppercase;
@@ -118,13 +132,16 @@ $("#foto img").click(function(e) {
   <h1>{{ object.place }}</h1>
   <h2>{{ object.date }} at {{object.time}}</h2>
 </div>
+<div class="details" style="right: 10px; left: inherit; cursor: pointer;" id="remove-tag">
+  <h2>Remove my tag</h2>
+</div>
 </div>
 </a>
 
 {% if user.is_staff %}
 <input type="button" onclick="location.href='{% url 'photos:delete' photo.pk %}';" value="Eliminar" />
 {% endif %}
-<input type="button" onclick="activate_tagging()"  value="Etiquetarse" />
+<!--<input type="button" onclick="activate_tagging()"  value="Etiquetarse" />-->
 </article>
 
 {% endblock %}

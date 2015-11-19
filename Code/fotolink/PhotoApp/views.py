@@ -36,7 +36,7 @@ def tagsAjax(request):
                 notification.save() 
         response = {'result':'OK'}              
     elif getDict['action'][0] == "getlist":  
-        response = {'tags':[]}                        
+        response = {'tags':[], 'me':request.user.username}                        
         for each in tags_anteriores:
             response['tags'].append({
                 'x':each.x_pos,
