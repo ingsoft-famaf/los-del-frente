@@ -9,31 +9,32 @@ from .models import Photo, Place, Notification, Tag
 
 
 
-def AddTag(request):
+def tagsAjax(request):
 
     getDict = dict(request.GET.iterlists()) 
     photo_id = int(getDict['photo_id'][0])
-    x = int(getDict['x'][0])
-    y = int(getDict['y'][0])
+    if getDict['action'] == "add":
+        x = int(getDict['x'][0])
+        y = int(getDict['y'][0])
 
-    photoInstance = Photo.objects.get(pk=photo_id)
-    tags_anteriores = Tag.objects.all().filter(photo = photoInstance)
-    oldtag = tags_anteriores.filter(user = request.user)
+        photoInstance = Photo.objects.get(pk=photo_id)
+        tags_anteriores = Tag.objects.all().filter(photo = photoInstance)
+        oldtag = tags_anteriores.filter(user = request.user)
 
-    if len(oldtag) == 0:
-        tag = Tag(photo=photoInstance, user=request.user, x_pos=x, y_pos=y)
-        tag.save()
-    else:
-        oldtag[0].x_pos= x
-        oldtag[0].y_pos= y
-        oldtag[0].save()
+        if len(oldtag) == 0:
+            tag = Tag(photo=photoInstance, user=request.user, x_pos=x, y_pos=y)
+            tag.save()
+        else:
+            oldtag[0].x_pos= x
+            oldtag[0].y_pos= y
+            oldtag[0].save()
 
-    for each in tags_anteriores:
-        if each.user != request.user:
-            notification = Notification(sender=request.user,receiver=each.user,
-                                        tagged_photo=photoInstance,
-                                        notif_type='tag')
-            notification.save()
+        for each in tags_anteriores:
+            if each.user != request.user:
+                notification = Notification(sender=request.user,receiver=each.user,
+                                            tagged_photo=photoInstance,
+                                            notif_type='tag')
+                notification.save()
 
     return JsonResponse({'result':'OK'})
 

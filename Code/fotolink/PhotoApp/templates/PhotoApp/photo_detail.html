@@ -27,8 +27,8 @@ function cargarEtiquetas() {
 
 function etiquetar(a, b) {
     $.ajax({
-      url: "/addtag",
-      data: {'photo_id':{{ photo.pk }}, 'x':a, 'y': b},
+      url: "/tagajax",
+      data: {'action':'add', 'photo_id':{{ photo.pk }}, 'x':a, 'y': b},
       context: document.body
     }).done(function() {
       alert("You are correctly tagged on this photo");
