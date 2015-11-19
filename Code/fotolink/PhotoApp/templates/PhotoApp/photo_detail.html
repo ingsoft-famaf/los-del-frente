@@ -12,12 +12,21 @@ function activate_tagging() {
 }
 
 function cargarEtiquetas() {
+  $('.img-container .tag').remove()
     $.ajax({
-      url: "/tags",
-      data: {'photo_id':{{ photo.pk }}, 'x':a, 'y': b},
+      url: "/tagajax",
+      data: {'action':'getlist','photo_id':{{ photo.pk }}},
       context: document.body
-    }).done(function() {
-      alert("You are correctly tagged on this photo");
+    }).done(function(data) {
+      for (tag in data['tags']) {        
+        este_tag = data['tags'][tag]
+        console.log(este_tag)
+        var span = document.createElement('span')
+        span.setAttribute('class','tag')
+        span.style = "top: " + este_tag.y +'px; left: ' + este_tag.x + 'px'
+        span.innerHTML = este_tag.user
+        $('.img-container').append(span)
+      }
     }).fail(function(){
       console.log("Error cargando etiquetas");
     });
@@ -27,17 +36,19 @@ function cargarEtiquetas() {
 
 function etiquetar(a, b) {
     $.ajax({
-      url: "/addtag",
-      data: {'photo_id':{{ photo.pk }}, 'x':a, 'y': b},
+      url: "/tagajax",
+      data: {'action':'add', 'photo_id':{{ photo.pk }}, 'x':a, 'y': b},
       context: document.body
     }).done(function() {
       alert("You are correctly tagged on this photo");
     });
     eneable_tagging = false;
     document.getElementById('welcomeDiv').style.display = "none";
+    cargarEtiquetas()
 }
 
 $(function() {
+  cargarEtiquetas()
 $("#foto img").click(function(e) {
   if (eneable_tagging == true) {
   var offset = $(this).offset();
@@ -79,6 +90,9 @@ $("#foto img").click(function(e) {
   }
   .img-container h2 {    
     font-size: 15px; margin-top: 0px;
+  }
+  .tag {
+    position: absolute;
   }
 </style>
 <article>

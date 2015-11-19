@@ -9,33 +9,41 @@ from .models import Photo, Place, Notification, Tag
 
 
 
-def AddTag(request):
-
+def tagsAjax(request):
     getDict = dict(request.GET.iterlists()) 
     photo_id = int(getDict['photo_id'][0])
-    x = int(getDict['x'][0])
-    y = int(getDict['y'][0])
-
     photoInstance = Photo.objects.get(pk=photo_id)
     tags_anteriores = Tag.objects.all().filter(photo = photoInstance)
-    oldtag = tags_anteriores.filter(user = request.user)
+    response = {'result':'error'}
+    if getDict['action'][0] == "add":
+        x = int(getDict['x'][0])
+        y = int(getDict['y'][0])                
+        oldtag = tags_anteriores.filter(user = request.user)
 
-    if len(oldtag) == 0:
-        tag = Tag(photo=photoInstance, user=request.user, x_pos=x, y_pos=y)
-        tag.save()
-    else:
-        oldtag[0].x_pos= x
-        oldtag[0].y_pos= y
-        oldtag[0].save()
+        if len(oldtag) == 0:
+            tag = Tag(photo=photoInstance, user=request.user, x_pos=x, y_pos=y)
+            tag.save()
+        else:
+            oldtag[0].x_pos= x
+            oldtag[0].y_pos= y
+            oldtag[0].save()
 
-    for each in tags_anteriores:
-        if each.user != request.user:
-            notification = Notification(sender=request.user,receiver=each.user,
-                                        tagged_photo=photoInstance,
-                                        notif_type='tag')
-            notification.save()
-
-    return JsonResponse({'result':'OK'})
+        for each in tags_anteriores:
+            if each.user != request.user:
+                notification = Notification(sender=request.user,receiver=each.user,
+                                            tagged_photo=photoInstance,
+                                            notif_type='tag')
+                notification.save() 
+        response = {'result':'OK'}              
+    elif getDict['action'][0] == "getlist":        
+        response = {'tags':[]}                        
+        for each in tags_anteriores:
+            response['tags'].append({
+                'x':each.x_pos,
+                'y':each.y_pos,
+                'user':each.user.username
+            })
+    return JsonResponse(response)
 
 def notifications(request):
     allNotis = Notification.objects.get_queryset()
