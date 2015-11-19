@@ -101,7 +101,7 @@ class PhotoAppTestCase(TestCase):
         '''
         cliente = Client()
         cliente.login(username="matias1", password="matias1")
-        ##Subo una foto de Neuquen
+        # Subo una foto de Neuquen
         pictureFile = File(open("./PhotoApp/tests/picture.jpg"))
         response = cliente.post('/upload/',
                                 {'picture': pictureFile,
@@ -159,7 +159,7 @@ class PhotoAppTestCase(TestCase):
         '''
         cliente = Client()
         cliente.login(username="matias1", password="matias1")
-        ##Subo una foto de Neuquen
+        # Subo una foto de Neuquen
         pictureFile = File(open("./PhotoApp/tests/picture.jpg"))
         response = cliente.post('/upload/',
                                 {'picture': pictureFile,
@@ -170,7 +170,7 @@ class PhotoAppTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
         response = cliente.get("/%2Fphotos/1")
         self.assertEqual(response.status_code, 301)
-        ##Subo una foto de Catamarca
+        # Subo una foto de Catamarca
         pictureFile = File(open("./PhotoApp/tests/picture.jpg"))
         response = cliente.post('/upload/',
                                 {'picture': pictureFile,
@@ -181,9 +181,9 @@ class PhotoAppTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
         response = cliente.get("/%2Fphotos/2")
         self.assertEqual(response.status_code, 301)
-        ##Obtengo photolist
+        # Obtengo photolist
         response = cliente.get('/photos/')
-        ##Me fijo si estan mis fotos
+        # Me fijo si estan mis fotos
         for foto in response.context['photo_list']:
             self.assertTrue(foto.place_id == 'Neuquen' or
                             foto.place_id == 'Catamarca')
@@ -195,7 +195,7 @@ class PhotoAppTestCase(TestCase):
         '''
         cliente = Client()
         cliente.login(username="matias1", password="matias1")
-        ##Subo una foto de Neuquen
+        # Subo una foto de Neuquen
         pictureFile = File(open("./PhotoApp/tests/picture.jpg"))
         response = cliente.post('/upload/',
                                 {'picture': pictureFile,
@@ -206,7 +206,7 @@ class PhotoAppTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
         response = cliente.get("/%2Fphotos/1")
         self.assertEqual(response.status_code, 301)
-        ##Subo una foto de Catamarca
+        # Subo una foto de Catamarca
         pictureFile = File(open("./PhotoApp/tests/picture.jpg"))
         response = cliente.post('/upload/',
                                 {'picture': pictureFile,
@@ -217,9 +217,9 @@ class PhotoAppTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
         response = cliente.get("/%2Fphotos/2")
         self.assertEqual(response.status_code, 301)
-        ##Obtengo photolist
+        # Obtengo photolist
         response = cliente.get('/photos/')
-        ##Filtro solo Neuquen
+        # Filtro solo Neuquen
         response = cliente.get('/photos/?csrfmiddlewaretoken=fSuRgFpRXVPd7OsA'
                                'Vpsc6tnFBWo9bokb&place=neu&year=&mon'
                                'th=&day=&time=&submit=Filter')
@@ -279,8 +279,8 @@ class NotificationTagTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
         response = cliente.get('/%2Fphotos/1/')
         self.assertTrue("Neuquen" in str(response))
-        #response = cliente.get("/tagajax?photo_id=1&x=500&y=100")
-        #self.assertTrue("OK" in str(response))
+        # response = cliente.get("/tagajax?photo_id=1&x=500&y=100")
+        # self.assertTrue("OK" in str(response))
         response = cliente.get('/notification')
         self.assertTrue("admin" in str(response))
         self.assertFalse("tag" in str(response))
@@ -289,12 +289,12 @@ class NotificationTagTestCase(TestCase):
         cliente.login(username="matias1", password="matias1")
         response = cliente.get('/%2Fphotos/1/')
         self.assertTrue("Neuquen" in str(response))
-        #response = cliente.get("/tagajax?photo_id=1&x=500&y=100")
-        #self.assertTrue("OK" in str(response))
+        # response = cliente.get("/tagajax?photo_id=1&x=500&y=100")
+        # self.assertTrue("OK" in str(response))
         response = cliente.get('/notification')
         self.assertTrue("matias1" in str(response))
         cliente.logout()
         cliente = Client()
         cliente.login(username="admin", password="admin")
         response = cliente.get('/notification')
-        #self.assertTrue("tag" in str(response))
+        # self.assertTrue("tag" in str(response))

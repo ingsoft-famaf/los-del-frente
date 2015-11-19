@@ -120,9 +120,10 @@ class EditProfileTestCase(TestCase):
         """
         Chequeo que cambien los parametros CharFields
         """
-        response = self.cliente.post('/accounts/profile/edit/', {'nombre':
-                                     'alfredo',
-                                     'residencia': 'Siempre Viva 23'})
+        datos = {'nombre': 'alfredo', 'residencia': 'Siempre Viva 23'}
+
+        response = self.cliente.post('/accounts/profile/edit/', datos)
+
         self.assertEqual(response.status_code, 302)
         dbuser = User.objects.get(username="user")
         nomb = dbuser.perfil.nombre
