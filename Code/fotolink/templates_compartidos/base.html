@@ -96,6 +96,9 @@
         $("#logout-cancel").click(function(){
             $(".cd-popup").removeClass("is-visible")
         })
+        $("#change-bg").click(function(){
+            $("body").toggleClass("monta")
+        })
     }); 
     </script>
 </head>
@@ -140,7 +143,7 @@
                     <img src="{% static "log_out.png" %}"
                     style="width: 30px;position: relative;top: 9px;">Logout({{user.username}})-soysuper</a>
                     {% else %}
-                    <img src="{% static "log_out.png" %}"
+                    <img src="{% static "log_out.svg" %}"
                     style="width: 30px;position: relative;top: 9px;">Logout({{user.username}})</a>
                     {% endif %}
                 </li>
@@ -156,7 +159,7 @@
             <div id="errorBox" class="notification error"><h5>Uh oh</h5><p id="notifErrMsg">This is an error D:</p> <a class="close" href="#">×</a></div>
             <div id="errData" style="display: none">{{ form.non_field_errors }}</div>
     </footer> 
-    </div>
+    <div id="change-bg"></div>
 </body>
 </html>
 
