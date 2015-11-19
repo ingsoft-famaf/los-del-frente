@@ -11,6 +11,20 @@ function activate_tagging() {
    eneable_tagging = true;
 }
 
+function cargarEtiquetas() {
+    $.ajax({
+      url: "/tags",
+      data: {'photo_id':{{ photo.pk }}, 'x':a, 'y': b},
+      context: document.body
+    }).done(function() {
+      alert("You are correctly tagged on this photo");
+    }).fail(function(){
+      console.log("Error cargando etiquetas");
+    });
+    eneable_tagging = false;
+    document.getElementById('welcomeDiv').style.display = "none";
+}
+
 function etiquetar(a, b) {
     $.ajax({
       url: "/addtag",
@@ -35,20 +49,57 @@ $("#foto img").click(function(e) {
 });
 });
 
-</script>
-<h1>Details</h1>
-<p>Date and Time: {{ object.date }} at {{object.time}}</p>
-<p>Place: {{ object.place }}</p>
 
+
+</script>
+<style>
+  article {
+    color: #FFF;
+    width: 800px;
+    position: relative;
+    left: 50%;
+    margin-left: -400px;
+  }
+  .img-container {
+    position: relative;
+  }
+  .img-container img {
+    width: 100%;
+  }
+  .img-container .details {
+    background-color: rgba(0, 0, 0, 0.36);
+    color: rgba(240, 239, 239, 1);
+    position: absolute;
+    left: 30px;
+    bottom: 30px;
+    padding: 10px;
+  }
+  .img-container h1 {
+    font-size: 20px; margin-top: 5px;
+  }
+  .img-container h2 {    
+    font-size: 15px; margin-top: 0px;
+  }
+</style>
+<article>
+<legend>Details</legend>
 <div id="welcomeDiv"  style="display:none;" class="answer_list" > Haga click en la posición que se quiere etiquetar</div>
 <a id = "foto">
-<img src="{{ object.picture.url }}" class="img-responsive img-detail" alt=""></a>
+<div class="img-container">
+  <span class="tag">- Pepe</span>
+<img src="{{ object.picture.url }}" class="img-responsive img-detail" alt="">
+<div class="details">
+  <h1>{{ object.place }}</h1>
+  <h2>{{ object.date }} at {{object.time}}</h2>
+</div>
+</div>
+</a>
 
 {% if user.is_staff %}
 <input type="button" onclick="location.href='{% url 'photos:delete' photo.pk %}';" value="Eliminar" />
 {% endif %}
 <input type="button" onclick="activate_tagging()"  value="Etiquetarse" />
-
+</article>
 
 {% endblock %}
 
